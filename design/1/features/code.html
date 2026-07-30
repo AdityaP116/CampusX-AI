@@ -1,0 +1,323 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>CampusX Features | Premium Student Marketplace</title>
+<!-- Google Fonts: Inter -->
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
+<!-- Material Symbols Outlined -->
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Tailwind CSS -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<!-- Tailwind Config -->
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "tertiary": "#7e3000",
+                    "on-tertiary-fixed-variant": "#7b2f00",
+                    "on-secondary-container": "#fffbff",
+                    "surface-container-lowest": "#ffffff",
+                    "on-tertiary-container": "#ffd2be",
+                    "inverse-on-surface": "#f3effc",
+                    "primary-container": "#4f46e5",
+                    "on-primary-fixed": "#0f0069",
+                    "error-container": "#ffdad6",
+                    "surface": "#fcf8ff",
+                    "on-secondary-fixed": "#07006c",
+                    "outline": "#777587",
+                    "on-secondary": "#ffffff",
+                    "on-error-container": "#93000a",
+                    "on-error": "#ffffff",
+                    "surface-container-highest": "#e4e1ee",
+                    "on-background": "#1b1b24",
+                    "secondary-fixed-dim": "#c0c1ff",
+                    "tertiary-container": "#a44100",
+                    "surface-container-high": "#eae6f4",
+                    "on-secondary-fixed-variant": "#2f2ebe",
+                    "secondary-container": "#6063ee",
+                    "inverse-primary": "#c3c0ff",
+                    "primary-fixed-dim": "#c3c0ff",
+                    "surface-bright": "#fcf8ff",
+                    "inverse-surface": "#302f39",
+                    "on-tertiary-fixed": "#351000",
+                    "primary": "#3525cd",
+                    "on-primary-fixed-variant": "#3323cc",
+                    "tertiary-fixed": "#ffdbcc",
+                    "on-primary-container": "#dad7ff",
+                    "on-tertiary": "#ffffff",
+                    "primary-fixed": "#e2dfff",
+                    "secondary-fixed": "#e1e0ff",
+                    "surface-tint": "#4d44e3",
+                    "surface-dim": "#dcd8e5",
+                    "on-surface": "#1b1b24",
+                    "surface-variant": "#e4e1ee",
+                    "secondary": "#4648d4",
+                    "background": "#fcf8ff",
+                    "outline-variant": "#c7c4d8",
+                    "on-primary": "#ffffff",
+                    "on-surface-variant": "#464555",
+                    "surface-container-low": "#f5f2ff",
+                    "tertiary-fixed-dim": "#ffb695",
+                    "surface-container": "#f0ecf9",
+                    "error": "#ba1a1a"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.25rem",
+                    "lg": "0.5rem",
+                    "xl": "0.75rem",
+                    "full": "9999px"
+            },
+            "spacing": {
+                    "md": "16px",
+                    "margin_mobile": "16px",
+                    "sm": "8px",
+                    "gutter": "24px",
+                    "container_max": "1440px",
+                    "xxl": "48px",
+                    "base": "8px",
+                    "xs": "4px",
+                    "lg": "24px",
+                    "xl": "32px"
+            },
+            "fontFamily": {
+                    "title": ["Inter"],
+                    "h2": ["Inter"],
+                    "display": ["Inter"],
+                    "caption": ["Inter"],
+                    "body": ["Inter"],
+                    "h1": ["Inter"],
+                    "h3": ["Inter"],
+                    "h1-mobile": ["Inter"],
+                    "small": ["Inter"]
+            },
+            "fontSize": {
+                    "title": ["20px", {"lineHeight": "1.5", "fontWeight": "600"}],
+                    "h2": ["32px", {"lineHeight": "1.3", "letterSpacing": "-0.01em", "fontWeight": "600"}],
+                    "display": ["48px", {"lineHeight": "1.1", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                    "caption": ["12px", {"lineHeight": "1.4", "letterSpacing": "0.01em", "fontWeight": "400"}],
+                    "body": ["16px", {"lineHeight": "1.6", "fontWeight": "400"}],
+                    "h1": ["40px", {"lineHeight": "1.2", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                    "h3": ["24px", {"lineHeight": "1.4", "fontWeight": "600"}],
+                    "h1-mobile": ["32px", {"lineHeight": "1.2", "fontWeight": "700"}],
+                    "small": ["14px", {"lineHeight": "1.5", "fontWeight": "500"}]
+            }
+          },
+        },
+      }
+    </script>
+<style>
+        body { background-color: #F8FAFC; }
+        .glass-nav { backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); }
+        .bento-card { transition: transform 0.2s cubic-bezier(0.2, 0, 0, 1), box-shadow 0.2s ease; }
+        .bento-card:hover { transform: translateY(-4px); }
+        .material-symbols-outlined { font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24; }
+        .gradient-mask { mask-image: linear-gradient(to bottom, black 50%, transparent 100%); }
+    </style>
+</head>
+<body class="font-body text-on-surface selection:bg-primary-container selection:text-on-primary-container">
+<!-- Top Navigation Bar -->
+<header class="fixed top-0 w-full z-50 bg-surface/70 backdrop-blur-xl border-b border-outline-variant/30 shadow-sm">
+<div class="flex justify-between items-center w-full px-gutter max-w-container_max mx-auto h-16">
+<div class="flex items-center gap-8">
+<span class="font-display text-title font-bold text-primary">CampusX</span>
+<nav class="hidden md:flex items-center gap-6">
+<a class="text-on-surface-variant font-medium hover:text-primary transition-colors duration-200" href="#">Marketplace</a>
+<a class="text-on-surface-variant font-medium hover:text-primary transition-colors duration-200" href="#">Rentals</a>
+<a class="text-on-surface-variant font-medium hover:text-primary transition-colors duration-200" href="#">Exchanges</a>
+</nav>
+</div>
+<div class="flex items-center gap-4">
+<div class="hidden sm:flex items-center gap-2">
+<span class="material-symbols-outlined text-on-surface-variant">notifications</span>
+<span class="material-symbols-outlined text-on-surface-variant">chat_bubble</span>
+</div>
+<button class="bg-primary text-on-primary px-5 py-2 rounded-full font-small font-semibold hover:bg-secondary transition-all active:scale-95 duration-150">
+                    Post Listing
+                </button>
+<div class="w-10 h-10 rounded-full border-2 border-primary-container overflow-hidden">
+<img class="w-full h-full object-cover" data-alt="Close-up portrait of a diverse university student smiling warmly, high-quality professional studio photography with soft rim lighting, representing the trustworthy and verified nature of the CampusX community. The background is a clean, neutral gray." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCrHE8Brq1J5CsvT5ZPCPCrpxT_imGkgRHNbsuj1gV8HxLz0v76VW92bjYmcxp5CgsAhR58OcBbkH0WOwGe4tk6186g8IXATfJ_erBzSLebkxLOwHORPGarztFE2SAv1otYVsrVDx8SxIIMwroH0PEFwMO5zHviTYseJx6rZ_-v30sWTJoBJwzjN2_9pp7czBvdfjEohsbrAgoexfD1arrYjx8N3XHE66s-Gcza4b_IGHm7nMxhWYTxTLrMvz15ijHfzTDZ8yzuNEcK"/>
+</div>
+</div>
+</div>
+</header>
+<main class="pt-32 pb-xxl px-gutter max-w-container_max mx-auto">
+<!-- Hero Section -->
+<section class="text-center mb-xxl">
+<div class="inline-flex items-center gap-2 px-4 py-1 rounded-full bg-primary-container/10 text-primary font-small mb-6 border border-primary/20">
+<span class="material-symbols-outlined text-[16px]">verified</span>
+<span>The Verified Standard for Students</span>
+</div>
+<h1 class="font-h1 text-h1 md:text-display max-w-3xl mx-auto mb-6 text-on-surface tracking-tight">
+                Marketplace utility meets <span class="text-primary">campus community.</span>
+</h1>
+<p class="font-body text-body text-on-surface-variant max-w-2xl mx-auto">
+                CampusX combines high-performance discovery tools with secure student verification to create the ultimate destination for university commerce.
+            </p>
+</section>
+<!-- Feature Grid (Linear-inspired Bento) -->
+<div class="grid grid-cols-1 md:grid-cols-6 md:grid-rows-2 gap-gutter">
+<!-- Verified Student ID (Large) -->
+<div class="md:col-span-3 md:row-span-1 bento-card bg-surface border border-outline-variant/30 rounded-[24px] p-8 flex flex-col justify-between overflow-hidden relative group">
+<div class="relative z-10">
+<div class="w-12 h-12 rounded-xl bg-primary/10 flex items-center justify-center text-primary mb-6">
+<span class="material-symbols-outlined text-[28px]" data-weight="fill">verified_user</span>
+</div>
+<h3 class="font-h3 text-h3 mb-2">Verified Student ID</h3>
+<p class="text-on-surface-variant font-body">Security by design. Every user is authenticated via .edu email verification, ensuring a circle of trust within your campus.</p>
+</div>
+<div class="mt-8 relative h-32 md:h-40 rounded-xl overflow-hidden border border-outline-variant/20 bg-surface-container-low">
+<div class="absolute inset-0 opacity-40 bg-gradient-to-tr from-primary/20 to-transparent"></div>
+<div class="p-4 flex gap-4 overflow-hidden">
+<div class="w-2/3 shrink-0 h-24 bg-white rounded-lg shadow-sm border border-outline-variant/10 p-3 flex items-center gap-3">
+<div class="w-10 h-10 rounded-full bg-surface-variant"></div>
+<div class="space-y-1">
+<div class="w-20 h-2 bg-surface-variant rounded"></div>
+<div class="w-12 h-1.5 bg-surface-variant/50 rounded"></div>
+</div>
+<div class="ml-auto">
+<span class="material-symbols-outlined text-primary text-[18px]">verified</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Smart Search -->
+<div class="md:col-span-3 md:row-span-1 bento-card bg-surface border border-outline-variant/30 rounded-[24px] p-8 flex flex-col justify-between overflow-hidden group">
+<div>
+<div class="w-12 h-12 rounded-xl bg-secondary/10 flex items-center justify-center text-secondary mb-6">
+<span class="material-symbols-outlined text-[28px]">search_spark</span>
+</div>
+<h3 class="font-h3 text-h3 mb-2">Smart Search</h3>
+<p class="text-on-surface-variant font-body">Discovery redefined. Use semantic search to find exactly what you need, from course-specific textbooks to niche electronics.</p>
+</div>
+<div class="mt-8 flex items-center gap-2 bg-surface-container-high/50 p-3 rounded-full border border-outline-variant/20">
+<span class="material-symbols-outlined text-outline">search</span>
+<span class="text-on-surface-variant/60 font-body">Search for "Organic Chemistry Lab Coat"...</span>
+</div>
+</div>
+<!-- Secure Messaging -->
+<div class="md:col-span-2 md:row-span-1 bento-card bg-surface border border-outline-variant/30 rounded-[24px] p-8 group">
+<div class="w-12 h-12 rounded-xl bg-tertiary-fixed flex items-center justify-center text-tertiary mb-6">
+<span class="material-symbols-outlined text-[28px]">mobile_code</span>
+</div>
+<h3 class="font-h3 text-h3 mb-2">Secure Messaging</h3>
+<p class="text-on-surface-variant font-body">End-to-end communication without sharing personal numbers or social media handles.</p>
+</div>
+<!-- Listing Management -->
+<div class="md:col-span-2 md:row-span-1 bento-card bg-surface border border-outline-variant/30 rounded-[24px] p-8 group">
+<div class="w-12 h-12 rounded-xl bg-surface-container-highest flex items-center justify-center text-on-surface-variant mb-6">
+<span class="material-symbols-outlined text-[28px]">inventory_2</span>
+</div>
+<h3 class="font-h3 text-h3 mb-2">Listing Management</h3>
+<p class="text-on-surface-variant font-body">Simplicity in motion. List items in under 60 seconds with auto-tagging and campus pricing suggestions.</p>
+</div>
+<!-- Campus Hubs (Large) -->
+<div class="md:col-span-2 md:row-span-1 bento-card bg-primary-container text-on-primary-container rounded-[24px] p-8 flex flex-col justify-between group overflow-hidden relative">
+<div class="absolute top-0 right-0 p-8 opacity-10 group-hover:opacity-20 transition-opacity">
+<span class="material-symbols-outlined text-[120px]">hub</span>
+</div>
+<div class="relative z-10">
+<div class="w-12 h-12 rounded-xl bg-white/20 flex items-center justify-center text-white mb-6">
+<span class="material-symbols-outlined text-[28px]">school</span>
+</div>
+<h3 class="font-h3 text-h3 mb-2">Campus Hubs</h3>
+<p class="text-white/80 font-body">Relevance guaranteed. Every campus has its own ecosystem. No more wading through items 50 miles away.</p>
+</div>
+<div class="relative z-10 mt-6 pt-4 border-t border-white/10 flex items-center justify-between">
+<span class="font-small font-semibold">Switch Campus</span>
+<span class="material-symbols-outlined">arrow_forward</span>
+</div>
+</div>
+<!-- Analytics Dashboard (Wide) -->
+<div class="md:col-span-6 md:row-span-1 bento-card bg-surface border border-outline-variant/30 rounded-[24px] p-8 flex flex-col md:flex-row gap-8 items-center overflow-hidden">
+<div class="flex-1">
+<div class="w-12 h-12 rounded-xl bg-error-container/30 flex items-center justify-center text-primary mb-6">
+<span class="material-symbols-outlined text-[28px]">analytics</span>
+</div>
+<h3 class="font-h3 text-h3 mb-2">Analytics Dashboard</h3>
+<p class="text-on-surface-variant font-body max-w-lg">Performance insights for power sellers. Track views, engagement, and conversion rates with minimalist visualization tools.</p>
+<div class="mt-8 flex gap-4">
+<div class="p-4 rounded-xl bg-surface-container-low border border-outline-variant/20 flex-1">
+<span class="block text-caption text-outline mb-1">Total Views</span>
+<span class="block font-h3 text-primary">1,284</span>
+</div>
+<div class="p-4 rounded-xl bg-surface-container-low border border-outline-variant/20 flex-1">
+<span class="block text-caption text-outline mb-1">Items Sold</span>
+<span class="block font-h3 text-primary">24</span>
+</div>
+</div>
+</div>
+<div class="flex-1 w-full h-full min-h-[200px] bg-surface-container-lowest rounded-xl border border-outline-variant/20 p-6 flex flex-col gap-4">
+<div class="flex justify-between items-end h-32 gap-2">
+<div class="flex-1 bg-primary/20 rounded-t-md h-[40%]"></div>
+<div class="flex-1 bg-primary/30 rounded-t-md h-[60%]"></div>
+<div class="flex-1 bg-primary/50 rounded-t-md h-[85%]"></div>
+<div class="flex-1 bg-primary/40 rounded-t-md h-[70%]"></div>
+<div class="flex-1 bg-primary/60 rounded-t-md h-[95%]"></div>
+<div class="flex-1 bg-primary rounded-t-md h-[80%]"></div>
+<div class="flex-1 bg-primary/50 rounded-t-md h-[65%]"></div>
+</div>
+<div class="h-1 bg-outline-variant/20 w-full rounded-full"></div>
+</div>
+</div>
+</div>
+</main>
+<!-- Footer -->
+<footer class="bg-surface-container border-t border-outline-variant/20 py-16 px-gutter">
+<div class="max-w-container_max mx-auto flex flex-col md:flex-row justify-between items-start gap-12">
+<div class="max-w-xs">
+<span class="font-display text-h3 font-bold text-primary block mb-4">CampusX</span>
+<p class="text-on-surface-variant font-body">The next generation student marketplace. Premium, verified, and campus-first.</p>
+</div>
+<div class="grid grid-cols-2 sm:grid-cols-3 gap-12">
+<div>
+<span class="font-small font-bold text-on-surface mb-4 block">Product</span>
+<ul class="space-y-2 text-on-surface-variant font-body">
+<li><a class="hover:text-primary" href="#">Features</a></li>
+<li><a class="hover:text-primary" href="#">Security</a></li>
+<li><a class="hover:text-primary" href="#">For Universities</a></li>
+</ul>
+</div>
+<div>
+<span class="font-small font-bold text-on-surface mb-4 block">Support</span>
+<ul class="space-y-2 text-on-surface-variant font-body">
+<li><a class="hover:text-primary" href="#">Help Center</a></li>
+<li><a class="hover:text-primary" href="#">Community Rules</a></li>
+<li><a class="hover:text-primary" href="#">Contact</a></li>
+</ul>
+</div>
+<div>
+<span class="font-small font-bold text-on-surface mb-4 block">Legal</span>
+<ul class="space-y-2 text-on-surface-variant font-body">
+<li><a class="hover:text-primary" href="#">Privacy Policy</a></li>
+<li><a class="hover:text-primary" href="#">Terms of Service</a></li>
+<li><a class="hover:text-primary" href="#">Safety Policy</a></li>
+</ul>
+</div>
+</div>
+</div>
+<div class="max-w-container_max mx-auto mt-16 pt-8 border-t border-outline-variant/20 flex flex-col sm:flex-row justify-between items-center gap-4">
+<span class="text-caption text-outline">© 2024 CampusX. All rights reserved. Built for students.</span>
+<div class="flex gap-6">
+<a class="text-outline hover:text-primary transition-colors" href="#"><span class="material-symbols-outlined">public</span></a>
+<a class="text-outline hover:text-primary transition-colors" href="#"><span class="material-symbols-outlined">alternate_email</span></a>
+</div>
+</div>
+</footer>
+<script>
+        // Micro-interaction for hover states
+        document.querySelectorAll('.bento-card').forEach(card => {
+            card.addEventListener('mouseenter', () => {
+                card.style.boxShadow = '0 12px 24px rgba(79, 70, 229, 0.05)';
+            });
+            card.addEventListener('mouseleave', () => {
+                card.style.boxShadow = 'none';
+            });
+        });
+    </script>
+</body></html>

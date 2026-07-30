@@ -1,0 +1,440 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>CampusX Admin - System Settings</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Tailwind Configuration -->
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                "surface-tint": "#4d44e3",
+                "surface-container-low": "#eff4ff",
+                "surface": "#f8f9ff",
+                "tertiary-fixed-dim": "#c0c1ff",
+                "on-primary": "#ffffff",
+                "primary-container": "#4f46e5",
+                "primary-fixed-dim": "#c3c0ff",
+                "tertiary": "#3130c0",
+                "surface-container-highest": "#d3e4fe",
+                "inverse-primary": "#c3c0ff",
+                "on-surface": "#0b1c30",
+                "on-tertiary-fixed-variant": "#2f2ebe",
+                "on-secondary-fixed-variant": "#3f465c",
+                "outline-variant": "#c7c4d8",
+                "on-primary-container": "#dad7ff",
+                "secondary-fixed": "#dae2fd",
+                "tertiary-fixed": "#e1e0ff",
+                "on-primary-fixed": "#0f0069",
+                "outline": "#777587",
+                "tertiary-container": "#4b4dd8",
+                "on-tertiary": "#ffffff",
+                "secondary-fixed-dim": "#bec6e0",
+                "on-tertiary-container": "#d9d8ff",
+                "primary-fixed": "#e2dfff",
+                "secondary": "#565e74",
+                "on-tertiary-fixed": "#07006c",
+                "on-secondary-fixed": "#131b2e",
+                "secondary-container": "#dae2fd",
+                "surface-container-lowest": "#ffffff",
+                "on-error-container": "#93000a",
+                "error-container": "#ffdad6",
+                "inverse-surface": "#213145",
+                "on-secondary-container": "#5c647a",
+                "background": "#f8f9ff",
+                "surface-bright": "#f8f9ff",
+                "surface-container": "#e5eeff",
+                "on-background": "#0b1c30",
+                "surface-dim": "#cbdbf5",
+                "surface-container-high": "#dce9ff",
+                "on-secondary": "#ffffff",
+                "error": "#ba1a1a",
+                "on-error": "#ffffff",
+                "on-primary-fixed-variant": "#3323cc",
+                "on-surface-variant": "#464555",
+                "primary": "#3525cd",
+                "surface-variant": "#d3e4fe",
+                "inverse-on-surface": "#eaf1ff"
+            },
+            "borderRadius": {
+                "DEFAULT": "0.25rem",
+                "lg": "0.5rem",
+                "xl": "0.75rem",
+                "full": "9999px"
+            },
+            "spacing": {
+                "gutter": "16px",
+                "container-margin": "32px",
+                "row-height-dense": "32px",
+                "unit": "4px",
+                "row-height-standard": "48px"
+            },
+            "fontFamily": {
+                "headline": ["Inter"],
+                "mono-label": ["monospace"],
+                "label-caps": ["Inter"],
+                "title-sm": ["Inter"],
+                "body-md": ["Inter"],
+                "body-sm": ["Inter"],
+                "table-data": ["Inter"],
+                "display": ["Inter"]
+            },
+            "fontSize": {
+                "headline": ["18px", {"lineHeight": "28px", "letterSpacing": "-0.01em", "fontWeight": "600"}],
+                "mono-label": ["12px", {"lineHeight": "16px", "fontWeight": "400"}],
+                "label-caps": ["11px", {"lineHeight": "16px", "letterSpacing": "0.05em", "fontWeight": "700"}],
+                "title-sm": ["14px", {"lineHeight": "20px", "fontWeight": "600"}],
+                "body-md": ["14px", {"lineHeight": "20px", "fontWeight": "400"}],
+                "body-sm": ["13px", {"lineHeight": "18px", "fontWeight": "400"}],
+                "table-data": ["13px", {"lineHeight": "16px", "fontWeight": "400"}],
+                "display": ["24px", {"lineHeight": "32px", "letterSpacing": "-0.02em", "fontWeight": "600"}]
+            }
+          },
+        },
+      }
+    </script>
+<style>
+        body { font-family: 'Inter', sans-serif; background-color: #f8fafc; }
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+            display: inline-block;
+            vertical-align: middle;
+        }
+        .settings-card {
+            border-left-width: 4px;
+        }
+        .active-nav-border {
+            border-left: 4px solid #3525cd;
+        }
+        /* Custom Toggle Switch */
+        .switch {
+            position: relative;
+            display: inline-block;
+            width: 40px;
+            height: 20px;
+        }
+        .switch input { opacity: 0; width: 0; height: 0; }
+        .slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background-color: #cbd5e1;
+            transition: .4s;
+            border-radius: 20px;
+        }
+        .slider:before {
+            position: absolute;
+            content: "";
+            height: 14px; width: 14px;
+            left: 3px; bottom: 3px;
+            background-color: white;
+            transition: .4s;
+            border-radius: 50%;
+        }
+        input:checked + .slider { background-color: #3525cd; }
+        input:checked + .slider:before { transform: translateX(20px); }
+    </style>
+</head>
+<body class="bg-background text-on-surface">
+<!-- TopNavBar -->
+<header class="sticky top-0 z-50 flex items-center justify-between px-gutter w-full h-row-height-standard bg-surface-container-lowest border-b border-outline-variant">
+<div class="flex items-center gap-4">
+<span class="font-headline text-headline font-bold text-primary">CampusX Admin</span>
+<div class="hidden md:flex ml-8 items-center bg-surface-container-low px-3 py-1 rounded-lg border border-outline-variant w-64">
+<span class="material-symbols-outlined text-outline text-sm">search</span>
+<input class="bg-transparent border-none focus:ring-0 text-body-sm w-full h-8" placeholder="Search settings..." type="text"/>
+</div>
+</div>
+<div class="flex items-center gap-4">
+<button class="material-symbols-outlined text-secondary hover:bg-surface-container-low p-2 rounded-full transition-colors">notifications</button>
+<button class="material-symbols-outlined text-secondary hover:bg-surface-container-low p-2 rounded-full transition-colors">settings_suggest</button>
+<button class="material-symbols-outlined text-secondary hover:bg-surface-container-low p-2 rounded-full transition-colors">dns</button>
+<div class="h-8 w-8 rounded-full bg-primary flex items-center justify-center text-white font-bold text-xs cursor-pointer">
+                AD
+            </div>
+</div>
+</header>
+<div class="flex min-h-[calc(100vh-48px)]">
+<!-- SideNavBar -->
+<aside class="fixed left-0 top-[48px] h-full flex flex-col w-[240px] z-40 bg-surface-container-low border-r border-outline-variant">
+<div class="p-6">
+<p class="font-title-sm text-title-sm text-primary">System Oversight</p>
+<p class="font-body-sm text-body-sm text-on-surface-variant">Management Console</p>
+</div>
+<nav class="flex-1 overflow-y-auto">
+<a class="flex items-center gap-3 px-4 py-3 cursor-pointer text-on-surface-variant hover:bg-surface-container transition-all" href="#">
+<span class="material-symbols-outlined">dashboard</span>
+<span class="font-title-sm text-title-sm">Dashboard</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 cursor-pointer text-on-surface-variant hover:bg-surface-container transition-all" href="#">
+<span class="material-symbols-outlined">analytics</span>
+<span class="font-title-sm text-title-sm">Analytics</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 cursor-pointer text-on-surface-variant hover:bg-surface-container transition-all" href="#">
+<span class="material-symbols-outlined">how_to_reg</span>
+<span class="font-title-sm text-title-sm">Verification</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 cursor-pointer text-on-surface-variant hover:bg-surface-container transition-all" href="#">
+<span class="material-symbols-outlined">report</span>
+<span class="font-title-sm text-title-sm">Reports</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 cursor-pointer text-on-surface-variant hover:bg-surface-container transition-all" href="#">
+<span class="material-symbols-outlined">inventory_2</span>
+<span class="font-title-sm text-title-sm">Listings</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 cursor-pointer text-on-surface-variant hover:bg-surface-container transition-all" href="#">
+<span class="material-symbols-outlined">category</span>
+<span class="font-title-sm text-title-sm">Categories</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 cursor-pointer text-on-surface-variant hover:bg-surface-container transition-all" href="#">
+<span class="material-symbols-outlined">history_edu</span>
+<span class="font-title-sm text-title-sm">Activity Log</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 cursor-pointer text-primary border-l-4 border-primary bg-surface-container-highest font-bold" href="#">
+<span class="material-symbols-outlined">settings</span>
+<span class="font-title-sm text-title-sm">Settings</span>
+</a>
+</nav>
+<div class="p-4 border-t border-outline-variant">
+<button class="w-full bg-primary text-white py-2 rounded-lg font-title-sm text-title-sm flex items-center justify-center gap-2 mb-4">
+<span class="material-symbols-outlined">send</span>
+                    New Broadcast
+                </button>
+<div class="flex flex-col gap-1">
+<a class="flex items-center gap-3 px-4 py-2 text-on-surface-variant hover:bg-surface-container transition-all rounded-md" href="#">
+<span class="material-symbols-outlined text-sm">help</span>
+<span class="text-body-sm">Support</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-2 text-error hover:bg-error-container transition-all rounded-md" href="#">
+<span class="material-symbols-outlined text-sm">logout</span>
+<span class="text-body-sm">Sign Out</span>
+</a>
+</div>
+</div>
+</aside>
+<!-- Main Content Area -->
+<main class="ml-[240px] flex-1 p-container-margin max-w-7xl">
+<header class="mb-8">
+<h1 class="font-display text-display text-on-surface">System Settings</h1>
+<p class="font-body-md text-body-md text-on-surface-variant">Manage global configurations, team permissions, and operational states for the CampusX platform.</p>
+</header>
+<div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+<!-- Section: Global Platform Rules -->
+<section class="settings-card bg-surface-container-lowest p-6 rounded-xl border border-outline-variant border-l-primary shadow-sm space-y-6">
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-primary">public</span>
+<h2 class="font-headline text-headline">Global Platform Rules</h2>
+</div>
+</div>
+<div class="space-y-4">
+<div>
+<label class="block font-title-sm text-title-sm mb-1 text-on-surface-variant">Maximum Listing Price (USD)</label>
+<input class="w-full bg-surface border border-outline-variant rounded-lg px-4 py-2 text-body-md focus:ring-2 focus:ring-primary focus:border-transparent outline-none" type="number" value="1000"/>
+<p class="text-[11px] text-outline mt-1 italic">Limits student-to-student transactions to mitigate fraud risk.</p>
+</div>
+<div>
+<label class="block font-title-sm text-title-sm mb-1 text-on-surface-variant">Allowed Campuses</label>
+<div class="flex flex-wrap gap-2 mt-2">
+<span class="bg-surface-container-highest text-primary px-3 py-1 rounded-full text-body-sm flex items-center gap-1">
+                                    Main Campus <span class="material-symbols-outlined text-[14px] cursor-pointer">close</span>
+</span>
+<span class="bg-surface-container-highest text-primary px-3 py-1 rounded-full text-body-sm flex items-center gap-1">
+                                    West Wing <span class="material-symbols-outlined text-[14px] cursor-pointer">close</span>
+</span>
+<span class="bg-surface-container-highest text-primary px-3 py-1 rounded-full text-body-sm flex items-center gap-1">
+                                    North Tech <span class="material-symbols-outlined text-[14px] cursor-pointer">close</span>
+</span>
+<button class="border border-dashed border-primary text-primary px-3 py-1 rounded-full text-body-sm flex items-center gap-1 hover:bg-surface-container-low transition-colors">
+<span class="material-symbols-outlined text-[14px]">add</span> Add Campus
+                                </button>
+</div>
+</div>
+<div class="flex items-center justify-between pt-4">
+<div class="flex flex-col">
+<span class="font-title-sm text-title-sm">Automatic Image Moderation</span>
+<span class="text-body-sm text-on-surface-variant">Analyze listings with AI before publishing.</span>
+</div>
+<label class="switch">
+<input checked="" type="checkbox"/>
+<span class="slider"></span>
+</label>
+</div>
+</div>
+<div class="pt-6 border-t border-outline-variant flex justify-end">
+<button class="bg-primary text-white px-6 py-2 rounded-lg font-title-sm text-title-sm hover:opacity-90 transition-opacity">Save Changes</button>
+</div>
+</section>
+<!-- Section: Admin Permissions -->
+<section class="settings-card bg-surface-container-lowest p-6 rounded-xl border border-outline-variant border-l-tertiary shadow-sm space-y-6">
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-tertiary">shield_person</span>
+<h2 class="font-headline text-headline">Admin Permissions</h2>
+</div>
+<button class="text-primary font-title-sm text-title-sm hover:underline flex items-center gap-1">
+<span class="material-symbols-outlined text-sm">group_add</span> Invite Admin
+                        </button>
+</div>
+<div class="space-y-4">
+<div class="bg-surface p-3 rounded-lg flex items-center justify-between border border-outline-variant">
+<div class="flex items-center gap-3">
+<div class="w-8 h-8 rounded bg-secondary-container flex items-center justify-center text-secondary font-bold text-xs">SK</div>
+<div>
+<p class="font-title-sm text-title-sm">Sarah Koenig</p>
+<p class="text-body-sm text-on-surface-variant">Super Admin</p>
+</div>
+</div>
+<span class="material-symbols-outlined text-outline cursor-pointer">more_vert</span>
+</div>
+<div class="bg-surface p-3 rounded-lg flex items-center justify-between border border-outline-variant">
+<div class="flex items-center gap-3">
+<div class="w-8 h-8 rounded bg-tertiary-container flex items-center justify-center text-on-tertiary font-bold text-xs">RJ</div>
+<div>
+<p class="font-title-sm text-title-sm">Robert Jordan</p>
+<p class="text-body-sm text-on-surface-variant">Moderator</p>
+</div>
+</div>
+<span class="material-symbols-outlined text-outline cursor-pointer">more_vert</span>
+</div>
+<div class="bg-surface p-3 rounded-lg flex items-center justify-between border border-outline-variant">
+<div class="flex items-center gap-3">
+<div class="w-8 h-8 rounded bg-surface-container-highest flex items-center justify-center text-on-surface font-bold text-xs">ML</div>
+<div>
+<p class="font-title-sm text-title-sm">Mei Ling</p>
+<p class="text-body-sm text-on-surface-variant">Financial Analyst</p>
+</div>
+</div>
+<span class="material-symbols-outlined text-outline cursor-pointer">more_vert</span>
+</div>
+</div>
+<div class="bg-surface-container-low p-4 rounded-lg border-l-4 border-outline">
+<h4 class="font-title-sm text-title-sm mb-1">Audit Policy</h4>
+<p class="text-body-sm text-on-surface-variant">All admin actions are logged and retained for 365 days in accordance with the Security Protocol 4.2.</p>
+</div>
+<div class="pt-2 flex justify-end">
+<button class="bg-surface-container-highest text-primary px-6 py-2 rounded-lg font-title-sm text-title-sm hover:bg-surface-container-high transition-colors">Manage Roles</button>
+</div>
+</section>
+<!-- Section: Notification Webhooks -->
+<section class="settings-card bg-surface-container-lowest p-6 rounded-xl border border-outline-variant border-l-[#10b981] shadow-sm space-y-6">
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-[#10b981]">webhook</span>
+<h2 class="font-headline text-headline">Notification Webhooks</h2>
+</div>
+</div>
+<div class="space-y-4">
+<div>
+<div class="flex justify-between items-center mb-2">
+<label class="block font-title-sm text-title-sm text-on-surface-variant">Discord Security Alerts</label>
+<span class="bg-green-100 text-green-700 px-2 py-0.5 rounded text-[10px] font-bold uppercase">Active</span>
+</div>
+<div class="flex gap-2">
+<input class="flex-1 bg-surface-container-low border border-outline-variant rounded-lg px-4 py-2 text-mono-label text-outline truncate" readonly="" type="text" value="https://discord.com/api/webhooks/9283..."/>
+<button class="material-symbols-outlined text-secondary border border-outline-variant p-2 rounded-lg hover:bg-surface-container transition-colors">edit</button>
+</div>
+</div>
+<div>
+<div class="flex justify-between items-center mb-2">
+<label class="block font-title-sm text-title-sm text-on-surface-variant">Slack Moderation Queue</label>
+<span class="bg-amber-100 text-amber-700 px-2 py-0.5 rounded text-[10px] font-bold uppercase">Pending</span>
+</div>
+<div class="flex gap-2">
+<input class="flex-1 bg-surface-container-low border border-outline-variant rounded-lg px-4 py-2 text-mono-label text-outline truncate" readonly="" type="text" value="https://hooks.slack.com/services/T0..."/>
+<button class="material-symbols-outlined text-secondary border border-outline-variant p-2 rounded-lg hover:bg-surface-container transition-colors">edit</button>
+</div>
+</div>
+<button class="w-full border border-dashed border-outline text-secondary py-3 rounded-lg text-body-sm flex items-center justify-center gap-2 hover:bg-surface-container-low transition-colors">
+<span class="material-symbols-outlined text-sm">add_link</span> Create New Webhook
+                        </button>
+</div>
+</section>
+<!-- Section: System Maintenance Mode -->
+<section class="settings-card bg-surface-container-lowest p-6 rounded-xl border border-outline-variant border-l-error shadow-sm space-y-6">
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-error">emergency_home</span>
+<h2 class="font-headline text-headline text-error">Critical Operations</h2>
+</div>
+</div>
+<div class="bg-error-container p-4 rounded-lg flex items-start gap-4">
+<span class="material-symbols-outlined text-error mt-1">warning</span>
+<div class="flex-1">
+<h4 class="font-title-sm text-title-sm text-on-error-container">Maintenance Mode</h4>
+<p class="text-body-sm text-on-error-container mb-4">Activating maintenance mode will disconnect all active users and display a "System Update" screen. Use only for database migrations or emergency fixes.</p>
+<div class="flex items-center gap-3">
+<button class="bg-error text-on-error px-6 py-2 rounded-lg font-title-sm text-title-sm hover:opacity-90 transition-opacity" id="maintenance-toggle">
+                                    Enable Maintenance
+                                </button>
+<span class="text-error font-bold text-[11px] uppercase tracking-widest hidden" id="status-badge">Live: System Offline</span>
+</div>
+</div>
+</div>
+<div class="space-y-4 opacity-50 pointer-events-none">
+<div>
+<label class="block font-title-sm text-title-sm mb-1 text-on-surface-variant">Maintenance Message</label>
+<textarea class="w-full bg-surface border border-outline-variant rounded-lg px-4 py-2 text-body-md" placeholder="CampusX is currently undergoing scheduled maintenance. We'll be back at 4PM EST." rows="2"></textarea>
+</div>
+</div>
+<div class="pt-4">
+<button class="w-full text-error border border-error border-dashed py-3 rounded-lg text-body-sm font-bold flex items-center justify-center gap-2 hover:bg-red-50 transition-colors">
+<span class="material-symbols-outlined text-sm">delete_forever</span> PURGE SYSTEM CACHE (REDIS)
+                        </button>
+</div>
+</section>
+</div>
+<!-- Dashboard Visual Asset (Ambient Decor) -->
+<div class="mt-12 relative h-48 rounded-2xl overflow-hidden shadow-inner bg-surface-container">
+
+<div class="absolute inset-0 flex items-center justify-center flex-col text-center p-8">
+<h3 class="font-display text-display text-primary">Operational Integrity Dashboard</h3>
+<p class="font-body-md text-body-md text-on-surface-variant max-w-xl">Real-time system health monitored across all configured campuses. All changes logged via the Admin Permissions protocol.</p>
+</div>
+</div>
+</main>
+</div>
+<!-- Micro-interaction script -->
+<script>
+        document.getElementById('maintenance-toggle').addEventListener('click', function() {
+            const btn = this;
+            const badge = document.getElementById('status-badge');
+            
+            if (btn.innerText === 'Enable Maintenance') {
+                if (confirm('Are you sure? This will disconnect all users.')) {
+                    btn.innerText = 'Disable Maintenance';
+                    btn.classList.remove('bg-error');
+                    btn.classList.add('bg-on-surface');
+                    badge.classList.remove('hidden');
+                }
+            } else {
+                btn.innerText = 'Enable Maintenance';
+                btn.classList.add('bg-error');
+                btn.classList.remove('bg-on-surface');
+                badge.classList.add('hidden');
+            }
+        });
+
+        // Add visual feedback on save buttons
+        document.querySelectorAll('button').forEach(btn => {
+            if (btn.innerText.includes('Save')) {
+                btn.addEventListener('click', () => {
+                    const originalText = btn.innerText;
+                    btn.innerText = 'Settings Saved!';
+                    btn.classList.add('bg-green-600');
+                    setTimeout(() => {
+                        btn.innerText = originalText;
+                        btn.classList.remove('bg-green-600');
+                    }, 2000);
+                });
+            }
+        });
+    </script>
+</body></html>

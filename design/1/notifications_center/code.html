@@ -1,0 +1,331 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Notifications | CampusX</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .glass-nav {
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+        }
+        .notification-card {
+            transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .notification-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+        }
+        @media (max-width: 768px) {
+            .desktop-only { display: none; }
+        }
+    </style>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "secondary-fixed": "#e1e0ff",
+                        "on-tertiary-fixed-variant": "#7b2f00",
+                        "on-tertiary-container": "#ffd2be",
+                        "on-secondary-fixed-variant": "#2f2ebe",
+                        "on-error": "#ffffff",
+                        "on-background": "#1b1b24",
+                        "secondary": "#4648d4",
+                        "outline-variant": "#c7c4d8",
+                        "secondary-fixed-dim": "#c0c1ff",
+                        "primary": "#3525cd",
+                        "on-surface": "#1b1b24",
+                        "primary-container": "#4f46e5",
+                        "inverse-on-surface": "#f3effc",
+                        "surface": "#fcf8ff",
+                        "inverse-surface": "#302f39",
+                        "on-primary-fixed-variant": "#3323cc",
+                        "error-container": "#ffdad6",
+                        "primary-fixed": "#e2dfff",
+                        "on-surface-variant": "#464555",
+                        "tertiary-fixed-dim": "#ffb695",
+                        "primary-fixed-dim": "#c3c0ff",
+                        "on-secondary-fixed": "#07006c",
+                        "on-secondary": "#ffffff",
+                        "surface-dim": "#dcd8e5",
+                        "surface-bright": "#fcf8ff",
+                        "tertiary-container": "#a44100",
+                        "tertiary": "#7e3000",
+                        "on-error-container": "#93000a",
+                        "surface-container-high": "#eae6f4",
+                        "surface-tint": "#4d44e3",
+                        "surface-container-highest": "#e4e1ee",
+                        "on-primary": "#ffffff",
+                        "surface-container": "#f0ecf9",
+                        "secondary-container": "#6063ee",
+                        "on-tertiary": "#ffffff",
+                        "on-primary-container": "#dad7ff",
+                        "background": "#fcf8ff",
+                        "on-tertiary-fixed": "#351000",
+                        "error": "#ba1a1a",
+                        "on-secondary-container": "#fffbff",
+                        "tertiary-fixed": "#ffdbcc",
+                        "inverse-primary": "#c3c0ff",
+                        "outline": "#777587",
+                        "surface-variant": "#e4e1ee",
+                        "on-primary-fixed": "#0f0069",
+                        "surface-container-lowest": "#ffffff",
+                        "surface-container-low": "#f5f2ff"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "sm": "8px",
+                        "lg": "24px",
+                        "xs": "4px",
+                        "xl": "32px",
+                        "xxl": "48px",
+                        "md": "16px",
+                        "container_max": "1440px",
+                        "gutter": "24px",
+                        "base": "8px",
+                        "margin_mobile": "16px"
+                    },
+                    "fontFamily": {
+                        "h2": ["Inter"],
+                        "body": ["Inter"],
+                        "title": ["Inter"],
+                        "small": ["Inter"],
+                        "h1": ["Inter"],
+                        "h1-mobile": ["Inter"],
+                        "display": ["Inter"],
+                        "caption": ["Inter"],
+                        "h3": ["Inter"]
+                    },
+                    "fontSize": {
+                        "h2": ["32px", {"lineHeight": "1.3", "letterSpacing": "-0.01em", "fontWeight": "600"}],
+                        "body": ["16px", {"lineHeight": "1.6", "fontWeight": "400"}],
+                        "title": ["20px", {"lineHeight": "1.5", "fontWeight": "600"}],
+                        "small": ["14px", {"lineHeight": "1.5", "fontWeight": "500"}],
+                        "h1": ["40px", {"lineHeight": "1.2", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                        "h1-mobile": ["32px", {"lineHeight": "1.2", "fontWeight": "700"}],
+                        "display": ["48px", {"lineHeight": "1.1", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                        "caption": ["12px", {"lineHeight": "1.4", "letterSpacing": "0.01em", "fontWeight": "400"}],
+                        "h3": ["24px", {"lineHeight": "1.4", "fontWeight": "600"}]
+                    }
+                },
+            },
+        }
+    </script>
+</head>
+<body class="bg-background text-on-background font-body min-h-screen">
+<!-- TopNavBar -->
+<header class="fixed top-0 w-full z-50 backdrop-blur-xl bg-surface/70 border-b border-outline-variant shadow-sm">
+<div class="flex justify-between items-center px-lg py-sm max-w-container_max mx-auto">
+<div class="flex items-center gap-md">
+<span class="font-title text-title font-bold text-primary tracking-tight">CampusX</span>
+<nav class="hidden md:flex items-center gap-lg ml-xl">
+<a class="text-on-surface-variant font-medium hover:text-primary transition-colors" href="#">Browse</a>
+<a class="text-on-surface-variant font-medium hover:text-primary transition-colors" href="#">Deals</a>
+<a class="text-on-surface-variant font-medium hover:text-primary transition-colors" href="#">Activity</a>
+</nav>
+</div>
+<div class="flex items-center gap-md">
+<button class="material-symbols-outlined p-sm rounded-full text-primary hover:bg-surface-container-high/50 transition-all duration-200 active:scale-95" data-icon="notifications" style="font-variation-settings: 'FILL' 1;">notifications</button>
+<button class="material-symbols-outlined p-sm rounded-full text-on-surface-variant hover:bg-surface-container-high/50 transition-all duration-200 active:scale-95" data-icon="chat_bubble">chat_bubble</button>
+<div class="w-10 h-10 rounded-full border-2 border-primary/20 overflow-hidden ml-sm cursor-pointer hover:border-primary transition-colors">
+<img class="w-full h-full object-cover" data-alt="A professional headshot of a college student for a verified profile, featuring soft natural lighting on a clean, minimal university campus background. The student has a confident, friendly expression, and the image follows a premium, high-resolution aesthetic with slight depth of field." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBRiPnQ9b1x1E1N4EwTPauUQso1hFjXL2idMWQAy0PlYxlTFflj8qXx-X8NdxEIMhv61GfI9rJGor2G99DHBz8gQE_eXAfl-lYZzP4xCi5VhD78ozIYJq4M14Ye9NPqEHGrbGJumVdK2VLjoNk-NCzLXvtoPBo57pJck4aKtbxKd-YYYxhFHD7Ko196c0PNqoTAJgYrAp6IwvsIijIoGqXvGBDgt1F_VE7EjYh3VzuImLf-p2OYkXy15siS0y0xXAUTP1msdQEk5jti"/>
+</div>
+</div>
+</div>
+</header>
+<div class="flex max-w-container_max mx-auto pt-[72px] min-h-screen">
+<!-- SideNavBar (Desktop) -->
+<aside class="hidden md:flex flex-col h-[calc(100vh-72px)] w-64 docked left-0 bg-surface-container-low border-r border-outline-variant sticky top-[72px] p-md gap-sm">
+<div class="flex items-center gap-md p-sm mb-md">
+<div class="w-12 h-12 rounded-xl bg-primary-container flex items-center justify-center text-on-primary-container">
+<span class="material-symbols-outlined" data-icon="person">person</span>
+</div>
+<div>
+<h3 class="font-small text-small text-on-surface font-bold">Alex Rivers</h3>
+<p class="font-caption text-caption text-on-surface-variant">Verified Student</p>
+</div>
+</div>
+<nav class="flex flex-col gap-xs flex-grow">
+<a class="flex items-center gap-md text-on-surface-variant hover:bg-surface-container-high rounded-xl px-md py-sm transition-transform duration-200 hover:translate-x-1" href="#">
+<span class="material-symbols-outlined" data-icon="inbox">inbox</span>
+<span class="font-small text-small">Inbox</span>
+</a>
+<a class="flex items-center gap-md text-on-surface-variant hover:bg-surface-container-high rounded-xl px-md py-sm transition-transform duration-200 hover:translate-x-1" href="#">
+<span class="material-symbols-outlined" data-icon="local_offer">local_offer</span>
+<span class="font-small text-small">Offers</span>
+</a>
+<a class="flex items-center gap-md text-on-surface-variant hover:bg-surface-container-high rounded-xl px-md py-sm transition-transform duration-200 hover:translate-x-1" href="#">
+<span class="material-symbols-outlined" data-icon="bookmark">bookmark</span>
+<span class="font-small text-small">Saved</span>
+</a>
+<a class="flex items-center gap-md text-on-surface-variant hover:bg-surface-container-high rounded-xl px-md py-sm transition-transform duration-200 hover:translate-x-1" href="#">
+<span class="material-symbols-outlined" data-icon="sell">sell</span>
+<span class="font-small text-small">Listings</span>
+</a>
+<a class="flex items-center gap-md text-on-surface-variant hover:bg-surface-container-high rounded-xl px-md py-sm transition-transform duration-200 hover:translate-x-1" href="#">
+<span class="material-symbols-outlined" data-icon="settings">settings</span>
+<span class="font-small text-small">Settings</span>
+</a>
+</nav>
+<div class="mt-auto pt-md border-t border-outline-variant/30">
+<a class="flex items-center gap-md text-on-surface-variant hover:bg-surface-container-high rounded-xl px-md py-sm" href="#">
+<span class="material-symbols-outlined" data-icon="help">help</span>
+<span class="font-small text-small">Support</span>
+</a>
+</div>
+</aside>
+<!-- Main Content (Notifications) -->
+<main class="flex-grow px-gutter py-xl md:px-xxl">
+<div class="max-w-3xl mx-auto">
+<div class="flex flex-col md:flex-row md:items-end justify-between gap-md mb-xxl">
+<div>
+<h1 class="font-h1 text-h1-mobile md:text-h1 text-on-surface mb-xs">Notifications</h1>
+<p class="font-body text-body text-on-surface-variant">Stay updated with your campus activity and marketplace deals.</p>
+</div>
+<button class="text-primary font-small text-small hover:underline">Mark all as read</button>
+</div>
+<!-- Tabs -->
+<div class="flex gap-md border-b border-outline-variant mb-xl">
+<button class="px-md py-sm font-small text-small border-b-2 border-primary text-primary">All</button>
+<button class="px-md py-sm font-small text-small text-on-surface-variant hover:text-primary transition-colors">Marketplace</button>
+<button class="px-md py-sm font-small text-small text-on-surface-variant hover:text-primary transition-colors">System</button>
+</div>
+<!-- Notifications List -->
+<div class="space-y-md">
+<!-- Notification Item: Marketplace Offer -->
+<div class="notification-card bg-surface-container-lowest border border-outline-variant rounded-xl p-md flex gap-md cursor-pointer">
+<div class="w-12 h-12 flex-shrink-0 rounded-full bg-secondary-fixed text-on-secondary-fixed-variant flex items-center justify-center">
+<span class="material-symbols-outlined" data-icon="local_offer" style="font-variation-settings: 'FILL' 1;">local_offer</span>
+</div>
+<div class="flex-grow">
+<div class="flex justify-between items-start mb-xs">
+<h4 class="font-title text-body font-semibold text-on-surface">New Offer Received</h4>
+<span class="font-caption text-caption text-on-surface-variant">2m ago</span>
+</div>
+<p class="font-body text-small text-on-surface-variant">Someone offered $45.00 for your "Intro to Economics" textbook. Tap to review.</p>
+<div class="mt-md flex gap-sm">
+<button class="px-md py-xs bg-primary text-on-primary rounded-full font-small text-small active:scale-95 transition-transform">Accept</button>
+<button class="px-md py-xs bg-surface-container text-on-surface-variant rounded-full font-small text-small active:scale-95 transition-transform">Decline</button>
+</div>
+</div>
+<div class="w-2 h-2 rounded-full bg-primary mt-2"></div>
+</div>
+<!-- Notification Item: Price Drop -->
+<div class="notification-card bg-surface-container-lowest border border-outline-variant rounded-xl p-md flex gap-md cursor-pointer">
+<div class="w-12 h-12 flex-shrink-0 rounded-full bg-tertiary-fixed text-on-tertiary-fixed-variant flex items-center justify-center">
+<span class="material-symbols-outlined" data-icon="trending_down">trending_down</span>
+</div>
+<div class="flex-grow">
+<div class="flex justify-between items-start mb-xs">
+<h4 class="font-title text-body font-semibold text-on-surface">Price Drop Alert</h4>
+<span class="font-caption text-caption text-on-surface-variant">1h ago</span>
+</div>
+<p class="font-body text-small text-on-surface-variant">The "Mechanical Keyboard" you saved is now 15% cheaper! Grab it before it's gone.</p>
+</div>
+<div class="w-2 h-2 rounded-full bg-primary mt-2"></div>
+</div>
+<!-- Notification Item: Verification Status -->
+<div class="notification-card bg-surface-container-lowest border border-outline-variant rounded-xl p-md flex gap-md cursor-pointer">
+<div class="w-12 h-12 flex-shrink-0 rounded-full bg-primary-fixed text-on-primary-fixed-variant flex items-center justify-center">
+<span class="material-symbols-outlined" data-icon="verified" style="font-variation-settings: 'FILL' 1;">verified</span>
+</div>
+<div class="flex-grow">
+<div class="flex justify-between items-start mb-xs">
+<h4 class="font-title text-body font-semibold text-on-surface">Verification Successful</h4>
+<span class="font-caption text-caption text-on-surface-variant">5h ago</span>
+</div>
+<p class="font-body text-small text-on-surface-variant">Your student ID has been verified. You can now post unlimited listings and access campus-only deals.</p>
+</div>
+</div>
+<!-- Notification Item: Message Alert -->
+<div class="notification-card bg-surface-container-lowest border border-outline-variant rounded-xl p-md flex gap-md cursor-pointer">
+<div class="w-12 h-12 flex-shrink-0 rounded-full bg-secondary-fixed text-on-secondary-fixed-variant flex items-center justify-center overflow-hidden">
+<img class="w-full h-full object-cover" data-alt="A small circular avatar of a cheerful female college student with glasses, smiling warmly, studio lighting with a soft lavender background to match the platform's color palette." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBn0Eg3lnwg4GfF3AQ9eDCOFLEVb251mjkWv0zPsVWnHW-9a1iKJvl0H58hRPnH1EBDeAautiNulNpD-mYxLVIEflwDdS5BJ5J8kUOn-fqgTT_2NENK4Kk9Y2iJSTmXSe-2RdEhF3tg9uGrqnciDEaxsuV1vX9Denn_MyhYkq-o9vBrmjd3_I1vIrB37hHcWxw213CrfQI6bkQLq7qoh2lwIPHPvCa6rMtithzSJT1iuMHDLThB6o2qiYzsHg2XEosAuVQikSouVJ36"/>
+</div>
+<div class="flex-grow">
+<div class="flex justify-between items-start mb-xs">
+<h4 class="font-title text-body font-semibold text-on-surface">Sarah Miller sent a message</h4>
+<span class="font-caption text-caption text-on-surface-variant">8h ago</span>
+</div>
+<p class="font-body text-small text-on-surface-variant">"Hey, is the desk lamp still available? I can pick it up tomorrow afternoon if that works..."</p>
+</div>
+</div>
+<!-- Notification Item: System Update -->
+<div class="notification-card bg-surface-container-lowest border border-outline-variant rounded-xl p-md flex gap-md cursor-pointer">
+<div class="w-12 h-12 flex-shrink-0 rounded-full bg-surface-container-high text-on-surface-variant flex items-center justify-center">
+<span class="material-symbols-outlined" data-icon="update">update</span>
+</div>
+<div class="flex-grow">
+<div class="flex justify-between items-start mb-xs">
+<h4 class="font-title text-body font-semibold text-on-surface">System Maintenance</h4>
+<span class="font-caption text-caption text-on-surface-variant">Yesterday</span>
+</div>
+<p class="font-body text-small text-on-surface-variant">CampusX will be undergoing scheduled maintenance tonight at 2 AM PST. Marketplace searches may be briefly unavailable.</p>
+</div>
+</div>
+</div>
+<div class="py-xl text-center">
+<button class="font-small text-small text-primary hover:bg-primary-fixed px-lg py-sm rounded-full transition-colors">Load older notifications</button>
+</div>
+</div>
+</main>
+</div>
+<!-- BottomNavBar (Mobile) -->
+<nav class="md:hidden fixed bottom-0 left-0 w-full z-50 flex justify-around items-center px-margin_mobile pb-4 pt-2 backdrop-blur-lg border-t border-outline-variant bg-surface/80 shadow-lg rounded-t-xl">
+<a class="flex flex-col items-center justify-center text-on-surface-variant active:scale-90 transition-all" href="#">
+<span class="material-symbols-outlined" data-icon="home">home</span>
+<span class="font-caption text-caption">Home</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant active:scale-90 transition-all" href="#">
+<span class="material-symbols-outlined" data-icon="chat_bubble">chat_bubble</span>
+<span class="font-caption text-caption">Messages</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant active:scale-90 transition-all" href="#">
+<span class="material-symbols-outlined" data-icon="local_offer">local_offer</span>
+<span class="font-caption text-caption">Offers</span>
+</a>
+<a class="flex flex-col items-center justify-center bg-primary-container text-on-primary-container rounded-xl px-4 py-1 active:scale-90 transition-all" href="#">
+<span class="material-symbols-outlined" data-icon="person" style="font-variation-settings: 'FILL' 1;">person</span>
+<span class="font-caption text-caption">Profile</span>
+</a>
+</nav>
+<script>
+        // Simple micro-interaction for notification items
+        document.querySelectorAll('.notification-card').forEach(card => {
+            card.addEventListener('click', () => {
+                const dot = card.querySelector('.bg-primary.w-2.h-2');
+                if (dot) {
+                    dot.style.opacity = '0';
+                    setTimeout(() => dot.remove(), 300);
+                }
+            });
+        });
+
+        // Tab switching logic (visual only for this prototype)
+        document.querySelectorAll('[role="tab"]' || 'button.px-md.py-sm').forEach(tab => {
+            tab.addEventListener('click', (e) => {
+                const parent = tab.parentElement;
+                parent.querySelectorAll('button').forEach(b => {
+                    b.classList.remove('border-b-2', 'border-primary', 'text-primary');
+                    b.classList.add('text-on-surface-variant');
+                });
+                tab.classList.add('border-b-2', 'border-primary', 'text-primary');
+                tab.classList.remove('text-on-surface-variant');
+            });
+        });
+    </script>
+</body></html>

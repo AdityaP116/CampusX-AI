@@ -1,0 +1,328 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Edit Listing | CampusX</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .glass-header {
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+        }
+        input:focus, textarea:focus, select:focus {
+            outline: none;
+            box-shadow: 0 0 0 4px rgba(79, 70, 229, 0.1);
+        }
+    </style>
+<script id="tailwind-config">
+        tailwind.config = {
+          darkMode: "class",
+          theme: {
+            extend: {
+              "colors": {
+                      "on-surface": "#1b1b24",
+                      "on-secondary-fixed-variant": "#2f2ebe",
+                      "tertiary-fixed-dim": "#ffb695",
+                      "on-tertiary": "#ffffff",
+                      "background": "#fcf8ff",
+                      "surface-dim": "#dcd8e5",
+                      "outline": "#777587",
+                      "primary": "#3525cd",
+                      "inverse-surface": "#302f39",
+                      "error-container": "#ffdad6",
+                      "surface-container-high": "#eae6f4",
+                      "surface-container-lowest": "#ffffff",
+                      "surface-container": "#f0ecf9",
+                      "surface-container-highest": "#e4e1ee",
+                      "tertiary": "#7e3000",
+                      "on-tertiary-fixed": "#351000",
+                      "tertiary-fixed": "#ffdbcc",
+                      "surface": "#fcf8ff",
+                      "inverse-primary": "#c3c0ff",
+                      "on-primary-container": "#dad7ff",
+                      "primary-fixed-dim": "#c3c0ff",
+                      "inverse-on-surface": "#f3effc",
+                      "on-error": "#ffffff",
+                      "secondary-fixed": "#e1e0ff",
+                      "on-surface-variant": "#464555",
+                      "tertiary-container": "#a44100",
+                      "surface-container-low": "#f5f2ff",
+                      "surface-tint": "#4d44e3",
+                      "surface-variant": "#e4e1ee",
+                      "surface-bright": "#fcf8ff",
+                      "on-primary-fixed-variant": "#3323cc",
+                      "on-primary": "#ffffff",
+                      "error": "#ba1a1a",
+                      "on-error-container": "#93000a",
+                      "on-primary-fixed": "#0f0069",
+                      "secondary-fixed-dim": "#c0c1ff",
+                      "primary-container": "#4f46e5",
+                      "on-background": "#1b1b24",
+                      "secondary": "#4648d4",
+                      "on-tertiary-fixed-variant": "#7b2f00",
+                      "secondary-container": "#6063ee",
+                      "primary-fixed": "#e2dfff",
+                      "on-secondary": "#ffffff",
+                      "outline-variant": "#c7c4d8",
+                      "on-tertiary-container": "#ffd2be",
+                      "on-secondary-fixed": "#07006c",
+                      "on-secondary-container": "#fffbff"
+              },
+              "borderRadius": {
+                      "DEFAULT": "0.25rem",
+                      "lg": "0.5rem",
+                      "xl": "12px",
+                      "2xl": "18px",
+                      "full": "9999px"
+              },
+              "spacing": {
+                      "margin_mobile": "16px",
+                      "lg": "24px",
+                      "container_max": "1440px",
+                      "xs": "4px",
+                      "sm": "8px",
+                      "xxl": "48px",
+                      "md": "16px",
+                      "gutter": "24px",
+                      "xl": "32px",
+                      "base": "8px"
+              },
+              "fontFamily": {
+                      "display": ["Inter"],
+                      "h1": ["Inter"],
+                      "h2": ["Inter"],
+                      "h3": ["Inter"],
+                      "title": ["Inter"],
+                      "body": ["Inter"],
+                      "small": ["Inter"],
+                      "caption": ["Inter"]
+              }
+            }
+          }
+        }
+    </script>
+</head>
+<body class="bg-background font-body text-on-background min-h-screen">
+<!-- TopNavBar (Fixed) -->
+<header class="fixed top-0 w-full z-50 bg-surface/70 backdrop-blur-xl border-b border-outline-variant/30 shadow-sm h-16">
+<div class="flex justify-between items-center w-full px-gutter max-w-container_max mx-auto h-full">
+<div class="flex items-center gap-8">
+<span class="font-display text-title font-bold text-primary">CampusX</span>
+<nav class="hidden md:flex gap-6">
+<a class="text-on-surface-variant font-medium hover:text-primary transition-colors duration-200" href="#">Marketplace</a>
+<a class="text-on-surface-variant font-medium hover:text-primary transition-colors duration-200" href="#">Rentals</a>
+<a class="text-on-surface-variant font-medium hover:text-primary transition-colors duration-200" href="#">Exchanges</a>
+</nav>
+</div>
+<div class="flex items-center gap-4">
+<button class="material-symbols-outlined p-2 text-on-surface-variant hover:bg-surface-container rounded-full">notifications</button>
+<button class="material-symbols-outlined p-2 text-on-surface-variant hover:bg-surface-container rounded-full">chat_bubble</button>
+<div class="w-10 h-10 rounded-full border-2 border-primary overflow-hidden cursor-pointer">
+<img class="w-full h-full object-cover" data-alt="A professional student profile picture featuring a young adult with a friendly expression, set against a blurred campus background. The lighting is warm and natural, suggesting a sunset hour. The image has a high-quality, sharp focus on the face with a premium, circular border indicating verified status within the CampusX student ecosystem." src="https://lh3.googleusercontent.com/aida-public/AB6AXuC18DeCCepgXVLZ-ZrT6ZyWFs_Onx9wRviK7cLjT4bY2Ckz364W0PDbowpJlelnpEBRZKDmoA2g1ZtFWJph9FNyvn8Y7Da9li9Bgr9TbHxcINF4YUWsis88pxxHPtcIe7G9oaQPKiHVwSOUHGzBl64puZ2QRvDOfwsJEgG85_nEByAZJ7SB8Sljr60HLjIQzG4m4H5XAISsb6_ledX4fEtKjJepXN7LhvOx58cnMNNIaDfpiCHxLili2_Y_toLz0kjVzFKxW6ity56b"/>
+</div>
+</div>
+</div>
+</header>
+<main class="pt-24 pb-xxl px-gutter max-w-5xl mx-auto">
+<!-- Header Section -->
+<div class="mb-xl flex flex-col md:flex-row md:items-end justify-between gap-4">
+<div>
+<a class="flex items-center text-primary font-medium mb-2 gap-1 group" href="#">
+<span class="material-symbols-outlined text-[20px] transition-transform group-hover:-translate-x-1">arrow_back</span>
+                    Back to Dashboard
+                </a>
+<h1 class="font-h1 text-h1 text-on-surface">Edit Listing</h1>
+<p class="text-on-surface-variant mt-1">Managing: MacBook Pro 14" (M2 Pro, 2023)</p>
+</div>
+<div class="flex items-center gap-3">
+<button class="px-6 py-3 rounded-2xl border border-error text-error font-semibold hover:bg-error-container/20 transition-all active:scale-95">
+                    Delete Listing
+                </button>
+<button class="px-6 py-3 rounded-2xl bg-primary text-on-primary font-semibold shadow-md hover:bg-primary-container transition-all active:scale-95">
+                    Save Changes
+                </button>
+</div>
+</div>
+<div class="grid grid-cols-1 lg:grid-cols-3 gap-lg">
+<!-- Left Column: Form Details -->
+<div class="lg:col-span-2 space-y-lg">
+<!-- Status & Title Card -->
+<section class="bg-surface-container-lowest border border-outline-variant/30 rounded-2xl p-xl shadow-sm">
+<div class="flex items-center justify-between mb-xl">
+<h2 class="font-h3 text-h3">Core Information</h2>
+<div class="flex items-center gap-2 px-4 py-2 bg-surface-container rounded-full border border-outline-variant/50">
+<span class="text-small font-semibold">Visibility:</span>
+<div class="relative inline-flex items-center cursor-pointer" onclick="toggleSwitch()">
+<div class="w-11 h-6 bg-primary rounded-full transition-colors" id="switch-bg"></div>
+<div class="absolute left-[2px] top-[2px] bg-white w-5 h-5 rounded-full transition-transform translate-x-5" id="switch-dot"></div>
+<span class="ml-3 text-small font-bold text-primary" id="status-label">Active</span>
+</div>
+</div>
+</div>
+<div class="space-y-6">
+<div class="flex flex-col gap-2">
+<label class="font-title text-body text-on-surface">Product Title</label>
+<input class="w-full px-4 py-3 rounded-xl border border-outline-variant bg-surface-container-low text-body focus:border-primary transition-all" type="text" value="MacBook Pro 14-inch (M2 Pro, 16GB RAM, 512GB SSD) - Space Gray"/>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+<div class="flex flex-col gap-2">
+<label class="font-title text-body text-on-surface">Price ($)</label>
+<div class="relative">
+<span class="absolute left-4 top-1/2 -translate-y-1/2 text-on-surface-variant">$</span>
+<input class="w-full pl-8 pr-4 py-3 rounded-xl border border-outline-variant bg-surface-container-low text-body focus:border-primary transition-all" type="number" value="1650"/>
+</div>
+</div>
+<div class="flex flex-col gap-2">
+<label class="font-title text-body text-on-surface">Category</label>
+<select class="w-full px-4 py-3 rounded-xl border border-outline-variant bg-surface-container-low text-body focus:border-primary transition-all appearance-none">
+<option>Electronics</option>
+<option>Furniture</option>
+<option>Textbooks</option>
+<option>Clothing</option>
+</select>
+</div>
+</div>
+<div class="flex flex-col gap-2">
+<label class="font-title text-body text-on-surface">Description</label>
+<textarea class="w-full px-4 py-3 rounded-xl border border-outline-variant bg-surface-container-low text-body focus:border-primary transition-all resize-none" rows="6">Gently used MacBook Pro 14" with M2 Pro chip. Purchased 6 months ago for university. No scratches, perfect condition. Includes original 67W USB-C Power Adapter and MagSafe 3 Cable. Battery health at 98%. Selling because I'm switching to an iPad for my major. Verification badge available on request.</textarea>
+</div>
+</div>
+</section>
+<!-- Product Specifications Bento -->
+<section class="grid grid-cols-1 md:grid-cols-2 gap-6">
+<div class="bg-surface-container-lowest border border-outline-variant/30 rounded-2xl p-lg shadow-sm">
+<div class="flex items-center gap-2 mb-4">
+<span class="material-symbols-outlined text-primary">verified</span>
+<h3 class="font-title text-body">Condition</h3>
+</div>
+<div class="flex gap-2">
+<button class="flex-1 py-2 rounded-lg border-2 border-primary bg-primary-container/10 text-primary font-bold">Like New</button>
+<button class="flex-1 py-2 rounded-lg border border-outline-variant text-on-surface-variant hover:bg-surface-container transition-colors">Good</button>
+<button class="flex-1 py-2 rounded-lg border border-outline-variant text-on-surface-variant hover:bg-surface-container transition-colors">Fair</button>
+</div>
+</div>
+<div class="bg-surface-container-lowest border border-outline-variant/30 rounded-2xl p-lg shadow-sm">
+<div class="flex items-center gap-2 mb-4">
+<span class="material-symbols-outlined text-primary">local_shipping</span>
+<h3 class="font-title text-body">Delivery Option</h3>
+</div>
+<div class="flex gap-2">
+<button class="flex-1 py-2 rounded-lg border-2 border-primary bg-primary-container/10 text-primary font-bold">Campus Meetup</button>
+<button class="flex-1 py-2 rounded-lg border border-outline-variant text-on-surface-variant hover:bg-surface-container transition-colors">Shipping</button>
+</div>
+</div>
+</section>
+</div>
+<!-- Right Column: Media & Quick Actions -->
+<div class="space-y-lg">
+<!-- Image Gallery Edit -->
+<section class="bg-surface-container-lowest border border-outline-variant/30 rounded-2xl p-xl shadow-sm">
+<div class="flex items-center justify-between mb-4">
+<h3 class="font-title text-body">Photos (4/10)</h3>
+<button class="text-primary font-bold text-small hover:underline">+ Add</button>
+</div>
+<div class="grid grid-cols-2 gap-4">
+<div class="relative group aspect-square rounded-xl overflow-hidden border border-outline-variant/30">
+<img class="w-full h-full object-cover" data-alt="A close-up, high-resolution product photograph of a Space Gray MacBook Pro 14-inch on a clean, white minimalist desk. The laptop is slightly open, revealing the vibrant Retina display. The lighting is soft and studio-quality, emphasizing the sleek aluminum finish. This is the primary marketplace image for a premium electronics listing on CampusX." src="https://lh3.googleusercontent.com/aida-public/AB6AXuC6UxwIQtWRG-c31Yk2iYN_Z8QjivhZFrtz-6qAk0Rwa-5QPEwmrHIBUQz7eHUJgRt-8QUBBjoYHaLBq0Kqy7Mgfh7RwbCo2pGLUTJjBzgU6PrwU7z1pqxmIKeLhy6f6aifeKk_QyE_tv8tvUQQYjJLlmRofLCJQRjQdRVu0fbgcVWtcpYTghQW3IpecWOroESu8C3Z1xMpxde_TTj8dcCp-ortfwvx0QAlANZQGb__7TEKf7p5Eev7Pua8D-eUL4szirpgd1PHUThq"/>
+<button class="absolute top-2 right-2 bg-on-surface/80 text-white p-1 rounded-full opacity-0 group-hover:opacity-100 transition-opacity">
+<span class="material-symbols-outlined text-[18px]">close</span>
+</button>
+<div class="absolute bottom-2 left-2 px-2 py-1 bg-primary text-white text-[10px] font-bold rounded-md">Primary</div>
+</div>
+<div class="relative group aspect-square rounded-xl overflow-hidden border border-outline-variant/30">
+<img class="w-full h-full object-cover" data-alt="A detailed shot showing the side profile of a MacBook Pro 14-inch, highlighting the MagSafe and Thunderbolt ports. The background is a soft-focus library environment with warm wooden textures. The focus is sharp on the hardware details, showcasing the excellent condition of the item in a premium student marketplace style." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCbqV7EjUJWYHSg6qp8TED2_nxA-zD8A9EV3u9zCPDVcozhqWraTm2lw2fbY-PWTYjKEnfx0q5ZpMDIgN4QxkCRBzQyadWRWG8JSl2Nf7SlCzfEmAPDjU_NTnem6VWRxzu0CEFk4mECqi-ZdQow_kXTCe0X95I7KPVokPK_hagPPWB7ppEHUB2jhTHCckLeZf94uYr6hgPvBqaLQPIBDAWBWyUO6BZ0thEte3OKad2VW7Rxw1aA24Z2M_6l3NdCRHP1XH2vSPwMQkG3"/>
+<button class="absolute top-2 right-2 bg-on-surface/80 text-white p-1 rounded-full opacity-0 group-hover:opacity-100 transition-opacity">
+<span class="material-symbols-outlined text-[18px]">close</span>
+</button>
+</div>
+<div class="relative group aspect-square rounded-xl overflow-hidden border border-outline-variant/30">
+<img class="w-full h-full object-cover" data-alt="A top-down view of a MacBook Pro keyboard and trackpad, perfectly clean with no signs of wear. A student's coffee cup is placed artistically in the corner of the frame on a marble surface, creating an aspirational lifestyle aesthetic for the CampusX marketplace. The lighting is bright and even." src="https://lh3.googleusercontent.com/aida-public/AB6AXuD_41zh73kL4YyMZ3Gedy9ho7JmPge2jszTnvDKDaKcG02Gq_QiLyqJ5WIBzkVdgcDRWYa6ZeC33oChAOCBrlyU3XaL6ayrEghCOrseQv9ENT0PUgkarE1exA_vQwRUHgXtJeh71oq-cWCb-ES1_t-NLAEkY5T_dHQNyjD84jvMohPBoCQvHCiALVloCOK3f_s2RDRcI62EIYxrhmSuqInht32xP3PfZZK7dCcoep8ZyZ9iwXonqE-sj56f8OsqGLCdjIofKn0uNJwm"/>
+<button class="absolute top-2 right-2 bg-on-surface/80 text-white p-1 rounded-full opacity-0 group-hover:opacity-100 transition-opacity">
+<span class="material-symbols-outlined text-[18px]">close</span>
+</button>
+</div>
+<div class="aspect-square rounded-xl border-2 border-dashed border-outline-variant flex flex-col items-center justify-center text-on-surface-variant hover:bg-surface-container transition-colors cursor-pointer">
+<span class="material-symbols-outlined text-[32px]">add_a_photo</span>
+<span class="text-caption mt-1 font-semibold">Add More</span>
+</div>
+</div>
+</section>
+<!-- Insights/Stats Card -->
+<section class="bg-primary-container text-on-primary-container rounded-2xl p-xl shadow-lg relative overflow-hidden">
+<div class="relative z-10">
+<h3 class="font-title text-body mb-4">Listing Stats</h3>
+<div class="grid grid-cols-2 gap-4">
+<div class="bg-white/10 backdrop-blur-md rounded-xl p-3 border border-white/20">
+<p class="text-caption opacity-80">Views</p>
+<p class="text-h3 font-bold">142</p>
+</div>
+<div class="bg-white/10 backdrop-blur-md rounded-xl p-3 border border-white/20">
+<p class="text-caption opacity-80">Saves</p>
+<p class="text-h3 font-bold">18</p>
+</div>
+</div>
+<div class="mt-6 flex items-center gap-2 text-small font-medium">
+<span class="material-symbols-outlined text-[18px]">trending_up</span>
+<span>High interest in your area</span>
+</div>
+</div>
+<!-- Decorative background glow -->
+<div class="absolute -bottom-10 -right-10 w-32 h-32 bg-white/20 blur-3xl rounded-full"></div>
+</section>
+<!-- Quick Tips -->
+<section class="bg-surface-container border border-outline-variant/30 rounded-2xl p-lg">
+<h3 class="font-title text-body mb-3">Improve Listing</h3>
+<ul class="space-y-3">
+<li class="flex items-start gap-3">
+<span class="material-symbols-outlined text-primary text-[20px]">lightbulb</span>
+<p class="text-small text-on-surface-variant">Adding a 'Battery Health' screenshot usually speeds up electronics sales by 40%.</p>
+</li>
+<li class="flex items-start gap-3">
+<span class="material-symbols-outlined text-primary text-[20px]">shield</span>
+<p class="text-small text-on-surface-variant">Verify your student ID to get the "Verified Student" badge on this listing.</p>
+</li>
+</ul>
+</section>
+</div>
+</div>
+</main>
+<footer class="mt-auto border-t border-outline-variant/20 py-8 px-gutter">
+<div class="max-w-container_max mx-auto flex flex-col md:flex-row justify-between items-center gap-4">
+<span class="font-display font-bold text-on-surface-variant">CampusX</span>
+<div class="flex gap-6 text-caption text-on-surface-variant font-medium">
+<a class="hover:text-primary transition-colors" href="#">Safety Center</a>
+<a class="hover:text-primary transition-colors" href="#">Privacy Policy</a>
+<a class="hover:text-primary transition-colors" href="#">Campus Rules</a>
+</div>
+<p class="text-caption text-outline">© 2024 CampusX. All verified student transactions.</p>
+</div>
+</footer>
+<script>
+        let isActive = true;
+        const switchBg = document.getElementById('switch-bg');
+        const switchDot = document.getElementById('switch-dot');
+        const statusLabel = document.getElementById('status-label');
+
+        function toggleSwitch() {
+            isActive = !isActive;
+            if (isActive) {
+                switchBg.classList.replace('bg-outline-variant', 'bg-primary');
+                switchDot.classList.replace('translate-x-0', 'translate-x-5');
+                statusLabel.innerText = 'Active';
+                statusLabel.classList.replace('text-on-surface-variant', 'text-primary');
+            } else {
+                switchBg.classList.replace('bg-primary', 'bg-outline-variant');
+                switchDot.classList.replace('translate-x-5', 'translate-x-0');
+                statusLabel.innerText = 'Hidden';
+                statusLabel.classList.replace('text-primary', 'text-on-surface-variant');
+            }
+        }
+    </script>
+</body></html>

@@ -1,0 +1,467 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Reports Management - CampusX Admin</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800;900&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Tailwind Config from Source of Truth -->
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "surface-tint": "#4d44e3",
+                    "surface-container-low": "#eff4ff",
+                    "surface": "#f8f9ff",
+                    "tertiary-fixed-dim": "#c0c1ff",
+                    "on-primary": "#ffffff",
+                    "primary-container": "#4f46e5",
+                    "primary-fixed-dim": "#c3c0ff",
+                    "tertiary": "#3130c0",
+                    "surface-container-highest": "#d3e4fe",
+                    "inverse-primary": "#c3c0ff",
+                    "on-surface": "#0b1c30",
+                    "on-tertiary-fixed-variant": "#2f2ebe",
+                    "on-secondary-fixed-variant": "#3f465c",
+                    "outline-variant": "#c7c4d8",
+                    "on-primary-container": "#dad7ff",
+                    "secondary-fixed": "#dae2fd",
+                    "tertiary-fixed": "#e1e0ff",
+                    "on-primary-fixed": "#0f0069",
+                    "outline": "#777587",
+                    "tertiary-container": "#4b4dd8",
+                    "on-tertiary": "#ffffff",
+                    "secondary-fixed-dim": "#bec6e0",
+                    "on-tertiary-container": "#d9d8ff",
+                    "primary-fixed": "#e2dfff",
+                    "secondary": "#565e74",
+                    "on-tertiary-fixed": "#07006c",
+                    "on-secondary-fixed": "#131b2e",
+                    "secondary-container": "#dae2fd",
+                    "surface-container-lowest": "#ffffff",
+                    "on-error-container": "#93000a",
+                    "error-container": "#ffdad6",
+                    "inverse-surface": "#213145",
+                    "on-secondary-container": "#5c647a",
+                    "background": "#f8f9ff",
+                    "surface-bright": "#f8f9ff",
+                    "surface-container": "#e5eeff",
+                    "on-background": "#0b1c30",
+                    "surface-dim": "#cbdbf5",
+                    "surface-container-high": "#dce9ff",
+                    "on-secondary": "#ffffff",
+                    "error": "#ba1a1a",
+                    "on-error": "#ffffff",
+                    "on-primary-fixed-variant": "#3323cc",
+                    "on-surface-variant": "#464555",
+                    "primary": "#3525cd",
+                    "surface-variant": "#d3e4fe",
+                    "inverse-on-surface": "#eaf1ff"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.25rem",
+                    "lg": "0.5rem",
+                    "xl": "0.75rem",
+                    "full": "9999px"
+            },
+            "spacing": {
+                    "gutter": "16px",
+                    "container-margin": "32px",
+                    "row-height-dense": "32px",
+                    "unit": "4px",
+                    "row-height-standard": "48px"
+            },
+            "fontFamily": {
+                    "headline": ["Inter"],
+                    "mono-label": ["monospace"],
+                    "label-caps": ["Inter"],
+                    "title-sm": ["Inter"],
+                    "body-md": ["Inter"],
+                    "body-sm": ["Inter"],
+                    "table-data": ["Inter"],
+                    "display": ["Inter"]
+            },
+            "fontSize": {
+                    "headline": ["18px", {"lineHeight": "28px", "letterSpacing": "-0.01em", "fontWeight": "600"}],
+                    "mono-label": ["12px", {"lineHeight": "16px", "fontWeight": "400"}],
+                    "label-caps": ["11px", {"lineHeight": "16px", "letterSpacing": "0.05em", "fontWeight": "700"}],
+                    "title-sm": ["14px", {"lineHeight": "20px", "fontWeight": "600"}],
+                    "body-md": ["14px", {"lineHeight": "20px", "fontWeight": "400"}],
+                    "body-sm": ["13px", {"lineHeight": "18px", "fontWeight": "400"}],
+                    "table-data": ["13px", {"lineHeight": "16px", "fontWeight": "400"}],
+                    "display": ["24px", {"lineHeight": "32px", "letterSpacing": "-0.02em", "fontWeight": "600"}]
+            }
+          },
+        },
+      }
+    </script>
+<style>
+        body { font-family: 'Inter', sans-serif; }
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .custom-scrollbar::-webkit-scrollbar { width: 4px; }
+        .custom-scrollbar::-webkit-scrollbar-track { background: transparent; }
+        .custom-scrollbar::-webkit-scrollbar-thumb { background: #e2e8f0; border-radius: 10px; }
+        .report-row:hover { background-color: #f1f5f9; }
+    </style>
+</head>
+<body class="bg-background text-on-surface selection:bg-primary-fixed selection:text-on-primary-fixed">
+<!-- TopNavBar Shell -->
+<header class="sticky top-0 z-50 flex items-center justify-between px-gutter w-full h-row-height-standard bg-surface-container-lowest border-b border-outline-variant">
+<div class="flex items-center gap-4">
+<span class="font-headline text-headline font-bold text-primary">CampusX Admin</span>
+<div class="hidden md:flex items-center ml-8 gap-6">
+<span class="text-secondary font-body-md cursor-pointer hover:bg-surface-container-low px-3 py-1 rounded transition-colors">Overview</span>
+<span class="text-primary font-bold border-b-2 border-primary py-2 px-1 cursor-pointer">Reports</span>
+<span class="text-secondary font-body-md cursor-pointer hover:bg-surface-container-low px-3 py-1 rounded transition-colors">Users</span>
+</div>
+</div>
+<div class="flex items-center gap-3">
+<div class="relative group">
+<span class="material-symbols-outlined text-secondary cursor-pointer p-2 hover:bg-surface-container-low rounded-full">notifications</span>
+<span class="absolute top-1.5 right-1.5 block h-2 w-2 rounded-full bg-error border-2 border-surface-container-lowest"></span>
+</div>
+<span class="material-symbols-outlined text-secondary cursor-pointer p-2 hover:bg-surface-container-low rounded-full">settings_suggest</span>
+<span class="material-symbols-outlined text-secondary cursor-pointer p-2 hover:bg-surface-container-low rounded-full">dns</span>
+<div class="ml-2 w-8 h-8 rounded-full bg-primary-container overflow-hidden border border-outline-variant">
+<img class="w-full h-full object-cover" data-alt="A professional headshot of a campus security administrator, looking forward with a neutral expression. The image is a crisp studio portrait with soft lighting, set against a solid minimalist blue background that complements the modern corporate UI. High-definition details and a professional clean aesthetic are emphasized." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAPVwGBn2r84oHhantGciY6AwL4jtWGPXAY5ZGFYVdUwMRv0etx1HSTl0F9dPFySqAJ9I6U2-Tia-c5dmEMfFPjhlw1FQtoo9IHsWfawEVoLPIjP_spEgZ5wpqVr4DVBHGzrqrG_aWYOlai7vOEa-KcUYUvRmD199G6qTkCe4Z3owwA8zpeUPCj79e0-SBfozGGFwWLRa1hF5OKA7TdHLrXmBMDdmeHjqWDGC-aTiJmehwzzN3TJroYCQ3ze90bg4xmdUqJU4i_lEjD"/>
+</div>
+</div>
+</header>
+<div class="flex min-h-[calc(100vh-48px)]">
+<!-- SideNavBar Shell -->
+<aside class="fixed left-0 top-12 h-full flex flex-col w-[240px] z-40 bg-surface-container-low border-r border-outline-variant hidden md:flex">
+<div class="p-6">
+<div class="flex items-center gap-3 mb-6">
+<div class="w-10 h-10 bg-primary rounded-lg flex items-center justify-center text-on-primary">
+<span class="material-symbols-outlined">security</span>
+</div>
+<div>
+<h2 class="font-title-sm text-title-sm text-on-surface">CampusX Admin</h2>
+<p class="font-body-sm text-body-sm text-outline">System Oversight</p>
+</div>
+</div>
+<button class="w-full bg-primary text-on-primary font-title-sm py-2 rounded flex items-center justify-center gap-2 mb-8 hover:opacity-90 active:scale-95 transition-all">
+<span class="material-symbols-outlined text-[20px]">campaign</span>
+                    New Broadcast
+                </button>
+</div>
+<nav class="flex-1 space-y-1">
+<div class="flex items-center gap-3 px-4 py-3 cursor-pointer text-on-surface-variant hover:bg-surface-container transition-all">
+<span class="material-symbols-outlined">dashboard</span>
+<span class="font-title-sm">Dashboard</span>
+</div>
+<div class="flex items-center gap-3 px-4 py-3 cursor-pointer text-on-surface-variant hover:bg-surface-container transition-all">
+<span class="material-symbols-outlined">analytics</span>
+<span class="font-title-sm">Analytics</span>
+</div>
+<div class="flex items-center gap-3 px-4 py-3 cursor-pointer text-on-surface-variant hover:bg-surface-container transition-all">
+<span class="material-symbols-outlined">how_to_reg</span>
+<span class="font-title-sm">Verification</span>
+</div>
+<div class="flex items-center gap-3 px-4 py-3 cursor-pointer text-primary border-l-4 border-primary bg-surface-container-highest font-bold">
+<span class="material-symbols-outlined">report</span>
+<span class="font-title-sm">Reports</span>
+</div>
+<div class="flex items-center gap-3 px-4 py-3 cursor-pointer text-on-surface-variant hover:bg-surface-container transition-all">
+<span class="material-symbols-outlined">inventory_2</span>
+<span class="font-title-sm">Listings</span>
+</div>
+<div class="flex items-center gap-3 px-4 py-3 cursor-pointer text-on-surface-variant hover:bg-surface-container transition-all">
+<span class="material-symbols-outlined">category</span>
+<span class="font-title-sm">Categories</span>
+</div>
+<div class="flex items-center gap-3 px-4 py-3 cursor-pointer text-on-surface-variant hover:bg-surface-container transition-all">
+<span class="material-symbols-outlined">history_edu</span>
+<span class="font-title-sm">Activity Log</span>
+</div>
+<div class="flex items-center gap-3 px-4 py-3 cursor-pointer text-on-surface-variant hover:bg-surface-container transition-all">
+<span class="material-symbols-outlined">settings</span>
+<span class="font-title-sm">Settings</span>
+</div>
+</nav>
+<div class="p-4 border-t border-outline-variant space-y-1 mt-auto pb-16">
+<div class="flex items-center gap-3 px-4 py-3 cursor-pointer text-on-surface-variant hover:bg-surface-container transition-all">
+<span class="material-symbols-outlined">help</span>
+<span class="font-title-sm">Support</span>
+</div>
+<div class="flex items-center gap-3 px-4 py-3 cursor-pointer text-on-surface-variant hover:bg-surface-container transition-all">
+<span class="material-symbols-outlined">logout</span>
+<span class="font-title-sm">Sign Out</span>
+</div>
+</div>
+</aside>
+<!-- Main Content Canvas -->
+<main class="flex-1 md:ml-[240px] flex flex-col h-[calc(100vh-48px)]">
+<div class="flex-1 flex overflow-hidden">
+<!-- Reports Table Section -->
+<section class="flex-1 p-6 overflow-y-auto custom-scrollbar">
+<div class="flex justify-between items-end mb-6">
+<div>
+<h1 class="font-display text-display text-on-surface">Flagged Content</h1>
+<p class="font-body-md text-secondary mt-1">Reviewing 24 active community reports</p>
+</div>
+<div class="flex gap-2">
+<div class="flex bg-surface-container-high rounded-lg p-1">
+<button class="px-4 py-1.5 text-title-sm font-semibold bg-surface-container-lowest rounded-md shadow-sm">All</button>
+<button class="px-4 py-1.5 text-title-sm text-secondary hover:text-on-surface">Urgent</button>
+<button class="px-4 py-1.5 text-title-sm text-secondary hover:text-on-surface">New</button>
+</div>
+</div>
+</div>
+<!-- Modern Bento Data Table -->
+<div class="bg-surface-container-lowest border border-outline-variant rounded-xl overflow-hidden shadow-sm">
+<table class="w-full text-left border-collapse">
+<thead>
+<tr class="bg-surface-container-low border-b border-outline-variant">
+<th class="px-6 py-4 font-label-caps text-label-caps text-outline tracking-wider">Severity</th>
+<th class="px-6 py-4 font-label-caps text-label-caps text-outline tracking-wider">Reported Item / User</th>
+<th class="px-6 py-4 font-label-caps text-label-caps text-outline tracking-wider">Reporter</th>
+<th class="px-6 py-4 font-label-caps text-label-caps text-outline tracking-wider">Reason</th>
+<th class="px-6 py-4 font-label-caps text-label-caps text-outline tracking-wider">Status</th>
+<th class="px-6 py-4"></th>
+</tr>
+</thead>
+<tbody class="font-table-data text-table-data text-on-surface-variant">
+<!-- High Severity Row -->
+<tr class="report-row cursor-pointer transition-colors border-b border-outline-variant/50" onclick="openDetails('report_001')">
+<td class="px-6 py-4">
+<div class="flex items-center gap-2">
+<div class="w-1 h-6 bg-error rounded-full"></div>
+<span class="bg-error-container text-on-error-container font-bold px-2 py-0.5 rounded text-[11px] uppercase tracking-tighter">Urgent</span>
+</div>
+</td>
+<td class="px-6 py-4">
+<div class="flex items-center gap-3">
+<div class="w-10 h-10 rounded bg-surface-variant overflow-hidden">
+<img class="w-full h-full object-cover" data-alt="A macro photograph of a suspicious white powder in a plastic baggie, shot with high-contrast clinical lighting on a dark slate background. The image serves as a symbolic placeholder for 'prohibited items' in a moderation dashboard, maintaining a serious, professional tone without being graphic." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBMwPsYqcjRziGj0PD8J_Ria6LCJ8Vy-dhiAX0H5SBLApJ3xy77AslwN70efqp_x_lQiKxRcrrLdDNoanpti9vm7cpgr3jusaodCQVEaczc53IaJ4SLbGi6MupvJGMPR6rcdkjz3paunvoso_Dx7c3yMcNVeE7P6XKuizjZ9lMwGblmnHnRKMTs9VM5VsvQTTBU0PGCMfCzOQ4L4bs7GmnqQjF2q2x3RJ6g-r_H8S-vYUY9QdOgHDq6pntNgdlaK1A5vhI6vj1yG4Sp"/>
+</div>
+<div>
+<p class="font-title-sm text-on-surface">Suspicious Substance</p>
+<p class="text-[11px] text-outline">Listing ID: #98321</p>
+</div>
+</div>
+</td>
+<td class="px-6 py-4">
+<div class="flex items-center gap-2">
+<span class="font-semibold text-on-surface">Sarah Connor</span>
+<span class="text-[10px] bg-surface-container-high px-1.5 py-0.5 rounded">LVL 4</span>
+</div>
+</td>
+<td class="px-6 py-4">
+<span class="text-error font-medium">Prohibited Item</span>
+</td>
+<td class="px-6 py-4">
+<span class="bg-surface-container-high text-on-surface-variant px-2 py-1 rounded-full font-semibold text-[11px]">NEW</span>
+</td>
+<td class="px-6 py-4 text-right">
+<span class="material-symbols-outlined text-outline">chevron_right</span>
+</td>
+</tr>
+<!-- Medium Severity Row -->
+<tr class="report-row cursor-row transition-colors border-b border-outline-variant/50" onclick="openDetails('report_002')">
+<td class="px-6 py-4">
+<div class="flex items-center gap-2">
+<div class="w-1 h-6 bg-tertiary-container rounded-full"></div>
+<span class="bg-tertiary-container text-on-tertiary-container font-bold px-2 py-0.5 rounded text-[11px] uppercase tracking-tighter">Medium</span>
+</div>
+</td>
+<td class="px-6 py-4">
+<div class="flex items-center gap-3">
+<div class="w-10 h-10 rounded-full bg-surface-container-highest flex items-center justify-center">
+<span class="material-symbols-outlined text-primary">person</span>
+</div>
+<div>
+<p class="font-title-sm text-on-surface">Alex_Trader99</p>
+<p class="text-[11px] text-outline">User ID: #USR-772</p>
+</div>
+</div>
+</td>
+<td class="px-6 py-4">
+<span class="font-semibold text-on-surface">John Doe</span>
+</td>
+<td class="px-6 py-4">
+<span>Potential Scam</span>
+</td>
+<td class="px-6 py-4">
+<span class="bg-primary-container text-on-primary-container px-2 py-1 rounded-full font-semibold text-[11px]">REVIEWING</span>
+</td>
+<td class="px-6 py-4 text-right">
+<span class="material-symbols-outlined text-outline">chevron_right</span>
+</td>
+</tr>
+<!-- Low Severity Row -->
+<tr class="report-row cursor-pointer transition-colors border-b border-outline-variant/50" onclick="openDetails('report_003')">
+<td class="px-6 py-4">
+<div class="flex items-center gap-2">
+<div class="w-1 h-6 bg-secondary rounded-full"></div>
+<span class="bg-surface-container text-secondary font-bold px-2 py-0.5 rounded text-[11px] uppercase tracking-tighter">Low</span>
+</div>
+</td>
+<td class="px-6 py-4">
+<div class="flex items-center gap-3">
+<div class="w-10 h-10 rounded bg-surface-variant overflow-hidden">
+<img class="w-full h-full object-cover" data-alt="A collection of generic textbook covers scattered on a table, including titles like Chemistry and Economics. The lighting is bright and natural, creating a standard academic feel. The photo is clean and high-resolution, intended for use as a placeholder in an admin dashboard list item." src="https://lh3.googleusercontent.com/aida-public/AB6AXuA_GQj5BFjvACopB2xa9zNNUOs3jnjtIkuDyoMDF6pzaB_MR9-Ur7pJpcFN9kjeR5CFXJSRXwV1nHRJMnpsiF7NnU5--OVPq_b7M18KCA3c1B7mjGPRRvoGkdWLO_zRX0CveE1CmDKvTORCPefNqmpI7zasxqe29mU3hGRtIntO9w3frzyOEIoOrjFJKMiciyyAPizVJZMfVfXtwvT5GQ8eyJ-ZgGjmh0DPoWa8LyNycnVxfhkl8dBpl9wWjPd1aRKMpO6iVaaNpY0O"/>
+</div>
+<div>
+<p class="font-title-sm text-on-surface">Used Bio Textbook</p>
+<p class="text-[11px] text-outline">Listing ID: #44012</p>
+</div>
+</div>
+</td>
+<td class="px-6 py-4">
+<span class="font-semibold text-on-surface">Emily Blunt</span>
+</td>
+<td class="px-6 py-4">
+<span>Misleading Category</span>
+</td>
+<td class="px-6 py-4">
+<span class="bg-surface-variant text-on-surface-variant px-2 py-1 rounded-full font-semibold text-[11px]">REVIEWING</span>
+</td>
+<td class="px-6 py-4 text-right">
+<span class="material-symbols-outlined text-outline">chevron_right</span>
+</td>
+</tr>
+<!-- Another High Severity Row -->
+<tr class="report-row cursor-pointer transition-colors" onclick="openDetails('report_004')">
+<td class="px-6 py-4">
+<div class="flex items-center gap-2">
+<div class="w-1 h-6 bg-error rounded-full"></div>
+<span class="bg-error-container text-on-error-container font-bold px-2 py-0.5 rounded text-[11px] uppercase tracking-tighter">Urgent</span>
+</div>
+</td>
+<td class="px-6 py-4">
+<div class="flex items-center gap-3">
+<div class="w-10 h-10 rounded-full bg-surface-container-highest flex items-center justify-center">
+<span class="material-symbols-outlined text-error">gavel</span>
+</div>
+<div>
+<p class="font-title-sm text-on-surface">Hate Speech - Comment</p>
+<p class="text-[11px] text-outline">Comment ID: #CMT-992</p>
+</div>
+</div>
+</td>
+<td class="px-6 py-4">
+<span class="font-semibold text-on-surface">Automated Flag</span>
+</td>
+<td class="px-6 py-4">
+<span class="text-error font-medium">Policy Violation</span>
+</td>
+<td class="px-6 py-4">
+<span class="bg-surface-container-high text-on-surface-variant px-2 py-1 rounded-full font-semibold text-[11px]">NEW</span>
+</td>
+<td class="px-6 py-4 text-right">
+<span class="material-symbols-outlined text-outline">chevron_right</span>
+</td>
+</tr>
+</tbody>
+</table>
+<!-- Pagination/Footer -->
+<div class="p-4 bg-surface-container-low flex justify-between items-center border-t border-outline-variant">
+<p class="font-body-sm text-outline">Showing 1-10 of 24 reports</p>
+<div class="flex gap-2">
+<button class="px-3 py-1 border border-outline-variant rounded hover:bg-surface-container-lowest transition-colors"><span class="material-symbols-outlined text-sm">chevron_left</span></button>
+<button class="px-3 py-1 border border-outline-variant rounded hover:bg-surface-container-lowest transition-colors"><span class="material-symbols-outlined text-sm">chevron_right</span></button>
+</div>
+</div>
+</div>
+</section>
+<!-- Side Panel for Quick Details -->
+<aside class="w-[400px] border-l border-outline-variant bg-surface-container-lowest h-full overflow-y-auto custom-scrollbar transition-transform translate-x-0" id="details-panel">
+<div class="p-6 border-b border-outline-variant flex justify-between items-center bg-surface-container-low/50">
+<h3 class="font-headline text-headline text-on-surface">Report Details</h3>
+<button class="p-1 hover:bg-surface-container rounded-full text-outline hover:text-on-surface" onclick="closeDetails()">
+<span class="material-symbols-outlined">close</span>
+</button>
+</div>
+<div class="p-6 space-y-8">
+<!-- Moderation Priority Card -->
+<div class="p-4 rounded-xl border-l-4 border-error bg-error-container/10 flex gap-4">
+<div class="w-12 h-12 bg-error-container text-on-error-container rounded-full flex items-center justify-center shrink-0">
+<span class="material-symbols-outlined">warning</span>
+</div>
+<div>
+<h4 class="font-title-sm text-on-error-container">Critical Violation</h4>
+<p class="font-body-sm text-on-error-container/80 mt-1">This report is flagged as 'Prohibited Item'. Immediate action is recommended per safety protocol V2.</p>
+</div>
+</div>
+<!-- Reported Entity -->
+<div class="space-y-4">
+<h5 class="font-label-caps text-label-caps text-outline tracking-wider uppercase">Reported Entity</h5>
+<div class="p-4 rounded-lg bg-surface border border-outline-variant flex gap-4 items-center">
+<div class="w-16 h-16 rounded bg-surface-variant overflow-hidden">
+<img class="w-full h-full object-cover" data-alt="A macro photograph of a suspicious white powder in a plastic baggie, shot with high-contrast clinical lighting on a dark slate background. The image serves as a symbolic placeholder for 'prohibited items' in a moderation dashboard, maintaining a serious, professional tone without being graphic." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBWzXDGbFTWHhfFEwGYf4Yo-Jyt_ZFGwGKCIBQ4iF_dCnr3_hRq1vf2OGSoLXxASLVBzc_PUl3mvVSl1j05XnU91gn505K3q5uMdfUG1kEbiCmeIyB3O8DChCIpn_TSNKJf9pNQL_JoYtzbnRFWLRA923qXXCYNJ_p1Cj5ik9ve-NnaHNhViV81xBZGWPxpzYLPezLz-cItp9NJ8IO7mYzx0xNU2ufL01_vo1hrjtOpF-kzFzmPX_byMoW_hConQUPMMStFnXSsd-uk"/>
+</div>
+<div>
+<h4 class="font-title-sm text-on-surface">"Pure White Mystery Powder"</h4>
+<p class="font-body-sm text-secondary">Posted by: <span class="text-primary font-medium">User_902</span></p>
+<p class="font-body-sm text-secondary">Price: $250.00</p>
+</div>
+</div>
+<div class="p-4 rounded-lg bg-surface-container-low border border-outline-variant/50">
+<p class="font-body-sm text-on-surface italic">"Selling high quality white powder for research purposes. DM for pickup details on campus north lawn tonight."</p>
+</div>
+</div>
+<!-- Reporter Info -->
+<div class="space-y-3">
+<h5 class="font-label-caps text-label-caps text-outline tracking-wider uppercase">Reporter Evidence</h5>
+<div class="flex items-center justify-between p-3 border border-outline-variant rounded-lg">
+<div class="flex items-center gap-3">
+<div class="w-8 h-8 rounded-full bg-surface-container-highest flex items-center justify-center">
+<span class="material-symbols-outlined text-sm">person</span>
+</div>
+<span class="font-title-sm">Sarah Connor</span>
+</div>
+<span class="font-body-sm text-secondary">15m ago</span>
+</div>
+<p class="font-body-md text-on-surface">"This looks extremely suspicious and likely violates the drug paraphernalia policy. The user is also asking for off-platform meetings."</p>
+</div>
+<!-- Action Controls -->
+<div class="pt-6 border-t border-outline-variant space-y-3">
+<button class="w-full bg-error text-on-error font-title-sm py-3 rounded-lg flex items-center justify-center gap-2 hover:opacity-90 active:scale-[0.98] transition-all">
+<span class="material-symbols-outlined">delete_forever</span>
+                                Delete Item &amp; Notify User
+                            </button>
+<button class="w-full bg-inverse-surface text-inverse-on-surface font-title-sm py-3 rounded-lg flex items-center justify-center gap-2 hover:opacity-90 active:scale-[0.98] transition-all">
+<span class="material-symbols-outlined">person_off</span>
+                                Suspend User Account
+                            </button>
+<button class="w-full bg-surface-container-lowest border border-outline text-on-surface-variant font-title-sm py-3 rounded-lg flex items-center justify-center gap-2 hover:bg-surface-container-low active:scale-[0.98] transition-all">
+<span class="material-symbols-outlined">close</span>
+                                Dismiss Report
+                            </button>
+</div>
+</div>
+</aside>
+</div>
+</main>
+</div>
+<script>
+        function openDetails(id) {
+            const panel = document.getElementById('details-panel');
+            panel.classList.remove('translate-x-full');
+            // Mock dynamic loading logic
+            console.log("Loading details for: " + id);
+        }
+
+        function closeDetails() {
+            const panel = document.getElementById('details-panel');
+            panel.classList.add('translate-x-full');
+            // Small timeout to simulate hiding before it's actually removed if needed
+            // For now just moving it off-canvas
+        }
+
+        // Handle responsive behavior (start panel hidden on smaller screens)
+        window.addEventListener('resize', () => {
+            if (window.innerWidth < 1024) {
+                closeDetails();
+            }
+        });
+    </script>
+</body></html>

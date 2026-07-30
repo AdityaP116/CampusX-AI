@@ -1,0 +1,438 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>CampusX | Transactions</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@100..900&family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "background": "#fcf8ff",
+                    "primary": "#3525cd",
+                    "on-secondary": "#ffffff",
+                    "surface-container-low": "#f5f2ff",
+                    "surface-container-high": "#eae6f4",
+                    "surface-dim": "#dcd8e5",
+                    "primary-fixed-dim": "#c3c0ff",
+                    "on-surface-variant": "#464555",
+                    "on-tertiary-fixed": "#351000",
+                    "on-surface": "#1b1b24",
+                    "on-primary-fixed-variant": "#3323cc",
+                    "error": "#ba1a1a",
+                    "secondary-fixed-dim": "#c0c1ff",
+                    "secondary-container": "#6063ee",
+                    "on-primary-fixed": "#0f0069",
+                    "tertiary-container": "#a44100",
+                    "inverse-primary": "#c3c0ff",
+                    "surface-container-lowest": "#ffffff",
+                    "primary-fixed": "#e2dfff",
+                    "on-tertiary-container": "#ffd2be",
+                    "on-secondary-fixed": "#07006c",
+                    "on-primary-container": "#dad7ff",
+                    "on-secondary-fixed-variant": "#2f2ebe",
+                    "surface-tint": "#4d44e3",
+                    "surface-container-highest": "#e4e1ee",
+                    "on-tertiary-fixed-variant": "#7b2f00",
+                    "outline": "#777587",
+                    "primary-container": "#4f46e5",
+                    "inverse-on-surface": "#f3effc",
+                    "tertiary": "#7e3000",
+                    "on-tertiary": "#ffffff",
+                    "on-error-container": "#93000a",
+                    "surface-container": "#f0ecf9",
+                    "error-container": "#ffdad6",
+                    "on-primary": "#ffffff",
+                    "tertiary-fixed-dim": "#ffb695",
+                    "secondary-fixed": "#e1e0ff",
+                    "tertiary-fixed": "#ffdbcc",
+                    "surface-variant": "#e4e1ee",
+                    "outline-variant": "#c7c4d8",
+                    "surface-bright": "#fcf8ff",
+                    "secondary": "#4648d4",
+                    "on-secondary-container": "#fffbff",
+                    "on-error": "#ffffff",
+                    "on-background": "#1b1b24",
+                    "inverse-surface": "#302f39",
+                    "surface": "#fcf8ff"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.25rem",
+                    "lg": "0.5rem",
+                    "xl": "0.75rem",
+                    "full": "9999px"
+            },
+            "spacing": {
+                    "xl": "32px",
+                    "sm": "8px",
+                    "xxl": "48px",
+                    "xs": "4px",
+                    "margin_mobile": "16px",
+                    "container_max": "1440px",
+                    "md": "16px",
+                    "gutter": "24px",
+                    "lg": "24px",
+                    "base": "8px"
+            },
+            "fontFamily": {
+                    "h1-mobile": ["Inter"],
+                    "display": ["Inter"],
+                    "title": ["Inter"],
+                    "h3": ["Inter"],
+                    "caption": ["Inter"],
+                    "small": ["Inter"],
+                    "h1": ["Inter"],
+                    "body": ["Inter"],
+                    "h2": ["Inter"]
+            },
+            "fontSize": {
+                    "h1-mobile": ["32px", {"lineHeight": "1.2", "fontWeight": "700"}],
+                    "display": ["48px", {"lineHeight": "1.1", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                    "title": ["20px", {"lineHeight": "1.5", "fontWeight": "600"}],
+                    "h3": ["24px", {"lineHeight": "1.4", "fontWeight": "600"}],
+                    "caption": ["12px", {"lineHeight": "1.4", "letterSpacing": "0.01em", "fontWeight": "400"}],
+                    "small": ["14px", {"lineHeight": "1.5", "fontWeight": "500"}],
+                    "h1": ["40px", {"lineHeight": "1.2", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                    "body": ["16px", {"lineHeight": "1.6", "fontWeight": "400"}],
+                    "h2": ["32px", {"lineHeight": "1.3", "letterSpacing": "-0.01em", "fontWeight": "600"}]
+            }
+          },
+        },
+      }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .glass-header {
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+        }
+        body {
+            background-color: #fcf8ff;
+            color: #1b1b24;
+        }
+    </style>
+</head>
+<body class="font-body text-body min-h-screen overflow-x-hidden">
+<!-- TopNavBar -->
+<header class="fixed top-0 w-full z-50 bg-surface/70 dark:bg-surface-container/70 backdrop-blur-xl border-b border-outline-variant/30 shadow-sm h-20">
+<div class="flex justify-between items-center px-lg h-full w-full max-w-container_max mx-auto">
+<div class="flex items-center gap-xl">
+<span class="font-display text-h3 font-bold text-primary">CampusX</span>
+<nav class="hidden md:flex gap-lg items-center">
+<a class="text-on-surface-variant hover:text-primary transition-colors font-body text-body" href="#">Browse</a>
+<a class="text-on-surface-variant hover:text-primary transition-colors font-body text-body" href="#">Deals</a>
+<a class="text-on-surface-variant hover:text-primary transition-colors font-body text-body" href="#">Services</a>
+</nav>
+</div>
+<div class="flex items-center gap-md">
+<div class="hidden md:flex items-center bg-surface-container-low rounded-full px-md py-xs gap-sm border border-outline-variant/20 focus-within:shadow-md transition-shadow">
+<span class="material-symbols-outlined text-on-surface-variant">search</span>
+<input class="bg-transparent border-none focus:ring-0 text-small py-1 w-64" placeholder="Search orders..." type="text"/>
+</div>
+<button class="material-symbols-outlined text-on-surface-variant hover:bg-surface-container-high/50 p-2 rounded-full transition-all active:scale-95 duration-200">notifications</button>
+<button class="material-symbols-outlined text-on-surface-variant hover:bg-surface-container-high/50 p-2 rounded-full transition-all active:scale-95 duration-200">shopping_cart</button>
+<div class="h-10 w-10 rounded-full border-2 border-primary-container p-0.5 overflow-hidden">
+<img class="w-full h-full object-cover rounded-full" data-alt="Close-up professional headshot of a friendly college student in a minimalist studio setting. The lighting is soft and natural, emphasizing a high-end, verified user status. The background is a clean, neutral gradient of light purples and whites, maintaining a premium student marketplace aesthetic." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDItwlZYzOCA9yxol69mMiXgluSKKyaEE8KBAy6NB6SATZFT4jSfI_70g2LKlCUQBnqISX8jj_70pANHDPf4qVxqLgbz8Xw1HzUmoy4mDHXgmj4IhT4y9aBz5TPP56-O88T-i73ZTAmlrW5PxRYX_PUUfN-IyIS3LuCSpAziW-uS9YQrDwe4WekbHjBYCco0ZaIiUX95MUCAMgGfKOVvovgs1jJUnUF544otzhtEBjfsLkKi8-AJ7KwMd7EeQ7W-CZb-Q7W0EAEvHqm"/>
+</div>
+</div>
+</div>
+</header>
+<!-- Layout Container -->
+<div class="flex pt-20 max-w-container_max mx-auto">
+<!-- SideNavBar -->
+<aside class="h-screen w-64 fixed left-0 top-0 pt-24 bg-surface dark:bg-surface-container border-r border-outline-variant/20 hidden md:flex flex-col gap-sm px-md py-lg overflow-y-auto">
+<div class="flex items-center gap-md mb-xl px-sm">
+<div class="h-12 w-12 bg-primary-container rounded-xl flex items-center justify-center text-on-primary">
+<span class="material-symbols-outlined text-h3">account_circle</span>
+</div>
+<div>
+<h2 class="font-display text-title text-primary leading-tight">Student Hub</h2>
+<p class="font-caption text-caption text-on-surface-variant">Verified Member</p>
+</div>
+</div>
+<nav class="flex flex-col gap-xs">
+<a class="flex items-center gap-md p-md text-on-surface-variant hover:bg-surface-container-low rounded-lg transition-colors group" href="#">
+<span class="material-symbols-outlined group-hover:text-primary">dashboard</span>
+<span class="font-body text-body">Dashboard</span>
+</a>
+<a class="flex items-center gap-md p-md text-on-surface-variant hover:bg-surface-container-low rounded-lg transition-colors group" href="#">
+<span class="material-symbols-outlined group-hover:text-primary">sell</span>
+<span class="font-body text-body">My Listings</span>
+</a>
+<a class="flex items-center gap-md p-md bg-primary-container text-on-primary-container rounded-lg font-medium" href="#">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">receipt_long</span>
+<span class="font-body text-body">Messages</span>
+</a>
+<a class="flex items-center gap-md p-md text-on-surface-variant hover:bg-surface-container-low rounded-lg transition-colors group" href="#">
+<span class="material-symbols-outlined group-hover:text-primary">bookmark</span>
+<span class="font-body text-body">Saved</span>
+</a>
+<a class="flex items-center gap-md p-md text-on-surface-variant hover:bg-surface-container-low rounded-lg transition-colors group" href="#">
+<span class="material-symbols-outlined group-hover:text-primary">analytics</span>
+<span class="font-body text-body">Analytics</span>
+</a>
+</nav>
+<div class="mt-auto pt-lg border-t border-outline-variant/10">
+<button class="w-full bg-primary text-on-secondary rounded-full py-md font-title text-body mb-lg hover:bg-primary/90 transition-all active:scale-95 shadow-md">
+                    Post New Ad
+                </button>
+<div class="flex flex-col gap-xs">
+<a class="flex items-center gap-md p-md text-on-surface-variant hover:bg-surface-container-low rounded-lg transition-colors" href="#">
+<span class="material-symbols-outlined">settings</span>
+<span class="font-body text-body">Settings</span>
+</a>
+<a class="flex items-center gap-md p-md text-on-surface-variant hover:bg-surface-container-low rounded-lg transition-colors" href="#">
+<span class="material-symbols-outlined">help_outline</span>
+<span class="font-body text-body">Help</span>
+</a>
+</div>
+</div>
+</aside>
+<!-- Main Content -->
+<main class="flex-1 md:ml-64 px-margin_mobile md:px-xxl py-xl">
+<!-- Breadcrumbs & Header -->
+<div class="mb-xxl">
+<div class="flex items-center gap-xs text-on-surface-variant font-caption text-caption mb-sm">
+<a class="hover:text-primary" href="#">Home</a>
+<span class="material-symbols-outlined text-[14px]">chevron_right</span>
+<span>Transactions</span>
+</div>
+<div class="flex flex-col md:flex-row md:items-end justify-between gap-md">
+<div>
+<h1 class="font-display text-h1 text-on-surface">Order History</h1>
+<p class="text-on-surface-variant mt-xs">Track and manage your recent campus exchanges.</p>
+</div>
+<div class="flex bg-surface-container rounded-xl p-1 gap-1">
+<button class="px-lg py-2 bg-white rounded-lg shadow-sm font-small text-primary">All Orders</button>
+<button class="px-lg py-2 rounded-lg font-small text-on-surface-variant hover:text-primary transition-colors">Purchases</button>
+<button class="px-lg py-2 rounded-lg font-small text-on-surface-variant hover:text-primary transition-colors">Sales</button>
+</div>
+</div>
+</div>
+<!-- Transaction List -->
+<div class="flex flex-col gap-gutter">
+<!-- Order Card 1: Pending Meetup -->
+<div class="bg-surface-container-lowest border border-outline-variant/30 rounded-[18px] p-lg md:p-xl shadow-sm hover:shadow-md transition-shadow group">
+<div class="flex flex-col md:flex-row gap-lg">
+<div class="relative w-full md:w-48 h-48 md:h-32 shrink-0 overflow-hidden rounded-xl">
+<img class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" data-alt="High-quality studio shot of a pair of high-end wireless noise-canceling headphones, silver and matte grey, on a minimalist white pedestal. Soft architectural shadows and clean light-mode aesthetic. The product is crisp and detailed, looking premium for a student marketplace listing." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDI5epF9wM3WaPwSJSDqVleAigL2MwhfqBe5B_yl9LsGB5dyolJX25iTg9FwiNBfwjsG2r9-JdZ2oqy13b1-AmiYTYRRGWcQOOchys5ZQG22h-RBT0zUAot5hJ59VoxdE3z8E8X6lGKQyGp31fud-2cy_WwTDVhWKlVFg6ioqYrPm-WamDTd6aQGsdB_3TQEAdXu8-BH1Kib47ppCR2E0fs33gUjua3dmXMgiuGetjo8W6ESZJT1WLKCIU-P8IgIHD5SGM7tBBbDnz8"/>
+<div class="absolute top-2 left-2 bg-white/90 backdrop-blur px-sm py-xs rounded-full flex items-center gap-1 shadow-sm">
+<span class="material-symbols-outlined text-primary text-[16px]" style="font-variation-settings: 'FILL' 1;">verified</span>
+<span class="font-caption text-caption font-bold text-primary">Verified</span>
+</div>
+</div>
+<div class="flex-1 flex flex-col justify-between">
+<div class="flex justify-between items-start">
+<div>
+<div class="flex items-center gap-sm mb-xs">
+<span class="bg-surface-container-high text-on-tertiary-fixed-variant px-sm py-0.5 rounded-full font-caption text-caption font-bold tracking-wider">ORDER #CX-9021</span>
+<span class="text-on-surface-variant">•</span>
+<span class="text-on-surface-variant font-caption text-caption">Placed Oct 24, 2023</span>
+</div>
+<h3 class="font-title text-title text-on-surface mb-1">Sony WH-1000XM4 Noise Canceling Headphones</h3>
+<div class="flex items-center gap-md">
+<div class="flex items-center gap-sm">
+<div class="h-6 w-6 rounded-full overflow-hidden">
+<img class="w-full h-full object-cover" data-alt="Small circular avatar of a smiling young woman, diverse student profile, clean lighting, soft background. Professional and trustworthy appearance for a marketplace transaction context." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBSlyaE6OwHUCTkgTfjl6WQvlsemhjmlbo5F9WrDVFO2HYoCqi7LE4mYAn7C10vZEd44ywByH4SejmKUN9D8cl-YqI5zTNsPA52yuJ7J4VWCtgm6IVep8pcEZEwf_Pbia3DIDGgxuIUe1bgr3N2UTTDkcQOXRIOagayoiA2mAzAtOz3j8K5NuarszOoLDMt4n2DlLW7p4o9VoqPMKHMBgYda59DifJXAmowH_uzmAJhaHxRWVmuBQoNAf7fq7ijwKywcuZoIcEhdBD6"/>
+</div>
+<span class="text-small text-on-surface-variant">Seller: <span class="font-semibold text-on-surface">Alex Rivero</span></span>
+</div>
+<span class="text-primary font-bold text-title">$180.00</span>
+</div>
+</div>
+<div class="flex flex-col items-end gap-sm">
+<span class="px-md py-1.5 rounded-full bg-surface-container text-primary font-small flex items-center gap-sm">
+<span class="w-2 h-2 rounded-full bg-primary animate-pulse"></span>
+                                        Pending Meetup
+                                    </span>
+</div>
+</div>
+<div class="flex flex-wrap items-center justify-between gap-md mt-lg pt-md border-t border-outline-variant/10">
+<div class="flex items-center gap-sm text-on-surface-variant font-caption text-caption">
+<span class="material-symbols-outlined text-[20px]">location_on</span>
+                                    Meetup: Library South Plaza, 2:00 PM Tomorrow
+                                </div>
+<div class="flex gap-sm">
+<button class="px-lg py-2 border border-outline-variant rounded-full font-small text-on-surface hover:bg-surface-container-low transition-all active:scale-95">Message Seller</button>
+<button class="px-lg py-2 bg-primary text-on-secondary rounded-full font-small hover:bg-primary/90 shadow-sm transition-all active:scale-95">View Details</button>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Order Card 2: Completed -->
+<div class="bg-surface-container-lowest border border-outline-variant/30 rounded-[18px] p-lg md:p-xl shadow-sm hover:shadow-md transition-shadow group">
+<div class="flex flex-col md:flex-row gap-lg">
+<div class="relative w-full md:w-48 h-48 md:h-32 shrink-0 overflow-hidden rounded-xl grayscale-[0.3]">
+<img class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" data-alt="A clean, minimalist arrangement of several academic textbooks stacked neatly on a light wood desk. Bright, airy student study environment with soft morning sunlight. Premium photography style, consistent with a verified high-end marketplace." src="https://lh3.googleusercontent.com/aida-public/AB6AXuC0LGHQOPY92EfItiAMcsiov26SQgTgWZaOAL6gQNtM4q16CMyAYq5zIy7CVVWmOJYSmyaVxHrT51I4pVGFQARS5TZzHhz1F-Z84aesZJ2fMNUE1wDj685VSacNAsKo3jQeh-tnzoKPkKHDTqwIqotZhKsS-UxZx8X-Q9VdHS0K-2xxeoYmKV6-SnYNl7a0mnFm1N1YjNNV13oBDbA9rIGcYN-x5ZUNjdEkHS-VX2utuRJNZ37lMwahisELmCFZc37_NJm1gFxnK0N4"/>
+</div>
+<div class="flex-1 flex flex-col justify-between">
+<div class="flex justify-between items-start">
+<div>
+<div class="flex items-center gap-sm mb-xs">
+<span class="bg-surface-container-high text-on-surface-variant px-sm py-0.5 rounded-full font-caption text-caption font-bold tracking-wider">ORDER #CX-8842</span>
+<span class="text-on-surface-variant">•</span>
+<span class="text-on-surface-variant font-caption text-caption">Completed Oct 18, 2023</span>
+</div>
+<h3 class="font-title text-title text-on-surface mb-1">Advanced Organic Chemistry (8th Edition)</h3>
+<div class="flex items-center gap-md">
+<div class="flex items-center gap-sm">
+<div class="h-6 w-6 rounded-full overflow-hidden">
+<img class="w-full h-full object-cover" data-alt="Small circular avatar of a focused male student, professional lighting, simple grey background. Represents a verified and trusted community member in a marketplace platform." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDdXbg6Q1dtG8VsAhv-oNuBZsdmYI2JbyodrZsbOsxjLk6KRGnHViICuRnKdo-BvYJ2FDR-UKv1TREIX9Bj122yEQC4zIoFakQOjPR_0DhKJnhg5Hzpx9YbKiWDViuqMMp3qIYiSvJiqV5DSphcnE0JDq8HEYSCCrBi5YKXghEqj97Wa6lLlPIrxpxaT6W4Ca9O09S0xGoKtciPY-8J8kOZvR067DEqunjiiEWdZWsiwbF2ekjCBB6VhtNK6u7bCA3bjuMh1P8oKYUG"/>
+</div>
+<span class="text-small text-on-surface-variant">Buyer: <span class="font-semibold text-on-surface">Jordan Smith</span></span>
+</div>
+<span class="text-on-surface-variant font-bold text-title">$45.00</span>
+</div>
+</div>
+<div class="flex flex-col items-end gap-sm">
+<span class="px-md py-1.5 rounded-full bg-green-50 text-green-700 font-small flex items-center gap-sm border border-green-100">
+<span class="material-symbols-outlined text-[18px]" style="font-variation-settings: 'FILL' 1;">check_circle</span>
+                                        Completed
+                                    </span>
+</div>
+</div>
+<div class="flex flex-wrap items-center justify-between gap-md mt-lg pt-md border-t border-outline-variant/10">
+<div class="flex items-center gap-sm text-on-surface-variant font-caption text-caption">
+<span class="material-symbols-outlined text-[20px]">star</span>
+                                    You were rated 5 stars for this sale
+                                </div>
+<div class="flex gap-sm">
+<button class="px-lg py-2 border border-outline-variant rounded-full font-small text-on-surface hover:bg-surface-container-low transition-all">Download Receipt</button>
+<button class="px-lg py-2 bg-surface-container-high text-on-surface rounded-full font-small hover:bg-surface-dim transition-all">Archive Order</button>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Order Card 3: Shipped -->
+<div class="bg-surface-container-lowest border border-outline-variant/30 rounded-[18px] p-lg md:p-xl shadow-sm hover:shadow-md transition-shadow group">
+<div class="flex flex-col md:flex-row gap-lg">
+<div class="relative w-full md:w-48 h-48 md:h-32 shrink-0 overflow-hidden rounded-xl">
+<img class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" data-alt="A modern, minimalist mechanical keyboard with custom pastel keycaps. Photographed in a high-key lighting setup with a soft purple ambient glow. Very clean and professional, emphasizing the high-quality tech gear available for students." src="https://lh3.googleusercontent.com/aida-public/AB6AXuB4KAJ8yL92MNcKQ3cxYlsMQk_Xey4zm0PIYW74hCJxrVcUV5II6Zy0BHZtEnABi3AL-1S7tJrJvYC6hzBEKZP_sC63qI_AMItOKdgubRle3cVk1PaLYQq5Otrs1bREHraW8CyPU0C6tKXB3HgXtOkmfLwDe-RgaaaXxPZiBvxNQ4bJw_eyS_ZpTN-lHZGMGLqOa4drdpi5o9EPg4lf4EtqExb_-Lvsuaq9THIFadbKIePRqT1TXyczi-KvPf0lsmO9nFsx_XW02mfD"/>
+</div>
+<div class="flex-1 flex flex-col justify-between">
+<div class="flex justify-between items-start">
+<div>
+<div class="flex items-center gap-sm mb-xs">
+<span class="bg-surface-container-high text-on-surface-variant px-sm py-0.5 rounded-full font-caption text-caption font-bold tracking-wider">ORDER #CX-9105</span>
+<span class="text-on-surface-variant">•</span>
+<span class="text-on-surface-variant font-caption text-caption">Shipped Today</span>
+</div>
+<h3 class="font-title text-title text-on-surface mb-1">Keychron K2 Mechanical Keyboard</h3>
+<div class="flex items-center gap-md">
+<div class="flex items-center gap-sm">
+<div class="h-6 w-6 rounded-full overflow-hidden">
+<img class="w-full h-full object-cover" data-alt="Small circular profile photo of a student with a warm smile, wearing a college hoodie. Natural daylight, blurred campus background. High-quality and approachable." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCyDkzaP-0-ykmnlonDjOj-ExgFZUFZ-a9WCTOyEoCkVLVsFJGjY1_KjsY9ZxXh0h3ZFaSX03gllZ65d8VucYPlkQmuI0cCC1UsXGsFT9L6PDNiD3t-fDxsfScP0V6bkVKyYzx-GAUz_N53xecqeukL0IJjXyUbVqi-_4g8gZH-xUJ_-As41j1WSmSCs4Yrj1NrbaLBWjaCHaINpP9UU3oUZZlvVxN3RS8BpXRuFYHY7z1tCSbz2fM_vlf-qD4VUkhKBTKlSzQaXD8q"/>
+</div>
+<span class="text-small text-on-surface-variant">Seller: <span class="font-semibold text-on-surface">Mia Chen</span></span>
+</div>
+<span class="text-primary font-bold text-title">$75.00</span>
+</div>
+</div>
+<div class="flex flex-col items-end gap-sm">
+<span class="px-md py-1.5 rounded-full bg-blue-50 text-blue-700 font-small flex items-center gap-sm border border-blue-100">
+<span class="material-symbols-outlined text-[18px]">local_shipping</span>
+                                        Shipped
+                                    </span>
+</div>
+</div>
+<div class="flex flex-wrap items-center justify-between gap-md mt-lg pt-md border-t border-outline-variant/10">
+<div class="flex items-center gap-sm text-on-surface-variant font-caption text-caption">
+<span class="material-symbols-outlined text-[20px]">track_changes</span>
+                                    Tracking: UPS-9201485728 (Arriving Thursday)
+                                </div>
+<div class="flex gap-sm">
+<button class="px-lg py-2 border border-outline-variant rounded-full font-small text-on-surface hover:bg-surface-container-low transition-all">Track Package</button>
+<button class="px-lg py-2 bg-primary-container text-on-primary-container rounded-full font-small hover:bg-primary shadow-sm transition-all active:scale-95">Mark as Received</button>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Empty State / Footer Callout -->
+<div class="mt-xxl bg-surface-container rounded-[24px] p-xxl text-center border border-dashed border-outline-variant/50">
+<div class="w-20 h-20 bg-white rounded-full flex items-center justify-center mx-auto mb-lg shadow-sm">
+<span class="material-symbols-outlined text-primary text-[40px]">inventory_2</span>
+</div>
+<h3 class="font-display text-h3 text-on-surface mb-sm">Selling something new?</h3>
+<p class="text-on-surface-variant max-w-md mx-auto mb-xl">Post your items today and connect with thousands of verified students on campus.</p>
+<button class="bg-primary text-on-secondary px-xxl py-md rounded-full font-title text-body shadow-lg hover:shadow-xl transition-all active:scale-95">
+                    Create New Listing
+                </button>
+</div>
+</main>
+</div>
+<!-- Footer -->
+<footer class="w-full py-xxl bg-surface-container-lowest dark:bg-surface-dim border-t border-outline-variant/10 mt-xxl">
+<div class="flex flex-col md:flex-row justify-between items-center px-lg gap-md w-full max-w-container_max mx-auto">
+<div class="flex flex-col gap-xs items-center md:items-start">
+<span class="font-display text-body font-bold text-on-surface">CampusX</span>
+<p class="font-caption text-caption text-on-surface-variant">© 2024 CampusX Marketplace. Built for students.</p>
+</div>
+<div class="flex gap-xl">
+<a class="font-caption text-caption text-on-surface-variant hover:text-primary transition-opacity" href="#">Terms</a>
+<a class="font-caption text-caption text-on-surface-variant hover:text-primary transition-opacity" href="#">Privacy</a>
+<a class="font-caption text-caption text-on-surface-variant hover:text-primary transition-opacity" href="#">Safety</a>
+<a class="font-caption text-caption text-on-surface-variant hover:text-primary transition-opacity" href="#">Support</a>
+</div>
+</div>
+</footer>
+<!-- Mobile BottomNavBar -->
+<nav class="md:hidden fixed bottom-0 w-full bg-surface/70 backdrop-blur-xl border-t border-outline-variant/30 flex justify-around py-md z-50 px-md">
+<button class="flex flex-col items-center gap-xs text-on-surface-variant">
+<span class="material-symbols-outlined">home</span>
+<span class="text-[10px] font-bold">Home</span>
+</button>
+<button class="flex flex-col items-center gap-xs text-on-surface-variant">
+<span class="material-symbols-outlined">explore</span>
+<span class="text-[10px] font-bold">Explore</span>
+</button>
+<button class="flex flex-col items-center gap-xs text-primary">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">receipt_long</span>
+<span class="text-[10px] font-bold">Orders</span>
+</button>
+<button class="flex flex-col items-center gap-xs text-on-surface-variant">
+<span class="material-symbols-outlined">chat</span>
+<span class="text-[10px] font-bold">Inbox</span>
+</button>
+<button class="flex flex-col items-center gap-xs text-on-surface-variant">
+<span class="material-symbols-outlined">person</span>
+<span class="text-[10px] font-bold">Profile</span>
+</button>
+</nav>
+<script>
+        // Micro-interactions and subtle hover effects
+        document.querySelectorAll('button').forEach(button => {
+            button.addEventListener('mousedown', () => {
+                button.classList.add('scale-95');
+            });
+            button.addEventListener('mouseup', () => {
+                button.classList.remove('scale-95');
+            });
+            button.addEventListener('mouseleave', () => {
+                button.classList.remove('scale-95');
+            });
+        });
+
+        // Search bar focus effect
+        const searchInput = document.querySelector('input[type="text"]');
+        if (searchInput) {
+            searchInput.addEventListener('focus', () => {
+                searchInput.parentElement.classList.add('ring-2', 'ring-primary/20', 'border-primary/50');
+            });
+            searchInput.addEventListener('blur', () => {
+                searchInput.parentElement.classList.remove('ring-2', 'ring-primary/20', 'border-primary/50');
+            });
+        }
+    </script>
+</body></html>

@@ -1,0 +1,432 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Seller Profile | CampusX</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "background": "#fcf8ff",
+                    "primary": "#3525cd",
+                    "on-secondary": "#ffffff",
+                    "surface-container-low": "#f5f2ff",
+                    "surface-container-high": "#eae6f4",
+                    "surface-dim": "#dcd8e5",
+                    "primary-fixed-dim": "#c3c0ff",
+                    "on-surface-variant": "#464555",
+                    "on-tertiary-fixed": "#351000",
+                    "on-surface": "#1b1b24",
+                    "on-primary-fixed-variant": "#3323cc",
+                    "error": "#ba1a1a",
+                    "secondary-fixed-dim": "#c0c1ff",
+                    "secondary-container": "#6063ee",
+                    "on-primary-fixed": "#0f0069",
+                    "tertiary-container": "#a44100",
+                    "inverse-primary": "#c3c0ff",
+                    "surface-container-lowest": "#ffffff",
+                    "primary-fixed": "#e2dfff",
+                    "on-tertiary-container": "#ffd2be",
+                    "on-secondary-fixed": "#07006c",
+                    "on-primary-container": "#dad7ff",
+                    "on-secondary-fixed-variant": "#2f2ebe",
+                    "surface-tint": "#4d44e3",
+                    "surface-container-highest": "#e4e1ee",
+                    "on-tertiary-fixed-variant": "#7b2f00",
+                    "outline": "#777587",
+                    "primary-container": "#4f46e5",
+                    "inverse-on-surface": "#f3effc",
+                    "tertiary": "#7e3000",
+                    "on-tertiary": "#ffffff",
+                    "on-error-container": "#93000a",
+                    "surface-container": "#f0ecf9",
+                    "error-container": "#ffdad6",
+                    "on-primary": "#ffffff",
+                    "tertiary-fixed-dim": "#ffb695",
+                    "secondary-fixed": "#e1e0ff",
+                    "tertiary-fixed": "#ffdbcc",
+                    "surface-variant": "#e4e1ee",
+                    "outline-variant": "#c7c4d8",
+                    "surface-bright": "#fcf8ff",
+                    "secondary": "#4648d4",
+                    "on-secondary-container": "#fffbff",
+                    "on-error": "#ffffff",
+                    "on-background": "#1b1b24",
+                    "inverse-surface": "#302f39",
+                    "surface": "#fcf8ff"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.25rem",
+                    "lg": "0.5rem",
+                    "xl": "0.75rem",
+                    "full": "9999px",
+                    "premium": "18px"
+            },
+            "spacing": {
+                    "xl": "32px",
+                    "sm": "8px",
+                    "xxl": "48px",
+                    "xs": "4px",
+                    "margin_mobile": "16px",
+                    "container_max": "1440px",
+                    "md": "16px",
+                    "gutter": "24px",
+                    "lg": "24px",
+                    "base": "8px"
+            },
+            "fontFamily": {
+                    "display": ["Inter", "sans-serif"],
+                    "title": ["Inter", "sans-serif"],
+                    "h3": ["Inter", "sans-serif"],
+                    "caption": ["Inter", "sans-serif"],
+                    "small": ["Inter", "sans-serif"],
+                    "h1": ["Inter", "sans-serif"],
+                    "body": ["Inter", "sans-serif"],
+                    "h2": ["Inter", "sans-serif"]
+            }
+          },
+        },
+      }
+    </script>
+<style>
+        body { font-family: 'Inter', sans-serif; }
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .glass-header {
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+        }
+        .premium-shadow {
+            box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+        }
+        .listing-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 12px 24px rgba(0,0,0,0.08);
+        }
+    </style>
+</head>
+<body class="bg-background text-on-background min-h-screen">
+<!-- TopNavBar -->
+<header class="fixed top-0 w-full z-50 bg-surface/70 dark:bg-surface-container/70 backdrop-blur-xl border-b border-outline-variant/30 shadow-sm">
+<div class="flex justify-between items-center px-lg h-20 w-full max-w-container_max mx-auto">
+<div class="flex items-center gap-xl">
+<span class="font-display text-h3 font-bold text-primary">CampusX</span>
+<nav class="hidden md:flex items-center gap-lg">
+<a class="text-primary font-semibold font-title text-title" href="#">Browse</a>
+<a class="text-on-surface-variant hover:text-primary transition-colors font-title text-title" href="#">Deals</a>
+<a class="text-on-surface-variant hover:text-primary transition-colors font-title text-title" href="#">Services</a>
+</nav>
+</div>
+<div class="flex items-center gap-md">
+<div class="hidden md:flex items-center bg-surface-container-low px-md py-sm rounded-full border border-outline-variant/20">
+<span class="material-symbols-outlined text-on-surface-variant mr-sm">search</span>
+<input class="bg-transparent border-none focus:ring-0 text-small font-small w-64" placeholder="Search marketplace..." type="text"/>
+</div>
+<div class="flex items-center gap-sm">
+<button class="p-sm text-on-surface-variant hover:bg-surface-container-high/50 rounded-full transition-all active:scale-95">
+<span class="material-symbols-outlined">notifications</span>
+</button>
+<button class="p-sm text-on-surface-variant hover:bg-surface-container-high/50 rounded-full transition-all active:scale-95">
+<span class="material-symbols-outlined">shopping_cart</span>
+</button>
+<div class="w-10 h-10 rounded-full border-2 border-primary p-0.5 ml-sm">
+<img class="w-full h-full rounded-full object-cover" data-alt="Close up portrait of a smiling student with a premium profile ring, clean studio lighting, high-end consumer tech aesthetics, soft bokeh background, professional photography style." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCUpo50PsUa3TUauhYqY8gdCM2CgKXnfYpDx_omz2igikkIsc3UmjKnBJsfpad3ua6xq-S5jiyNTQN59OzzpoVGKH2Y_gC45IoFa_AoUmfyHvD-N79ocZAi62qQ95CBhe3ybvP1t3sfGoh-ySxn9esXuO_IC_zKI-Rzo7su5TswAMBMCp_w9UZs1MMXu_d8d0WBiZkLIxmlTmdAbR2Iy6UBuJuva7fpfDNVrNNlNWswIxwp4ScB8CuBwkcPrxCykxlm-AokxJ14aj3_"/>
+</div>
+</div>
+</div>
+</div>
+</header>
+<main class="pt-32 pb-xxl px-margin_mobile md:px-lg max-w-container_max mx-auto">
+<!-- Seller Profile Hero Section -->
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-gutter">
+<!-- Profile Sidebar -->
+<aside class="lg:col-span-4 flex flex-col gap-lg">
+<div class="bg-surface-container-lowest rounded-premium p-xl border border-outline-variant/20 premium-shadow">
+<div class="flex flex-col items-center text-center">
+<div class="relative w-32 h-32 mb-md">
+<img class="w-full h-full rounded-full object-cover border-4 border-surface-container" data-alt="A professional headshot of a friendly student seller for a marketplace profile. The lighting is soft and natural, emphasizing trust and reliability. The aesthetic is clean and modern, matching a high-end educational platform with a soft lilac and indigo color palette in the background." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCzH0RWFyb5W19qDCYw6fKxGiSNytgjClwT2DTosPiBcsqoDQfDWB2kSe4hQLcStxNnCIRwoFUShd7LGEFuxZxJHvNjlvSqBJPDiuBKpo4mu6HYt1PwJthj58ca0p9UYMPyJnJXgjDUoUZXmwNVlQbaX3PJX2e-hw3XZe0SXtfIi2y20Mbadsm9Fp4I_MqAhFcsBY-yfpmOYIzvYyTv3ZuPujjrP2uJgxMBg-MwTH_S-tMSdFAl7ba31NaSeIeqLc-XjpqEdCpbptdQ"/>
+<div class="absolute bottom-1 right-1 bg-primary text-white p-1 rounded-full border-2 border-white flex items-center justify-center">
+<span class="material-symbols-outlined text-[16px]" style="font-variation-settings: 'FILL' 1;">verified</span>
+</div>
+</div>
+<h1 class="font-h2 text-h2 mb-xs">Alex Rivera</h1>
+<p class="font-body text-body text-on-surface-variant mb-md">Computer Science @ Stanford</p>
+<div class="flex items-center gap-xs mb-lg">
+<div class="flex text-amber-500">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 0.5;">star_half</span>
+</div>
+<span class="font-title text-title ml-xs">4.8</span>
+<span class="text-on-surface-variant font-caption text-caption">(124 ratings)</span>
+</div>
+<div class="w-full grid grid-cols-2 gap-sm mb-lg">
+<div class="bg-surface-container p-md rounded-xl text-center">
+<span class="block font-title text-title text-primary">98%</span>
+<span class="font-caption text-caption text-on-surface-variant uppercase tracking-wider">Response Rate</span>
+</div>
+<div class="bg-surface-container p-md rounded-xl text-center">
+<span class="block font-title text-title text-primary">&lt; 1hr</span>
+<span class="font-caption text-caption text-on-surface-variant uppercase tracking-wider">Response Time</span>
+</div>
+</div>
+<button class="w-full bg-primary text-on-primary py-md rounded-premium font-title text-title hover:bg-secondary transition-all active:scale-[0.98] flex items-center justify-center gap-sm mb-md">
+<span class="material-symbols-outlined">mail</span>
+                            Message Seller
+                        </button>
+<div class="flex items-center gap-sm text-on-surface-variant font-small text-small">
+<span class="material-symbols-outlined text-[18px]">calendar_today</span>
+                            Joined CampusX Sept 2022
+                        </div>
+</div>
+</div>
+<!-- Trust Badges -->
+<div class="bg-surface-container-lowest rounded-premium p-lg border border-outline-variant/20 premium-shadow">
+<h3 class="font-title text-title mb-md">Seller Verification</h3>
+<ul class="space-y-md">
+<li class="flex items-center gap-md">
+<div class="w-10 h-10 rounded-full bg-emerald-100 text-emerald-700 flex items-center justify-center">
+<span class="material-symbols-outlined">alternate_email</span>
+</div>
+<div>
+<p class="font-small text-small">University Email Verified</p>
+<p class="font-caption text-caption text-on-surface-variant">Confirmed @stanford.edu address</p>
+</div>
+</li>
+<li class="flex items-center gap-md">
+<div class="w-10 h-10 rounded-full bg-blue-100 text-blue-700 flex items-center justify-center">
+<span class="material-symbols-outlined">credit_card</span>
+</div>
+<div>
+<p class="font-small text-small">ID Verified</p>
+<p class="font-caption text-caption text-on-surface-variant">Government ID checked</p>
+</div>
+</li>
+<li class="flex items-center gap-md">
+<div class="w-10 h-10 rounded-full bg-purple-100 text-purple-700 flex items-center justify-center">
+<span class="material-symbols-outlined">format_image_left</span>
+</div>
+<div>
+<p class="font-small text-small">Trusted Seller</p>
+<p class="font-caption text-caption text-on-surface-variant">50+ successful transactions</p>
+</div>
+</li>
+</ul>
+</div>
+</aside>
+<!-- Main Content Area -->
+<div class="lg:col-span-8 flex flex-col gap-xl">
+<!-- About / Bio -->
+<div class="bg-surface-container-lowest rounded-premium p-xl border border-outline-variant/20 premium-shadow">
+<h2 class="font-title text-title mb-md">About Alex</h2>
+<p class="font-body text-body text-on-surface-variant leading-relaxed">
+                        Hey everyone! I'm a senior CS major clearing out some of my high-end gear and textbooks before graduation. I take great care of all my electronics and most of them still have original packaging. Always open to reasonable offers from fellow students. Meetups preferred on the Main Quad or near Green Library.
+                    </p>
+</div>
+<!-- Active Listings Feed -->
+<div>
+<div class="flex justify-between items-end mb-lg">
+<div>
+<h2 class="font-h3 text-h3">Current Listings</h2>
+<p class="font-body text-body text-on-surface-variant">12 items available for pickup</p>
+</div>
+<div class="flex gap-sm">
+<button class="px-md py-sm rounded-full border border-outline text-small font-small hover:bg-surface-container transition-colors">Category</button>
+<button class="px-md py-sm rounded-full border border-outline text-small font-small hover:bg-surface-container transition-colors">Price</button>
+</div>
+</div>
+<!-- Grid of listings -->
+<div class="grid grid-cols-1 md:grid-cols-2 gap-gutter">
+<!-- Listing Card 1 -->
+<div class="listing-card group bg-surface-container-lowest rounded-premium overflow-hidden border border-outline-variant/20 premium-shadow transition-all duration-300">
+<div class="h-48 overflow-hidden relative">
+<img class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110" data-alt="High-quality close up of a space gray MacBook Air resting on a minimalist white desk with natural morning light. The composition is clean and focused, reflecting a premium second-hand tech listing. The atmosphere is bright, modern, and professional, utilizing soft shadows and high-key tones." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAFNMITJlyGitCDQ4hyO9RoDxIP_eFx8rawWDT4gcJlVXrVGb4CJomQMxgtxlQp35vFP-3am08ern2MTHvw9I64od-SyiSgcbwBJWgR84C2F9mRfGZ8iGnDrKnymGVUFusIFe3JVK_iBOQKL7coCJbNagJPEa_wFOeYV4l6_UJGO07uGt9R-0Z6EAxNsKZWjj8rzuAvQ91P21fIjncNLYW-_n0kFfkbP2fYQvlozBJNdMkEzEQ-EfzQiwU33wtPlLl8UEl8AD8vQNvT"/>
+<div class="absolute top-3 left-3 bg-white/90 backdrop-blur px-sm py-xs rounded-lg text-primary font-bold text-small shadow-sm">
+                                    $850
+                                </div>
+<div class="absolute top-3 right-3 bg-primary text-white p-1 rounded-full shadow-md">
+<span class="material-symbols-outlined text-[18px]" style="font-variation-settings: 'FILL' 1;">format_image_left</span>
+</div>
+</div>
+<div class="p-lg">
+<div class="flex justify-between items-start mb-xs">
+<h4 class="font-title text-title truncate pr-md">MacBook Air M2 (2022)</h4>
+<span class="bg-surface-container text-on-surface-variant px-sm py-xs rounded font-caption text-caption whitespace-nowrap">Used - Mint</span>
+</div>
+<p class="font-caption text-caption text-on-surface-variant mb-md">8GB RAM, 256GB SSD. Silver. Original box included.</p>
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-xs text-on-surface-variant font-caption text-caption">
+<span class="material-symbols-outlined text-[16px]">location_on</span>
+                                        Main Quad
+                                    </div>
+<button class="text-primary font-small text-small hover:underline">View Details</button>
+</div>
+</div>
+</div>
+<!-- Listing Card 2 -->
+<div class="listing-card group bg-surface-container-lowest rounded-premium overflow-hidden border border-outline-variant/20 premium-shadow transition-all duration-300">
+<div class="h-48 overflow-hidden relative">
+<img class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110" data-alt="Detailed professional product shot of premium wireless headphones on a clean wooden surface. Soft cinematic lighting with deep indigo and purple accents in the shadows. The image is crisp and elegant, fitting for a verified student marketplace looking for trustworthy sellers." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAIU8_iFAP0XF5m2HcvSQhldIluBpr0NVw-zpxWCYq8OwNVeuqt9Y-N9lPMbteEj3Fpf3ahylV1AtcZOb7Tc3TDrwR5pu4ynFkagD-_mpA7wYmLTtMIuJD3mZIPdApsDIlm5iG7ZHwYeehmQTllISjZveFVQ77ixNoyx86HYXFAoNeOOilNAkG316uFRd6W-RIwS1VKK08Yt9CWcFTsNP8Tak-Wsz0HCsG3gs-5vLN8sH9rW00tzufOY3KX_IkH3F8RTLyZuzBvarf-"/>
+<div class="absolute top-3 left-3 bg-white/90 backdrop-blur px-sm py-xs rounded-lg text-primary font-bold text-small shadow-sm">
+                                    $180
+                                </div>
+</div>
+<div class="p-lg">
+<div class="flex justify-between items-start mb-xs">
+<h4 class="font-title text-title truncate pr-md">Sony WH-1000XM4</h4>
+<span class="bg-surface-container text-on-surface-variant px-sm py-xs rounded font-caption text-caption whitespace-nowrap">Like New</span>
+</div>
+<p class="font-caption text-caption text-on-surface-variant mb-md">Noise cancelling, midnight blue. Barely used.</p>
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-xs text-on-surface-variant font-caption text-caption">
+<span class="material-symbols-outlined text-[16px]">location_on</span>
+                                        Engineering Hub
+                                    </div>
+<button class="text-primary font-small text-small hover:underline">View Details</button>
+</div>
+</div>
+</div>
+<!-- Listing Card 3 -->
+<div class="listing-card group bg-surface-container-lowest rounded-premium overflow-hidden border border-outline-variant/20 premium-shadow transition-all duration-300">
+<div class="h-48 overflow-hidden relative">
+<img class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110" data-alt="Stack of clean, modern academic textbooks on a minimalist desk. The background is a bright university library with soft natural light streaming in. The image conveys quality and academic trust, using a bright white and soft purple color palette consistent with the CampusX branding." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBEWuE62z5wA8HINE_8FS0ztssNlps8Ipr7yFGrWE41-gpsMCIh3siyNaKKw3xewtVE4sEoQ3cId5Dd9JkUr_IcWV82ND5YnCNxxFa_CLBov9fc3alytfKfXOvKpU4UHtSD2m5zgqUmvX7G5IQP9fPxFxDYkS5mjxjAtY2NDnyhrhZJdpK5IHsuMskDrta_F3nGs0fkZQv2Cnjw_tFK7OmgRTFZnDy3u-m9pYkmrIXbKjVLHxLkLYdm0DrXfcQAzLU5UgXw9K14rtsJ"/>
+<div class="absolute top-3 left-3 bg-white/90 backdrop-blur px-sm py-xs rounded-lg text-primary font-bold text-small shadow-sm">
+                                    $45
+                                </div>
+</div>
+<div class="p-lg">
+<div class="flex justify-between items-start mb-xs">
+<h4 class="font-title text-title truncate pr-md">Algorithms &amp; Data Structs</h4>
+<span class="bg-surface-container text-on-surface-variant px-sm py-xs rounded font-caption text-caption whitespace-nowrap">Used - Good</span>
+</div>
+<p class="font-caption text-caption text-on-surface-variant mb-md">Sedgewick &amp; Wayne. 4th Edition. Minimal highlighting.</p>
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-xs text-on-surface-variant font-caption text-caption">
+<span class="material-symbols-outlined text-[16px]">location_on</span>
+                                        Green Library
+                                    </div>
+<button class="text-primary font-small text-small hover:underline">View Details</button>
+</div>
+</div>
+</div>
+<!-- Listing Card 4 -->
+<div class="listing-card group bg-surface-container-lowest rounded-premium overflow-hidden border border-outline-variant/20 premium-shadow transition-all duration-300">
+<div class="h-48 overflow-hidden relative">
+<img class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110" data-alt="High-end laptop stand and accessories on a modern desktop. The lighting is crisp and cool-toned, with indigo accents. This aesthetic highlights technical sophistication and well-maintained equipment for sale in a verified student marketplace." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDJBp9olPZA-LNERo0JJSKILwEmar5JfWPhvMAxhzzU0JPAlkm6aHTaaWWorFWGbqM3o3Qh44a_fFV-FhAU1i0cTjkxyZ09yhR77oFbzAV4GgQ3D1fT8mmqhrLhYfGGxtYQt42Vq3nReA7dFlzKcF84eVfZ2tRxanqahtMajzWaj8PAgrEXFFQMpG6IGpXbjqEB4kRm0NrlBmgzM82FZUI4To_VwCrEGpBB3C9Xy6x-g1k1K4-IXxz5AkshKVrVLc6AxwLweGklnPkb"/>
+<div class="absolute top-3 left-3 bg-white/90 backdrop-blur px-sm py-xs rounded-lg text-primary font-bold text-small shadow-sm">
+                                    $35
+                                </div>
+</div>
+<div class="p-lg">
+<div class="flex justify-between items-start mb-xs">
+<h4 class="font-title text-title truncate pr-md">Adjustable Laptop Stand</h4>
+<span class="bg-surface-container text-on-surface-variant px-sm py-xs rounded font-caption text-caption whitespace-nowrap">New</span>
+</div>
+<p class="font-caption text-caption text-on-surface-variant mb-md">Aluminum, foldable. Great for dorm desks.</p>
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-xs text-on-surface-variant font-caption text-caption">
+<span class="material-symbols-outlined text-[16px]">location_on</span>
+                                        Main Quad
+                                    </div>
+<button class="text-primary font-small text-small hover:underline">View Details</button>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Recent Feedback -->
+<div class="bg-surface-container-lowest rounded-premium p-xl border border-outline-variant/20 premium-shadow">
+<h3 class="font-title text-title mb-lg">What students say</h3>
+<div class="space-y-xl">
+<div class="flex gap-md">
+<img class="w-12 h-12 rounded-full object-cover" data-alt="Portrait of a young student for a marketplace review avatar. Soft natural lighting, approachable and friendly expression. The visual style is clean and consistent with a modern minimalist educational platform." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAzbKCFD8ODQj0LZYImeYy-bxy5aJXgcKbU1L9waSCYOC6wJVjiRJQZuvTH2wgB4C7XNo9tG28u30yw86UGadl3rgN3xCDbUIJ2wF3g3BXgIWRzp46PsjBBodzqozlZ9OQJmdgCmM1hW5IEJ5_HCSSWEbfz5gJ54OsLDQhl3CjaW-PH08u2R_NwPpEFjcer7zGunlyvINuFq-ctmDdmupURIVLq2TgJNPoqsuzPSpO86Leh8c3PzIvQTXncUlpCTF1z-ZuYh6sGD3cN"/>
+<div class="flex-1">
+<div class="flex justify-between items-center mb-xs">
+<span class="font-title text-title">Sarah K.</span>
+<span class="font-caption text-caption text-on-surface-variant">2 days ago</span>
+</div>
+<div class="flex text-amber-500 mb-xs">
+<span class="material-symbols-outlined text-[14px]" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined text-[14px]" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined text-[14px]" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined text-[14px]" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined text-[14px]" style="font-variation-settings: 'FILL' 1;">star</span>
+</div>
+<p class="font-body text-body text-on-surface-variant">Met Alex on the quad for a monitor. Item was exactly as described and he even helped me carry it to my car. Super nice guy!</p>
+</div>
+</div>
+<div class="flex gap-md pt-lg border-t border-outline-variant/10">
+<img class="w-12 h-12 rounded-full object-cover" data-alt="Profile photo of a male student reviewer, crisp detail, modern campus environment background with soft focus. Trustworthy and professional aesthetic with a primary blue and white color palette." src="https://lh3.googleusercontent.com/aida-public/AB6AXuB_ogZCykiNYZGrGs-LxX-uJZtQjVDmW75U8lEIQSmmVnHwEJVWoQIPMZAgnFYYYfQ90OdrfsMHQIMzj3q2dORClUDuC-fZ5Yf2IBjGSaWygrlSFQm6tGsCkkxYspR4jlPJgz5ekIBEF_RLpYaB8HV40_SnIy_Fld5PyZ9TEj134Yid9srIaEub54z1g60tTnXgzDw4lkiZZh56cYTxqNQbuoFo-XVhT6Cuq_RLcaoGZs7f7kJhwYw7icLLekt7AH6-5ql_AppqoziG"/>
+<div class="flex-1">
+<div class="flex justify-between items-center mb-xs">
+<span class="font-title text-title">Michael T.</span>
+<span class="font-caption text-caption text-on-surface-variant">1 week ago</span>
+</div>
+<div class="flex text-amber-500 mb-xs">
+<span class="material-symbols-outlined text-[14px]" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined text-[14px]" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined text-[14px]" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined text-[14px]" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined text-[14px]" style="font-variation-settings: 'FILL' 1;">star</span>
+</div>
+<p class="font-body text-body text-on-surface-variant">Responsive and easy to coordinate with. Great seller!</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</main>
+<!-- Footer -->
+<footer class="w-full py-xxl bg-surface-container-lowest dark:bg-surface-dim border-t border-outline-variant/10 opacity-100 transition-opacity">
+<div class="flex flex-col md:flex-row justify-between items-center px-lg gap-md w-full max-w-container_max mx-auto">
+<div class="flex flex-col items-center md:items-start gap-xs">
+<span class="font-display text-body font-bold text-on-surface">CampusX</span>
+<p class="font-caption text-caption text-on-surface-variant">© 2024 CampusX Marketplace. Built for students.</p>
+</div>
+<div class="flex gap-lg">
+<a class="font-caption text-caption text-on-surface-variant hover:text-primary transition-colors" href="#">Terms</a>
+<a class="font-caption text-caption text-on-surface-variant hover:text-primary transition-colors" href="#">Privacy</a>
+<a class="font-caption text-caption text-on-surface-variant hover:text-primary transition-colors" href="#">Safety</a>
+<a class="font-caption text-caption text-on-surface-variant hover:text-primary transition-colors" href="#">Support</a>
+</div>
+</div>
+</footer>
+<!-- Micro-interaction Script -->
+<script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // Heart toggle interaction (if icons were added)
+            const cards = document.querySelectorAll('.listing-card');
+            cards.forEach(card => {
+                card.addEventListener('mouseenter', () => {
+                    // Slight expansion of image
+                });
+            });
+
+            // Smooth header visibility on scroll
+            let lastScroll = 0;
+            window.addEventListener('scroll', () => {
+                const header = document.querySelector('header');
+                const currentScroll = window.pageYOffset;
+                
+                if (currentScroll <= 0) {
+                    header.classList.remove('shadow-md');
+                } else {
+                    header.classList.add('shadow-md');
+                }
+                
+                lastScroll = currentScroll;
+            });
+        });
+    </script>
+</body></html>

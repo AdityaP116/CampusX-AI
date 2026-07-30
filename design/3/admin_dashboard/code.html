@@ -1,0 +1,470 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>CampusX Admin Dashboard</title>
+<!-- Google Fonts: Inter for the defined typography -->
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800;900&amp;display=swap" rel="stylesheet"/>
+<!-- Material Symbols -->
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<!-- Tailwind Config Execution -->
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                "surface-tint": "#4d44e3",
+                "surface-container-low": "#eff4ff",
+                "surface": "#f8f9ff",
+                "tertiary-fixed-dim": "#c0c1ff",
+                "on-primary": "#ffffff",
+                "primary-container": "#4f46e5",
+                "primary-fixed-dim": "#c3c0ff",
+                "tertiary": "#3130c0",
+                "surface-container-highest": "#d3e4fe",
+                "inverse-primary": "#c3c0ff",
+                "on-surface": "#0b1c30",
+                "on-tertiary-fixed-variant": "#2f2ebe",
+                "on-secondary-fixed-variant": "#3f465c",
+                "outline-variant": "#c7c4d8",
+                "on-primary-container": "#dad7ff",
+                "secondary-fixed": "#dae2fd",
+                "tertiary-fixed": "#e1e0ff",
+                "on-primary-fixed": "#0f0069",
+                "outline": "#777587",
+                "tertiary-container": "#4b4dd8",
+                "on-tertiary": "#ffffff",
+                "secondary-fixed-dim": "#bec6e0",
+                "on-tertiary-container": "#d9d8ff",
+                "primary-fixed": "#e2dfff",
+                "secondary": "#565e74",
+                "on-tertiary-fixed": "#07006c",
+                "on-secondary-fixed": "#131b2e",
+                "secondary-container": "#dae2fd",
+                "surface-container-lowest": "#ffffff",
+                "on-error-container": "#93000a",
+                "error-container": "#ffdad6",
+                "inverse-surface": "#213145",
+                "on-secondary-container": "#5c647a",
+                "background": "#f8f9ff",
+                "surface-bright": "#f8f9ff",
+                "surface-container": "#e5eeff",
+                "on-background": "#0b1c30",
+                "surface-dim": "#cbdbf5",
+                "surface-container-high": "#dce9ff",
+                "on-secondary": "#ffffff",
+                "error": "#ba1a1a",
+                "on-error": "#ffffff",
+                "on-primary-fixed-variant": "#3323cc",
+                "on-surface-variant": "#464555",
+                "primary": "#3525cd",
+                "surface-variant": "#d3e4fe",
+                "inverse-on-surface": "#eaf1ff"
+            },
+            "borderRadius": {
+                "DEFAULT": "0.25rem",
+                "lg": "0.5rem",
+                "xl": "0.75rem",
+                "full": "9999px"
+            },
+            "spacing": {
+                "gutter": "16px",
+                "container-margin": "32px",
+                "row-height-dense": "32px",
+                "unit": "4px",
+                "row-height-standard": "48px"
+            },
+            "fontFamily": {
+                "headline": ["Inter"],
+                "mono-label": ["monospace"],
+                "label-caps": ["Inter"],
+                "title-sm": ["Inter"],
+                "body-md": ["Inter"],
+                "body-sm": ["Inter"],
+                "table-data": ["Inter"],
+                "display": ["Inter"]
+            },
+            "fontSize": {
+                "headline": ["18px", {"lineHeight": "28px", "letterSpacing": "-0.01em", "fontWeight": "600"}],
+                "mono-label": ["12px", {"lineHeight": "16px", "fontWeight": "400"}],
+                "label-caps": ["11px", {"lineHeight": "16px", "letterSpacing": "0.05em", "fontWeight": "700"}],
+                "title-sm": ["14px", {"lineHeight": "20px", "fontWeight": "600"}],
+                "body-md": ["14px", {"lineHeight": "20px", "fontWeight": "400"}],
+                "body-sm": ["13px", {"lineHeight": "18px", "fontWeight": "400"}],
+                "table-data": ["13px", {"lineHeight": "16px", "fontWeight": "400"}],
+                "display": ["24px", {"lineHeight": "32px", "letterSpacing": "-0.02em", "fontWeight": "600"}]
+            }
+          }
+        }
+      }
+    </script>
+<style>
+      .material-symbols-outlined {
+        font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        display: inline-block;
+        line-height: 1;
+        text-transform: none;
+        letter-spacing: normal;
+        word-wrap: normal;
+        white-space: nowrap;
+        direction: ltr;
+      }
+      body {
+        background-color: #f8fafc; /* Layer 0 Canvas from Style Guidance */
+      }
+      .card-border {
+        border: 1px solid #e2e8f0; /* Layer 1 Border from Style Guidance */
+      }
+      .active-sidebar-stroke {
+        border-left: 4px solid #3525cd;
+      }
+      /* Custom scrollbar for data-dense look */
+      ::-webkit-scrollbar {
+        width: 6px;
+        height: 6px;
+      }
+      ::-webkit-scrollbar-track {
+        background: transparent;
+      }
+      ::-webkit-scrollbar-thumb {
+        background: #cbd5e1;
+        border-radius: 10px;
+      }
+    </style>
+</head>
+<body class="font-body-md text-on-surface antialiased overflow-x-hidden">
+<!-- SideNavBar (Fixed) -->
+<aside class="fixed left-0 top-0 h-full flex flex-col w-[240px] z-40 bg-surface-container-low dark:bg-on-secondary-fixed-variant border-r border-outline-variant dark:border-outline">
+<div class="p-6 flex items-center gap-3">
+<div class="w-10 h-10 bg-primary rounded-lg flex items-center justify-center text-white">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">account_balance</span>
+</div>
+<div>
+<h1 class="font-headline text-headline font-black text-on-surface">CampusX Admin</h1>
+<p class="font-body-sm text-body-sm text-secondary">System Oversight</p>
+</div>
+</div>
+<nav class="flex-1 mt-4 overflow-y-auto">
+<!-- Navigation Items Mapping -->
+<a class="flex items-center gap-3 px-4 py-3 cursor-pointer text-primary dark:text-primary-fixed-dim border-l-4 border-primary dark:border-primary-fixed-dim bg-surface-container-highest dark:bg-surface-variant font-bold transition-all" href="#">
+<span class="material-symbols-outlined">dashboard</span>
+<span class="font-title-sm text-title-sm">Dashboard</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 cursor-pointer text-on-surface-variant dark:text-outline-variant hover:bg-surface-container dark:hover:bg-surface-container-high transition-all" href="#">
+<span class="material-symbols-outlined">analytics</span>
+<span class="font-title-sm text-title-sm">Analytics</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 cursor-pointer text-on-surface-variant dark:text-outline-variant hover:bg-surface-container dark:hover:bg-surface-container-high transition-all" href="#">
+<span class="material-symbols-outlined">how_to_reg</span>
+<span class="font-title-sm text-title-sm">Verification</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 cursor-pointer text-on-surface-variant dark:text-outline-variant hover:bg-surface-container dark:hover:bg-surface-container-high transition-all" href="#">
+<span class="material-symbols-outlined">report</span>
+<span class="font-title-sm text-title-sm">Reports</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 cursor-pointer text-on-surface-variant dark:text-outline-variant hover:bg-surface-container dark:hover:bg-surface-container-high transition-all" href="#">
+<span class="material-symbols-outlined">inventory_2</span>
+<span class="font-title-sm text-title-sm">Listings</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 cursor-pointer text-on-surface-variant dark:text-outline-variant hover:bg-surface-container dark:hover:bg-surface-container-high transition-all" href="#">
+<span class="material-symbols-outlined">category</span>
+<span class="font-title-sm text-title-sm">Categories</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 cursor-pointer text-on-surface-variant dark:text-outline-variant hover:bg-surface-container dark:hover:bg-surface-container-high transition-all" href="#">
+<span class="material-symbols-outlined">history_edu</span>
+<span class="font-title-sm text-title-sm">Activity Log</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 cursor-pointer text-on-surface-variant dark:text-outline-variant hover:bg-surface-container dark:hover:bg-surface-container-high transition-all" href="#">
+<span class="material-symbols-outlined">settings</span>
+<span class="font-title-sm text-title-sm">Settings</span>
+</a>
+</nav>
+<div class="mt-auto p-4 border-t border-outline-variant">
+<button class="w-full mb-4 bg-primary text-white font-title-sm py-2 px-4 rounded-lg flex items-center justify-center gap-2 active:opacity-80 transition-opacity">
+<span class="material-symbols-outlined text-[18px]">campaign</span>
+                New Broadcast
+            </button>
+<div class="space-y-1">
+<a class="flex items-center gap-3 px-4 py-2 text-on-surface-variant hover:bg-surface-container transition-all text-sm" href="#">
+<span class="material-symbols-outlined text-[20px]">help</span>
+                    Support
+                </a>
+<a class="flex items-center gap-3 px-4 py-2 text-error hover:bg-error-container transition-all text-sm" href="#">
+<span class="material-symbols-outlined text-[20px]">logout</span>
+                    Sign Out
+                </a>
+</div>
+</div>
+</aside>
+<!-- TopNavBar (Sticky) -->
+<header class="sticky top-0 z-50 flex items-center justify-between px-gutter w-full h-row-height-standard bg-surface-container-lowest dark:bg-inverse-surface border-b border-outline-variant dark:border-outline ml-0 md:ml-[240px] md:w-[calc(100%-240px)]">
+<div class="flex items-center gap-4 flex-1">
+<div class="relative w-full max-w-md">
+<span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-outline">search</span>
+<input class="w-full pl-10 pr-4 py-1.5 bg-surface-container-low border border-outline-variant rounded-md text-body-sm focus:ring-2 focus:ring-primary focus:border-primary outline-none transition-all" placeholder="Search parameters, users, or transactions..." type="text"/>
+</div>
+</div>
+<div class="flex items-center gap-4">
+<div class="flex items-center gap-2">
+<button class="p-2 text-secondary hover:bg-surface-container-low rounded-full transition-colors cursor-pointer relative">
+<span class="material-symbols-outlined">notifications</span>
+<span class="absolute top-2 right-2 w-2 h-2 bg-error rounded-full border-2 border-surface"></span>
+</button>
+<button class="p-2 text-secondary hover:bg-surface-container-low rounded-full transition-colors cursor-pointer">
+<span class="material-symbols-outlined">settings_suggest</span>
+</button>
+<button class="p-2 text-secondary hover:bg-surface-container-low rounded-full transition-colors cursor-pointer">
+<span class="material-symbols-outlined">dns</span>
+</button>
+</div>
+<div class="h-8 w-[1px] bg-outline-variant mx-2"></div>
+<div class="flex items-center gap-3 cursor-pointer active:opacity-80">
+<img class="w-8 h-8 rounded-full border border-outline-variant" data-alt="A professional headshot of a middle-aged male administrator with a confident smile, wearing a modern charcoal suit. The lighting is crisp and cinematic, suitable for a high-end corporate dashboard interface. Background is a soft, out-of-focus modern office environment with cool blue and grey tones." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCvAI-32tTntC7pFFQmbmmIZj8ZRhgm6E-l9kioEwoL_tZ0Rb6xF0UeUR9lk3HaUDMKqYsKnR8LDCCzDcTcuxzWvNDCsT2L9filCqZVhNZJlUPvXS89rJlf9iqfbd4ANg-y3ZQ_XlSfSmG5mXmBMVwfAwa878btMxTCKXnqaANOO7l9rZ4Li1zzMjE09QarrcI4uVwNOVgJjGUC9RIY3zAjOtNgNx6dJxqTpUlycC5PKuOBfwRtY0BdXnX-XCY_pMfRYOXLR9IF3aZu"/>
+<div class="hidden lg:block text-right">
+<p class="font-title-sm text-title-sm leading-tight text-on-surface">Alex Rivera</p>
+<p class="font-body-sm text-[11px] text-secondary">Super Admin</p>
+</div>
+</div>
+</div>
+</header>
+<!-- Main Content Canvas -->
+<main class="ml-0 md:ml-[240px] p-container-margin transition-all">
+<div class="max-w-[1600px] mx-auto">
+<!-- Page Header -->
+<div class="mb-8 flex flex-col md:flex-row md:items-end justify-between gap-4">
+<div>
+<h2 class="font-display text-display text-on-surface mb-1">Operational Overview</h2>
+<p class="font-body-md text-secondary">Real-time platform metrics and system health monitoring.</p>
+</div>
+<div class="flex gap-2">
+<button class="flex items-center gap-2 px-4 py-2 border border-outline-variant bg-surface-container-lowest text-on-surface font-title-sm rounded-lg hover:bg-surface-container-low transition-colors">
+<span class="material-symbols-outlined text-[18px]">calendar_today</span>
+                        Last 24 Hours
+                        <span class="material-symbols-outlined text-[18px]">expand_more</span>
+</button>
+<button class="flex items-center gap-2 px-4 py-2 bg-primary text-on-primary font-title-sm rounded-lg hover:opacity-90 active:opacity-80 transition-all shadow-sm">
+<span class="material-symbols-outlined text-[18px]">download</span>
+                        Export PDF
+                    </button>
+</div>
+</div>
+<!-- Bento Metric Grid -->
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+<!-- Metric 1: Total Active Users -->
+<div class="bg-surface-container-lowest card-border p-5 rounded-xl hover:shadow-sm transition-shadow relative overflow-hidden group">
+<div class="absolute right-0 top-0 w-24 h-24 -mr-8 -mt-8 bg-primary/5 rounded-full group-hover:scale-110 transition-transform"></div>
+<div class="flex items-center justify-between mb-4">
+<div class="w-10 h-10 bg-primary/10 text-primary rounded-lg flex items-center justify-center">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">group</span>
+</div>
+<span class="text-green-600 bg-green-100 px-2 py-0.5 rounded text-[12px] font-bold flex items-center gap-1">
+<span class="material-symbols-outlined text-[14px]">trending_up</span> 12%
+                        </span>
+</div>
+<p class="font-body-sm text-on-surface-variant mb-1 uppercase tracking-wider text-[11px] font-bold">Total Active Users</p>
+<h3 class="font-display text-display text-on-surface">42,891</h3>
+<p class="text-[11px] text-secondary mt-2">+342 since yesterday</p>
+</div>
+<!-- Metric 2: Daily GMV -->
+<div class="bg-surface-container-lowest card-border p-5 rounded-xl hover:shadow-sm transition-shadow relative overflow-hidden group">
+<div class="flex items-center justify-between mb-4">
+<div class="w-10 h-10 bg-secondary-container text-primary rounded-lg flex items-center justify-center">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">payments</span>
+</div>
+<span class="text-green-600 bg-green-100 px-2 py-0.5 rounded text-[12px] font-bold flex items-center gap-1">
+<span class="material-symbols-outlined text-[14px]">trending_up</span> 4.5%
+                        </span>
+</div>
+<p class="font-body-sm text-on-surface-variant mb-1 uppercase tracking-wider text-[11px] font-bold">Daily GMV</p>
+<h3 class="font-display text-display text-on-surface">$128.4k</h3>
+<p class="text-[11px] text-secondary mt-2">Target: $150k daily average</p>
+</div>
+<!-- Metric 3: Pending Verifications (Urgent) -->
+<div class="bg-surface-container-lowest card-border border-l-4 border-l-error p-5 rounded-xl hover:shadow-sm transition-shadow group">
+<div class="flex items-center justify-between mb-4">
+<div class="w-10 h-10 bg-error-container text-error rounded-lg flex items-center justify-center">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">how_to_reg</span>
+</div>
+<span class="text-white bg-error px-2 py-0.5 rounded text-[10px] font-black uppercase tracking-tighter animate-pulse">Urgent</span>
+</div>
+<p class="font-body-sm text-on-surface-variant mb-1 uppercase tracking-wider text-[11px] font-bold">Pending Verifications</p>
+<h3 class="font-display text-display text-on-surface">156</h3>
+<p class="text-[11px] text-error mt-2 font-bold">48 SLA violations detected</p>
+</div>
+<!-- Metric 4: Active Reports -->
+<div class="bg-surface-container-lowest card-border p-5 rounded-xl hover:shadow-sm transition-shadow group">
+<div class="flex items-center justify-between mb-4">
+<div class="w-10 h-10 bg-surface-container-high text-on-surface rounded-lg flex items-center justify-center">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">flag</span>
+</div>
+<span class="text-secondary bg-surface-container px-2 py-0.5 rounded text-[12px] font-bold">Stable</span>
+</div>
+<p class="font-body-sm text-on-surface-variant mb-1 uppercase tracking-wider text-[11px] font-bold">Active Reports</p>
+<h3 class="font-display text-display text-on-surface">24</h3>
+<p class="text-[11px] text-secondary mt-2">Median response time: 1.2 hrs</p>
+</div>
+</div>
+<div class="grid grid-cols-1 xl:grid-cols-3 gap-8">
+<!-- Platform Health Chart Section -->
+<div class="xl:col-span-2 bg-surface-container-lowest card-border rounded-xl p-6 flex flex-col">
+<div class="flex items-center justify-between mb-8">
+<div>
+<h4 class="font-headline text-headline text-on-surface">Platform Health</h4>
+<p class="font-body-sm text-secondary">Listing volume trends over the last 30 days</p>
+</div>
+<div class="flex items-center gap-4">
+<div class="flex items-center gap-2">
+<span class="w-3 h-3 bg-primary rounded-full"></span>
+<span class="text-body-sm text-on-surface">Verified</span>
+</div>
+<div class="flex items-center gap-2">
+<span class="w-3 h-3 bg-surface-dim rounded-full"></span>
+<span class="text-body-sm text-on-surface">Unverified</span>
+</div>
+</div>
+</div>
+<!-- SVG Chart Visualization -->
+<div class="flex-1 w-full min-h-[350px] relative">
+<svg class="w-full h-full" preserveaspectratio="none" viewbox="0 0 800 300">
+<!-- Chart Grid Lines -->
+<line stroke="#f1f5f9" stroke-width="1" x1="0" x2="800" y1="50" y2="50"></line>
+<line stroke="#f1f5f9" stroke-width="1" x1="0" x2="800" y1="100" y2="100"></line>
+<line stroke="#f1f5f9" stroke-width="1" x1="0" x2="800" y1="150" y2="150"></line>
+<line stroke="#f1f5f9" stroke-width="1" x1="0" x2="800" y1="200" y2="200"></line>
+<line stroke="#f1f5f9" stroke-width="1" x1="0" x2="800" y1="250" y2="250"></line>
+<!-- Area Fill -->
+<path d="M0,250 Q100,220 200,230 T400,150 T600,100 T800,80 V300 H0 Z" fill="url(#chartGradient)" fill-opacity="0.1"></path>
+<!-- Main Data Line -->
+<path d="M0,250 Q100,220 200,230 T400,150 T600,100 T800,80" fill="none" stroke="#3525cd" stroke-linecap="round" stroke-width="3"></path>
+<!-- Secondary Data Line -->
+<path d="M0,280 Q150,260 300,270 T500,220 T800,200" fill="none" stroke="#cbd5e1" stroke-dasharray="4" stroke-width="2"></path>
+<!-- Gradient Def -->
+<defs>
+<lineargradient id="chartGradient" x1="0%" x2="0%" y1="0%" y2="100%">
+<stop offset="0%" style="stop-color:#3525cd; stop-opacity:1"></stop>
+<stop offset="100%" style="stop-color:#3525cd; stop-opacity:0"></stop>
+</lineargradient>
+</defs>
+</svg>
+<!-- Chart Tooltip Interaction Example -->
+<div class="absolute top-[80px] left-[70%] transform -translate-x-1/2 -translate-y-full mb-4">
+<div class="bg-inverse-surface text-white text-[11px] px-3 py-2 rounded shadow-lg">
+<p class="font-bold">Oct 12: 2,482 Listings</p>
+<p class="opacity-70">+12.4% vs prev week</p>
+</div>
+<div class="w-2 h-2 bg-inverse-surface rotate-45 mx-auto -mt-1"></div>
+</div>
+</div>
+<div class="mt-4 flex justify-between text-[11px] text-secondary font-mono-label px-2">
+<span>SEP 15</span>
+<span>SEP 22</span>
+<span>SEP 29</span>
+<span>OCT 06</span>
+<span>OCT 13</span>
+<span>TODAY</span>
+</div>
+</div>
+<!-- Recent System Activity Feed -->
+<div class="bg-surface-container-lowest card-border rounded-xl flex flex-col h-full">
+<div class="p-6 border-b border-outline-variant flex items-center justify-between">
+<h4 class="font-headline text-headline text-on-surface">System Activity</h4>
+<button class="text-primary font-title-sm hover:underline">View All</button>
+</div>
+<div class="flex-1 overflow-y-auto p-4 space-y-4">
+<!-- Activity Item 1 -->
+<div class="flex gap-4 p-3 hover:bg-surface-container-low rounded-lg transition-colors group">
+<div class="flex-shrink-0 w-8 h-8 rounded-full bg-green-100 flex items-center justify-center text-green-600">
+<span class="material-symbols-outlined text-[18px]">verified_user</span>
+</div>
+<div>
+<p class="text-body-sm text-on-surface"><span class="font-bold">Moderator Mark</span> approved listing <span class="text-primary">#L-8821</span></p>
+<p class="text-[11px] text-secondary mt-1">2 minutes ago • Automated Check Passed</p>
+</div>
+</div>
+<!-- Activity Item 2 -->
+<div class="flex gap-4 p-3 hover:bg-surface-container-low rounded-lg transition-colors group">
+<div class="flex-shrink-0 w-8 h-8 rounded-full bg-error-container flex items-center justify-center text-error">
+<span class="material-symbols-outlined text-[18px]">warning</span>
+</div>
+<div>
+<p class="text-body-sm text-on-surface"><span class="font-bold">System</span> flagged suspicious user <span class="font-mono text-error">@bot_99x</span></p>
+<p class="text-[11px] text-secondary mt-1">15 minutes ago • High velocity IP address</p>
+</div>
+</div>
+<!-- Activity Item 3 -->
+<div class="flex gap-4 p-3 hover:bg-surface-container-low rounded-lg transition-colors group">
+<div class="flex-shrink-0 w-8 h-8 rounded-full bg-surface-container-high flex items-center justify-center text-secondary">
+<span class="material-symbols-outlined text-[18px]">update</span>
+</div>
+<div>
+<p class="text-body-sm text-on-surface"><span class="font-bold">Global Config</span> updated by <span class="font-bold">Alex R.</span></p>
+<p class="text-[11px] text-secondary mt-1">1 hour ago • Updated Category "Laptops"</p>
+</div>
+</div>
+<!-- Activity Item 4 -->
+<div class="flex gap-4 p-3 hover:bg-surface-container-low rounded-lg transition-colors group">
+<div class="flex-shrink-0 w-8 h-8 rounded-full bg-primary-container/20 flex items-center justify-center text-primary">
+<span class="material-symbols-outlined text-[18px]">broadcast_on_home</span>
+</div>
+<div>
+<p class="text-body-sm text-on-surface"><span class="font-bold">New Broadcast</span> sent to <span class="font-bold">4,200</span> users</p>
+<p class="text-[11px] text-secondary mt-1">3 hours ago • Campaign: Maintenance Alert</p>
+</div>
+</div>
+<!-- Activity Item 5 -->
+<div class="flex gap-4 p-3 hover:bg-surface-container-low rounded-lg transition-colors group">
+<div class="flex-shrink-0 w-8 h-8 rounded-full bg-green-100 flex items-center justify-center text-green-600">
+<span class="material-symbols-outlined text-[18px]">payments</span>
+</div>
+<div>
+<p class="text-body-sm text-on-surface"><span class="font-bold">Payout</span> batch processed: <span class="font-bold">$42,800</span></p>
+<p class="text-[11px] text-secondary mt-1">5 hours ago • 120 vendors paid</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Footer Meta Info -->
+<footer class="mt-12 py-8 border-t border-outline-variant flex flex-col md:flex-row items-center justify-between gap-4">
+<div class="flex items-center gap-6">
+<div class="flex items-center gap-2">
+<span class="w-2 h-2 bg-green-500 rounded-full animate-pulse"></span>
+<span class="text-[11px] font-mono-label text-secondary uppercase tracking-widest">Server Status: Optimal</span>
+</div>
+<div class="text-[11px] font-mono-label text-secondary uppercase tracking-widest">Instance: PROD-US-WEST-1A</div>
+</div>
+<div class="text-body-sm text-outline">
+                    © 2024 CampusX Operating System. v4.2.1-stable.
+                </div>
+</footer>
+</div>
+</main>
+<!-- Micro-interaction Script -->
+<script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // Hover effect on metric cards
+            const cards = document.querySelectorAll('.card-border');
+            cards.forEach(card => {
+                card.addEventListener('mouseenter', () => {
+                    card.style.transform = 'translateY(-2px)';
+                    card.style.transition = 'transform 0.2s ease-out, box-shadow 0.2s ease-out';
+                });
+                card.addEventListener('mouseleave', () => {
+                    card.style.transform = 'translateY(0)';
+                });
+            });
+
+            // Notification animation
+            const notifyBtn = document.querySelector('button .absolute');
+            if (notifyBtn) {
+                setInterval(() => {
+                    notifyBtn.classList.toggle('scale-125');
+                }, 1000);
+            }
+        });
+    </script>
+</body></html>

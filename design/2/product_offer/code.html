@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>CampusX | Make an Offer</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .glass-panel {
+            background: rgba(252, 248, 255, 0.8);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+        }
+        .offer-input-focus:focus-within {
+            box-shadow: 0 0 0 4px rgba(79, 70, 229, 0.1);
+            border-color: #4F46E5;
+        }
+    </style>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "secondary-fixed": "#e1e0ff",
+                        "on-tertiary-fixed-variant": "#7b2f00",
+                        "on-tertiary-container": "#ffd2be",
+                        "on-secondary-fixed-variant": "#2f2ebe",
+                        "on-error": "#ffffff",
+                        "on-background": "#1b1b24",
+                        "secondary": "#4648d4",
+                        "outline-variant": "#c7c4d8",
+                        "secondary-fixed-dim": "#c0c1ff",
+                        "primary": "#3525cd",
+                        "on-surface": "#1b1b24",
+                        "primary-container": "#4f46e5",
+                        "inverse-on-surface": "#f3effc",
+                        "surface": "#fcf8ff",
+                        "inverse-surface": "#302f39",
+                        "on-primary-fixed-variant": "#3323cc",
+                        "error-container": "#ffdad6",
+                        "primary-fixed": "#e2dfff",
+                        "on-surface-variant": "#464555",
+                        "tertiary-fixed-dim": "#ffb695",
+                        "primary-fixed-dim": "#c3c0ff",
+                        "on-secondary-fixed": "#07006c",
+                        "on-secondary": "#ffffff",
+                        "surface-dim": "#dcd8e5",
+                        "surface-bright": "#fcf8ff",
+                        "tertiary-container": "#a44100",
+                        "tertiary": "#7e3000",
+                        "on-error-container": "#93000a",
+                        "surface-container-high": "#eae6f4",
+                        "surface-tint": "#4d44e3",
+                        "surface-container-highest": "#e4e1ee",
+                        "on-primary": "#ffffff",
+                        "surface-container": "#f0ecf9",
+                        "secondary-container": "#6063ee",
+                        "on-tertiary": "#ffffff",
+                        "on-primary-container": "#dad7ff",
+                        "background": "#fcf8ff",
+                        "on-tertiary-fixed": "#351000",
+                        "error": "#ba1a1a",
+                        "on-secondary-container": "#fffbff",
+                        "tertiary-fixed": "#ffdbcc",
+                        "inverse-primary": "#c3c0ff",
+                        "outline": "#777587",
+                        "surface-variant": "#e4e1ee",
+                        "on-primary-fixed": "#0f0069",
+                        "surface-container-lowest": "#ffffff",
+                        "surface-container-low": "#f5f2ff"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "12px",
+                        "xxl": "18px",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "sm": "8px",
+                        "lg": "24px",
+                        "xs": "4px",
+                        "xl": "32px",
+                        "xxl": "48px",
+                        "md": "16px",
+                        "container_max": "1440px",
+                        "gutter": "24px",
+                        "base": "8px",
+                        "margin_mobile": "16px"
+                    },
+                    "fontFamily": {
+                        "h2": ["Inter"],
+                        "body": ["Inter"],
+                        "title": ["Inter"],
+                        "small": ["Inter"],
+                        "h1": ["Inter"],
+                        "display": ["Inter"],
+                        "caption": ["Inter"],
+                        "h3": ["Inter"]
+                    },
+                    "fontSize": {
+                        "h2": ["32px", {"lineHeight": "1.3", "letterSpacing": "-0.01em", "fontWeight": "600"}],
+                        "body": ["16px", {"lineHeight": "1.6", "fontWeight": "400"}],
+                        "title": ["20px", {"lineHeight": "1.5", "fontWeight": "600"}],
+                        "small": ["14px", {"lineHeight": "1.5", "fontWeight": "500"}],
+                        "h1": ["40px", {"lineHeight": "1.2", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                        "display": ["48px", {"lineHeight": "1.1", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                        "caption": ["12px", {"lineHeight": "1.4", "letterSpacing": "0.01em", "fontWeight": "400"}],
+                        "h3": ["24px", {"lineHeight": "1.4", "fontWeight": "600"}]
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="bg-surface font-body text-on-surface antialiased overflow-hidden">
+<!-- Mock Background Chat Context -->
+<div class="fixed inset-0 z-0 flex flex-col p-lg opacity-40 select-none pointer-events-none">
+<header class="flex justify-between items-center mb-xl">
+<div class="flex items-center gap-md">
+<div class="w-10 h-10 rounded-full bg-outline-variant"></div>
+<div>
+<div class="h-4 w-32 bg-outline-variant rounded mb-xs"></div>
+<div class="h-3 w-20 bg-outline-variant/50 rounded"></div>
+</div>
+</div>
+<span class="material-symbols-outlined text-outline">more_vert</span>
+</header>
+<div class="flex-1 space-y-lg overflow-hidden">
+<div class="bg-surface-container w-2/3 h-24 rounded-xl"></div>
+<div class="bg-primary-container/20 w-1/2 ml-auto h-16 rounded-xl"></div>
+<div class="bg-surface-container w-3/4 h-32 rounded-xl"></div>
+<div class="bg-primary-container/20 w-2/3 ml-auto h-20 rounded-xl"></div>
+</div>
+</div>
+<!-- Modal Overlay -->
+<div class="fixed inset-0 z-50 flex items-center justify-center p-md bg-inverse-surface/10 backdrop-blur-[2px]">
+<!-- Offer Card Container -->
+<div class="w-full max-w-[520px] bg-surface-container-lowest rounded-xxl shadow-2xl border border-outline-variant/30 overflow-hidden flex flex-col animate-in fade-in zoom-in duration-300">
+<!-- Header Section -->
+<div class="px-xl pt-xl pb-md">
+<div class="flex justify-between items-start">
+<div>
+<h2 class="font-h3 text-h3 text-on-background mb-xs">Make an Offer</h2>
+<p class="font-small text-small text-on-surface-variant">Send a formal offer to the seller to negotiate the price.</p>
+</div>
+<button class="p-sm hover:bg-surface-container rounded-full transition-colors active:scale-95">
+<span class="material-symbols-outlined text-outline">close</span>
+</button>
+</div>
+</div>
+<!-- Product Context Mini-Card -->
+<div class="px-xl mb-lg">
+<div class="flex items-center gap-md p-md bg-surface-container-low rounded-xl border border-outline-variant/20">
+<div class="w-16 h-16 rounded-lg bg-cover bg-center shrink-0" data-alt="A high-end professional studio photograph of a sleek silver laptop sitting on a clean, white minimalist desk. The background is softly blurred, showing a modern university library setting with warm, ambient lighting. The overall mood is academic, premium, and trustworthy, perfectly fitting the student marketplace aesthetic." style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuB42gK9cfFVRwjHCX5N-lFYA2Fw9ObbZKhRDAS7iUA2QtU-mQ6vIbJmFW2wcPgGLQqyTn9onEzXrwljxD-dAxy5xLKA0uLe269KbV3haap5Y60TEsGuNEjj5OLZBhQxqAorA0t7EN5txr4FI-Cm23bQSIuLct7XaaPJ-A-D4B3WOXXnMqJdrkzy75DjT15hjDuLxJBWc54jCGvA6FdhobfJRxbvwnI1B9zJ0xsKd9Ut-6_vYSnSWDjRDudrg4QsgrGIZNRfJlWV71s_')">
+</div>
+<div class="flex-1 min-w-0">
+<h4 class="font-title text-body font-semibold truncate">MacBook Pro M2 - Space Gray</h4>
+<div class="flex items-center gap-xs">
+<span class="font-title text-title text-primary">$1,200.00</span>
+<span class="font-caption text-caption text-on-surface-variant line-through">$1,350.00</span>
+</div>
+</div>
+<div class="flex items-center gap-xs bg-surface-bright px-sm py-xs rounded-full shadow-sm border border-outline-variant/10">
+<span class="material-symbols-outlined text-[16px] text-primary" style="font-variation-settings: 'FILL' 1;">format_image_left</span>
+<span class="font-caption text-caption font-bold text-primary">Verified</span>
+</div>
+</div>
+</div>
+<!-- Form Content -->
+<div class="px-xl flex-1 space-y-lg overflow-y-auto max-h-[614px] pb-xl">
+<!-- Offer Amount Field -->
+<div>
+<label class="block font-small text-small text-on-surface mb-sm">Offer Amount</label>
+<div class="relative offer-input-focus transition-all rounded-xl border border-outline-variant">
+<span class="absolute left-md top-1/2 -translate-y-1/2 font-title text-title text-on-surface-variant">$</span>
+<input class="w-full pl-xl pr-md py-md bg-transparent border-none focus:ring-0 font-title text-title text-on-surface placeholder:text-outline-variant" placeholder="1,100" type="number"/>
+</div>
+<p class="mt-xs font-caption text-caption text-on-surface-variant">Recommended: $1,080 - $1,150</p>
+</div>
+<!-- Delivery Preferences -->
+<div>
+<label class="block font-small text-small text-on-surface mb-sm">Delivery Preference</label>
+<div class="grid grid-cols-2 gap-md">
+<label class="relative flex items-center justify-center gap-sm p-md rounded-xl border-2 border-primary bg-primary/5 cursor-pointer hover:bg-primary/10 transition-all">
+<input checked="" class="hidden" name="delivery" type="radio"/>
+<span class="material-symbols-outlined text-primary">groups</span>
+<span class="font-small text-small text-primary font-bold">Meetup</span>
+<div class="absolute -top-2 -right-2 bg-primary text-white rounded-full p-xs">
+<span class="material-symbols-outlined text-[14px]">check</span>
+</div>
+</label>
+<label class="relative flex items-center justify-center gap-sm p-md rounded-xl border border-outline-variant bg-surface-container-low cursor-pointer hover:bg-surface-container-high transition-all">
+<input class="hidden" name="delivery" type="radio"/>
+<span class="material-symbols-outlined text-on-surface-variant">local_shipping</span>
+<span class="font-small text-small text-on-surface-variant">Shipping</span>
+</label>
+</div>
+</div>
+<!-- Message to Seller -->
+<div>
+<label class="block font-small text-small text-on-surface mb-sm">Message (Optional)</label>
+<textarea class="w-full p-md rounded-xl border border-outline-variant bg-transparent focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none transition-all resize-none text-body" placeholder="e.g. Hi! I'm on campus today, can we meet near the library?" rows="3"></textarea>
+</div>
+<!-- Buyer Protection Highlight -->
+<div class="p-md bg-secondary-fixed rounded-xl flex gap-md items-start">
+<div class="w-10 h-10 bg-on-secondary-fixed-variant rounded-full flex items-center justify-center shrink-0">
+<span class="material-symbols-outlined text-white" style="font-variation-settings: 'FILL' 1;">verified_user</span>
+</div>
+<div>
+<h5 class="font-small text-small font-bold text-on-secondary-fixed-variant">Buyer Protection Included</h5>
+<p class="font-caption text-caption text-on-secondary-fixed-variant leading-tight mt-1 opacity-80">
+                            Your payment is held securely by CampusX until you confirm the item is as described. Campus meetups are tracked for extra safety.
+                        </p>
+</div>
+</div>
+</div>
+<!-- Footer Actions -->
+<div class="p-xl bg-surface-container-low flex items-center gap-md border-t border-outline-variant/30">
+<button class="flex-1 px-lg py-md rounded-xxl border border-outline text-on-surface font-small hover:bg-surface-container-high transition-all active:scale-95">
+                    Cancel
+                </button>
+<button class="flex-[1.5] px-lg py-md rounded-xxl bg-primary text-white font-small font-bold shadow-lg shadow-primary/20 hover:bg-primary-container transition-all active:scale-95 flex items-center justify-center gap-sm">
+<span>Send Offer</span>
+<span class="material-symbols-outlined text-[18px]">send</span>
+</button>
+</div>
+</div>
+<!-- Floating Atmosphere Effect -->
+<div class="absolute top-1/4 -left-20 w-64 h-64 bg-primary/10 rounded-full blur-[100px] -z-10"></div>
+<div class="absolute bottom-1/4 -right-20 w-64 h-64 bg-secondary/10 rounded-full blur-[100px] -z-10"></div>
+</div>
+<!-- Interaction Script -->
+<script>
+        // Simple micro-interactions for the delivery radios
+        const deliveryOptions = document.querySelectorAll('input[name="delivery"]');
+        deliveryOptions.forEach(opt => {
+            opt.parentElement.addEventListener('click', function() {
+                // Reset all
+                deliveryOptions.forEach(i => {
+                    const parent = i.parentElement;
+                    parent.classList.remove('border-primary', 'bg-primary/5');
+                    parent.classList.add('border-outline-variant', 'bg-surface-container-low');
+                    parent.querySelector('span:nth-of-type(1)').classList.replace('text-primary', 'text-on-surface-variant');
+                    parent.querySelector('span:nth-of-type(2)').classList.replace('text-primary', 'text-on-surface-variant');
+                    parent.querySelector('span:nth-of-type(2)').classList.remove('font-bold');
+                    const check = parent.querySelector('div');
+                    if(check) check.remove();
+                });
+                
+                // Set active
+                this.classList.replace('border-outline-variant', 'border-primary');
+                this.classList.replace('bg-surface-container-low', 'bg-primary/5');
+                this.querySelector('span:nth-of-type(1)').classList.replace('text-on-surface-variant', 'text-primary');
+                this.querySelector('span:nth-of-type(2)').classList.replace('text-on-surface-variant', 'text-primary');
+                this.querySelector('span:nth-of-type(2)').classList.add('font-bold');
+                
+                const checkDiv = document.createElement('div');
+                checkDiv.className = "absolute -top-2 -right-2 bg-primary text-white rounded-full p-xs animate-in zoom-in duration-200";
+                checkDiv.innerHTML = '<span class="material-symbols-outlined text-[14px]">check</span>';
+                this.appendChild(checkDiv);
+            });
+        });
+
+        // Close on escape
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') {
+                console.log('Close modal requested');
+            }
+        });
+    </script>
+</body></html>

@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Sign Up | CampusX</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "on-secondary": "#ffffff",
+                        "error-container": "#ffdad6",
+                        "tertiary": "#7e3000",
+                        "surface-bright": "#fcf8ff",
+                        "primary-container": "#4f46e5",
+                        "surface-dim": "#dcd8e5",
+                        "outline": "#777587",
+                        "on-primary-container": "#dad7ff",
+                        "surface-container-highest": "#e4e1ee",
+                        "surface-container": "#f0ecf9",
+                        "on-error": "#ffffff",
+                        "tertiary-fixed-dim": "#ffb695",
+                        "background": "#fcf8ff",
+                        "inverse-primary": "#c3c0ff",
+                        "error": "#ba1a1a",
+                        "on-tertiary": "#ffffff",
+                        "surface-container-high": "#eae6f4",
+                        "secondary": "#4648d4",
+                        "on-surface-variant": "#464555",
+                        "on-primary-fixed-variant": "#3323cc",
+                        "surface": "#fcf8ff",
+                        "surface-variant": "#e4e1ee",
+                        "on-secondary-fixed-variant": "#2f2ebe",
+                        "secondary-fixed-dim": "#c0c1ff",
+                        "primary": "#3525cd",
+                        "outline-variant": "#c7c4d8",
+                        "tertiary-container": "#a44100",
+                        "on-secondary-fixed": "#07006c",
+                        "primary-fixed-dim": "#c3c0ff",
+                        "on-primary": "#ffffff",
+                        "on-tertiary-container": "#ffd2be",
+                        "secondary-container": "#6063ee",
+                        "surface-container-lowest": "#ffffff",
+                        "tertiary-fixed": "#ffdbcc",
+                        "on-primary-fixed": "#0f0069",
+                        "on-tertiary-fixed-variant": "#7b2f00",
+                        "secondary-fixed": "#e1e0ff",
+                        "on-secondary-container": "#fffbff",
+                        "on-tertiary-fixed": "#351000",
+                        "on-background": "#1b1b24",
+                        "inverse-on-surface": "#f3effc",
+                        "surface-container-low": "#f5f2ff",
+                        "primary-fixed": "#e2dfff",
+                        "on-surface": "#1b1b24",
+                        "inverse-surface": "#302f39",
+                        "on-error-container": "#93000a",
+                        "surface-tint": "#4d44e3"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "xl": "32px",
+                        "xxl": "48px",
+                        "margin_mobile": "16px",
+                        "sm": "8px",
+                        "md": "16px",
+                        "lg": "24px",
+                        "gutter": "24px",
+                        "xs": "4px",
+                        "base": "8px",
+                        "container_max": "1440px"
+                    },
+                    "fontFamily": {
+                        "display": ["Inter"],
+                        "body": ["Inter"],
+                        "title": ["Inter"],
+                        "small": ["Inter"]
+                    },
+                    "fontSize": {
+                        "h1": ["40px", {"lineHeight": "1.2", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                        "h3": ["24px", {"lineHeight": "1.4", "fontWeight": "600"}],
+                        "body": ["16px", {"lineHeight": "1.6", "fontWeight": "400"}],
+                        "title": ["20px", {"lineHeight": "1.5", "fontWeight": "600"}],
+                        "small": ["14px", {"lineHeight": "1.5", "fontWeight": "500"}],
+                        "caption": ["12px", {"lineHeight": "1.4", "letterSpacing": "0.01em", "fontWeight": "400"}]
+                    }
+                }
+            }
+        }
+    </script>
+<style>
+        body {
+            background-color: #fcf8ff;
+            font-family: 'Inter', sans-serif;
+            overflow-x: hidden;
+        }
+
+        .glass-card {
+            background: rgba(255, 255, 255, 0.7);
+            backdrop-filter: blur(16px);
+            border: 1px solid rgba(226, 232, 240, 0.8);
+            box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.05);
+        }
+
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+            vertical-align: middle;
+        }
+
+        .input-focus-ring:focus-within {
+            box-shadow: 0 0 0 2px rgba(79, 70, 229, 0.2);
+        }
+
+        .floating-bg-item {
+            position: absolute;
+            z-index: -1;
+            filter: blur(80px);
+            opacity: 0.4;
+            border-radius: 9999px;
+        }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col items-center justify-center relative bg-surface">
+<!-- Background Atmospheric Elements -->
+<div class="floating-bg-item bg-primary w-[500px] h-[500px] -top-48 -left-24"></div>
+<div class="floating-bg-item bg-secondary w-[400px] h-[400px] -bottom-24 -right-12"></div>
+<div class="floating-bg-item bg-tertiary-fixed w-[300px] h-[300px] top-1/2 left-1/4"></div>
+<!-- Main Content Shell -->
+<main class="w-full max-w-md px-margin_mobile md:px-0 relative z-10 py-xxl">
+<!-- Branding Anchor -->
+<header class="text-center mb-xl">
+<h1 class="font-display text-h1 text-primary mb-xs">CampusX</h1>
+<p class="font-body text-body text-on-surface-variant">Join the verified student marketplace</p>
+</header>
+<!-- Glassmorphic Signup Card -->
+<section class="glass-card rounded-[24px] p-lg md:p-xl animate-in fade-in slide-in-from-bottom-4 duration-700">
+<!-- Social Signup -->
+<button class="w-full flex items-center justify-center gap-md py-md px-lg bg-surface-container-lowest border border-outline-variant rounded-xl font-small text-small text-on-surface hover:bg-surface-container transition-all active:scale-[0.98]">
+<img alt="Google Logo" class="w-5 h-5" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDZ2kP-vHRSf0ZV5aw9tInudy3k2jqsAQKiqlsouebU9kH3tVZhbF0nem-xn7dy1UJ2HG2CzrIVJJyF4gukkm97urKVeN3Q1hI-h6DCZMpx0EAnFdnh_O4xEvib1e2MFAb9x6JkR0NkiaPkl5bVPFZUCz_g9w_qoPVHJFgAwYb-asD_6BsSUwOsbgpdDMp33iUWrx9OJFML0Ow-Qsk0bL_h8CmnV94_jZc2omXvDvm7u2MngtOesf3w90LeTyOn0t8IhqvQIm8RZr2y"/>
+                Continue with Google
+            </button>
+<div class="relative my-xl text-center">
+<hr class="border-outline-variant"/>
+<span class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-surface px-md font-caption text-caption text-outline">OR</span>
+</div>
+<!-- Form -->
+<form action="#" class="space-y-lg" method="POST">
+<!-- Full Name -->
+<div class="space-y-xs">
+<label class="font-small text-small text-on-surface block px-1" for="name">Full Name</label>
+<div class="relative flex items-center input-focus-ring rounded-xl bg-surface-container-low transition-all">
+<span class="material-symbols-outlined absolute left-md text-outline">person</span>
+<input class="w-full pl-[48px] pr-md py-md bg-transparent border-none focus:ring-0 text-body font-body placeholder:text-outline-variant" id="name" name="name" placeholder="John Doe" required="" type="text"/>
+</div>
+</div>
+<!-- University Email -->
+<div class="space-y-xs">
+<label class="font-small text-small text-on-surface block px-1" for="email">University Email</label>
+<div class="relative flex items-center input-focus-ring rounded-xl bg-surface-container-low transition-all">
+<span class="material-symbols-outlined absolute left-md text-outline">school</span>
+<input class="w-full pl-[48px] pr-md py-md bg-transparent border-none focus:ring-0 text-body font-body placeholder:text-outline-variant" id="email" name="email" placeholder="student@university.edu" required="" type="email"/>
+</div>
+</div>
+<!-- Password -->
+<div class="space-y-xs">
+<label class="font-small text-small text-on-surface block px-1" for="password">Password</label>
+<div class="relative flex items-center input-focus-ring rounded-xl bg-surface-container-low transition-all">
+<span class="material-symbols-outlined absolute left-md text-outline">lock</span>
+<input class="w-full pl-[48px] pr-md py-md bg-transparent border-none focus:ring-0 text-body font-body placeholder:text-outline-variant" id="password" name="password" placeholder="••••••••" required="" type="password"/>
+<button class="absolute right-md text-outline hover:text-primary transition-colors" type="button">
+<span class="material-symbols-outlined">visibility</span>
+</button>
+</div>
+</div>
+<!-- Signup CTA -->
+<button class="w-full bg-primary text-on-primary font-title text-body py-md rounded-[18px] hover:bg-secondary transition-all active:scale-[0.97] shadow-lg shadow-primary/20" type="submit">
+                    Create Account
+                </button>
+</form>
+<!-- Disclaimer -->
+<p class="mt-lg font-caption text-caption text-on-surface-variant text-center px-md">
+                By signing up, you agree to our 
+                <a class="text-primary font-medium hover:underline" href="#">Terms of Service</a> 
+                and 
+                <a class="text-primary font-medium hover:underline" href="#">Privacy Policy</a>.
+            </p>
+</section>
+<!-- Footer Link -->
+<footer class="mt-xl text-center">
+<p class="font-body text-body text-on-surface-variant">
+                Already have an account? 
+                <a class="text-primary font-bold hover:text-secondary transition-colors" href="#">Login</a>
+</p>
+</footer>
+</main>
+<!-- Contextual Aesthetic Side Image (Hidden on small screens) -->
+<div class="fixed left-gutter bottom-gutter hidden lg:block max-w-[280px] p-md glass-card rounded-xl pointer-events-none">
+<div class="w-full aspect-[4/5] bg-cover bg-center rounded-lg mb-sm" data-alt="A high-end lifestyle photography shot of a clean, minimalist university dorm room. The desk features a sleek laptop displaying a student marketplace app. Soft afternoon sunlight streams through the window, casting long shadows. The aesthetic is warm, intelligent, and focused on student life excellence with primary indigo accents." style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuCG9QgQcXKMZDZFVOCO4gaTzY5QpFH7WlciUhwsU379aSWvwMFdCCEYBpxzRPtFrWV6Q7zIgw76Z5aeGD3paawa74AogXGZUUjN17RLr3SrOetceG-baNfWszDkpKAV63y8x81gUAxcszs54dC-WY79Tf4Vhk5xs7xAPdQRtjhR8ogObVh7FIM6IfCbfm9cO0C5iFrZgC45v3rJ3xvrIvqSq8gBiQ-cx6rFpkzBgunRGjJHf4sYlSSH3fs4LO2emIwKUYIZGbh1iC-W')"></div>
+<p class="font-small text-small text-on-surface">Verified listings only.</p>
+<p class="font-caption text-caption text-outline">Join 10k+ students trading safely.</p>
+</div>
+<script>
+        // Micro-interaction for password visibility
+        const toggleBtn = document.querySelector('button[type="button"]');
+        const passInput = document.getElementById('password');
+        const passIcon = toggleBtn.querySelector('.material-symbols-outlined');
+
+        toggleBtn.addEventListener('click', () => {
+            if (passInput.type === 'password') {
+                passInput.type = 'text';
+                passIcon.innerText = 'visibility_off';
+            } else {
+                passInput.type = 'password';
+                passIcon.innerText = 'visibility';
+            }
+        });
+
+        // Form submission loading state simulation
+        const signupForm = document.querySelector('form');
+        const submitBtn = signupForm.querySelector('button[type="submit"]');
+
+        signupForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            const originalText = submitBtn.innerText;
+            submitBtn.disabled = true;
+            submitBtn.innerHTML = `
+                <div class="flex items-center justify-center gap-sm">
+                    <svg class="animate-spin h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                        <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                        <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                    </svg>
+                    Creating Account...
+                </div>
+            `;
+            
+            setTimeout(() => {
+                submitBtn.disabled = false;
+                submitBtn.innerText = originalText;
+            }, 2000);
+        });
+    </script>
+</body></html>
