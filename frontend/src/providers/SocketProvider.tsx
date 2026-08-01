@@ -34,14 +34,14 @@ export function SocketProvider({ children }: { children: ReactNode }) {
       return;
     }
 
-    // In a real app, this would be an environment variable (e.g. process.env.NEXT_PUBLIC_SOCKET_URL)
-    const SOCKET_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:3001";
+    const rawUrl = process.env.NEXT_PUBLIC_SOCKET_URL || process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000";
+    const SOCKET_URL = rawUrl.replace(/\/api\/v1\/?$/, "");
     
-    // Connect to the socket server, passing the auth token
     const socketInstance = io(SOCKET_URL, {
       auth: {
         userId: currentUser.uid, // This ID will be used by the backend to verify the user
       },
+      transports: ["websocket", "polling"],
       reconnectionAttempts: 5,
       reconnectionDelay: 1000,
       autoConnect: true,

@@ -135,18 +135,21 @@ export default function SettingsPage() {
               <div className="flex flex-col gap-md">
                 <div className="flex items-center justify-between">
                   <p className="font-medium text-body">Two-Factor Auth</p>
-                  
-                  {/* Custom Toggle Switch */}
-                  <div className="relative inline-block w-10 align-middle select-none">
-                    <input 
-                      type="checkbox" 
-                      checked={tfaEnabled}
-                      onChange={(e) => setTfaEnabled(e.target.checked)}
-                      className="peer sr-only"
+                  <button
+                    role="switch"
+                    aria-checked={tfaEnabled}
+                    onClick={() => setTfaEnabled(!tfaEnabled)}
+                    className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors duration-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 ${
+                      tfaEnabled ? 'bg-primary' : 'bg-surface-container-highest'
+                    }`}
+                    aria-label="Two-factor authentication"
+                  >
+                    <span
+                      className={`inline-block h-4 w-4 transform rounded-full bg-white shadow-sm transition-transform duration-300 ease-in-out ${
+                        tfaEnabled ? 'translate-x-6' : 'translate-x-1'
+                      }`}
                     />
-                    <div className="block h-6 rounded-full bg-surface-container-highest peer-checked:bg-primary transition-colors duration-300 w-10 cursor-pointer" onClick={() => setTfaEnabled(!tfaEnabled)}></div>
-                    <div className={`absolute top-0 w-6 h-6 rounded-full bg-white border-4 border-white shadow-sm transition-transform duration-300 ease-in-out cursor-pointer ${tfaEnabled ? 'translate-x-4 border-primary' : 'translate-x-0'}`} onClick={() => setTfaEnabled(!tfaEnabled)}></div>
-                  </div>
+                  </button>
                 </div>
                 <p className="text-caption text-on-surface-variant">Recommended for additional account protection.</p>
               </div>
@@ -181,10 +184,17 @@ export default function SettingsPage() {
                   <p className="font-medium text-body">Push Notifications</p>
                   <p className="text-caption text-on-surface-variant">Mobile & Browser alerts</p>
                 </div>
-                <div className="relative inline-block w-10 align-middle select-none">
-                  <div className={`block h-6 rounded-full transition-colors duration-300 w-10 cursor-pointer ${pushEnabled ? 'bg-primary' : 'bg-surface-container-highest'}`} onClick={() => setPushEnabled(!pushEnabled)}></div>
-                  <div className={`absolute top-0 w-6 h-6 rounded-full bg-white border-4 border-white shadow-sm transition-transform duration-300 ease-in-out cursor-pointer ${pushEnabled ? 'translate-x-4 border-primary' : 'translate-x-0'}`} onClick={() => setPushEnabled(!pushEnabled)}></div>
-                </div>
+                <button
+                  role="switch"
+                  aria-checked={pushEnabled}
+                  onClick={() => setPushEnabled(!pushEnabled)}
+                  className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors duration-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 ${
+                    pushEnabled ? 'bg-primary' : 'bg-surface-container-highest'
+                  }`}
+                  aria-label="Push notifications"
+                >
+                  <span className={`inline-block h-4 w-4 transform rounded-full bg-white shadow-sm transition-transform duration-300 ease-in-out ${pushEnabled ? 'translate-x-6' : 'translate-x-1'}`} />
+                </button>
               </div>
               
               <div className="flex items-center justify-between">
@@ -192,10 +202,17 @@ export default function SettingsPage() {
                   <p className="font-medium text-body">Email Marketing</p>
                   <p className="text-caption text-on-surface-variant">Weekly deals & highlights</p>
                 </div>
-                <div className="relative inline-block w-10 align-middle select-none">
-                  <div className={`block h-6 rounded-full transition-colors duration-300 w-10 cursor-pointer ${emailEnabled ? 'bg-primary' : 'bg-surface-container-highest'}`} onClick={() => setEmailEnabled(!emailEnabled)}></div>
-                  <div className={`absolute top-0 w-6 h-6 rounded-full bg-white border-4 border-white shadow-sm transition-transform duration-300 ease-in-out cursor-pointer ${emailEnabled ? 'translate-x-4 border-primary' : 'translate-x-0'}`} onClick={() => setEmailEnabled(!emailEnabled)}></div>
-                </div>
+                <button
+                  role="switch"
+                  aria-checked={emailEnabled}
+                  onClick={() => setEmailEnabled(!emailEnabled)}
+                  className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors duration-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 ${
+                    emailEnabled ? 'bg-primary' : 'bg-surface-container-highest'
+                  }`}
+                  aria-label="Email marketing"
+                >
+                  <span className={`inline-block h-4 w-4 transform rounded-full bg-white shadow-sm transition-transform duration-300 ease-in-out ${emailEnabled ? 'translate-x-6' : 'translate-x-1'}`} />
+                </button>
               </div>
               
               <div className="flex items-center justify-between">
@@ -203,10 +220,17 @@ export default function SettingsPage() {
                   <p className="font-medium text-body">Purchase Receipts</p>
                   <p className="text-caption text-on-surface-variant">Order confirmation emails</p>
                 </div>
-                <div className="relative inline-block w-10 align-middle select-none">
-                  <div className={`block h-6 rounded-full transition-colors duration-300 w-10 cursor-pointer ${receiptsEnabled ? 'bg-primary' : 'bg-surface-container-highest'}`} onClick={() => setReceiptsEnabled(!receiptsEnabled)}></div>
-                  <div className={`absolute top-0 w-6 h-6 rounded-full bg-white border-4 border-white shadow-sm transition-transform duration-300 ease-in-out cursor-pointer ${receiptsEnabled ? 'translate-x-4 border-primary' : 'translate-x-0'}`} onClick={() => setReceiptsEnabled(!receiptsEnabled)}></div>
-                </div>
+                <button
+                  role="switch"
+                  aria-checked={receiptsEnabled}
+                  onClick={() => setReceiptsEnabled(!receiptsEnabled)}
+                  className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors duration-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 ${
+                    receiptsEnabled ? 'bg-primary' : 'bg-surface-container-highest'
+                  }`}
+                  aria-label="Purchase receipts"
+                >
+                  <span className={`inline-block h-4 w-4 transform rounded-full bg-white shadow-sm transition-transform duration-300 ease-in-out ${receiptsEnabled ? 'translate-x-6' : 'translate-x-1'}`} />
+                </button>
               </div>
             </div>
           </motion.div>

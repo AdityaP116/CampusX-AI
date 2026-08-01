@@ -9,8 +9,21 @@
 import Link from "next/link";
 import Image from "next/image";
 import { usePathname, useRouter } from "next/navigation";
-import { useState } from "react";
+import { useState, useEffect, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
+import {
+  Search,
+  Bell,
+  MessageSquare,
+  PlusCircle,
+  LayoutDashboard,
+  User as UserIcon,
+  Bookmark,
+  Settings as SettingsIcon,
+  LogOut,
+  Menu,
+  X,
+} from "lucide-react";
 import { signOut } from "firebase/auth";
 import { auth } from "@/config/firebase.config";
 import { ROUTES } from "@/constants/routes";
@@ -48,6 +61,25 @@ export default function TopNav({ variant = "public" }: TopNavProps) {
   const toast = useToast();
   const [isProfileOpen, setIsProfileOpen] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const profileRef = useRef<HTMLDivElement>(null);
+
+  // Close profile dropdown when clicking outside
+  useEffect(() => {
+    if (!isProfileOpen) return;
+    const handleClickOutside = (e: MouseEvent) => {
+      if (profileRef.current && !profileRef.current.contains(e.target as Node)) {
+        setIsProfileOpen(false);
+      }
+    };
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, [isProfileOpen]);
+
+  // Close mobile menu on route change
+  useEffect(() => {
+    // eslint-disable-next-line react-hooks/set-state-in-effect
+    setIsMobileMenuOpen(false);
+  }, [pathname]);
 
   const navLinks = variant === "app" ? APP_NAV_LINKS : PUBLIC_NAV_LINKS;
 
@@ -69,10 +101,17 @@ export default function TopNav({ variant = "public" }: TopNavProps) {
         <div className="flex items-center gap-8">
           <Link
             href={isAuthenticated ? ROUTES.DASHBOARD : ROUTES.HOME}
-            className="font-bold text-title text-primary tracking-tight"
+            className="flex items-center gap-2.5 font-bold text-title text-primary tracking-tight group"
             aria-label="CampusX home"
           >
-            CampusX
+            <Image
+              src="/logo.png"
+              alt="CampusX Logo"
+              width={36}
+              height={36}
+              className="w-9 h-9 object-contain rounded-full bg-white shadow-sm p-0.5 group-hover:scale-105 transition-transform"
+            />
+            <span>CampusX</span>
           </Link>
 
           {/* Desktop nav links */}
@@ -83,10 +122,10 @@ export default function TopNav({ variant = "public" }: TopNavProps) {
                 <Link
                   key={link.href}
                   href={link.href}
-                  className={`font-medium transition-colors duration-200 text-body ${
+                  className={`font-medium transition-colors duration-200 text-body border-b-2 pb-1 ${
                     isActive
-                      ? "text-primary font-bold border-b-2 border-primary pb-1"
-                      : "text-on-surface-variant hover:text-primary"
+                      ? "text-primary font-bold border-primary"
+                      : "text-on-surface-variant hover:text-primary border-transparent"
                   }`}
                 >
                   {link.label}
@@ -103,12 +142,10 @@ export default function TopNav({ variant = "public" }: TopNavProps) {
               {/* Search (app only, desktop) */}
               {variant === "app" && (
                 <div className="relative hidden lg:block">
-                  <span
-                    className="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-outline text-title"
+                  <Search
+                    className="absolute left-3 top-1/2 -translate-y-1/2 text-outline w-4 h-4 pointer-events-none"
                     aria-hidden="true"
-                  >
-                    search
-                  </span>
+                  />
                   <input
                     className="pl-10 pr-4 py-2 bg-surface-container-low border-none rounded-full w-64 focus:outline-none focus:ring-2 focus:ring-primary/20 text-small transition-all"
                     placeholder="Search campus..."
@@ -124,9 +161,7 @@ export default function TopNav({ variant = "public" }: TopNavProps) {
                 className="p-2 text-on-surface-variant hover:bg-surface-variant/50 rounded-full transition-colors relative"
                 aria-label="Notifications"
               >
-                <span className="material-symbols-outlined" aria-hidden="true">
-                  notifications
-                </span>
+                <Bell className="w-5 h-5" aria-hidden="true" />
               </Link>
 
               {/* Chat */}
@@ -135,9 +170,7 @@ export default function TopNav({ variant = "public" }: TopNavProps) {
                 className="p-2 text-on-surface-variant hover:bg-surface-variant/50 rounded-full transition-colors"
                 aria-label="Messages"
               >
-                <span className="material-symbols-outlined" aria-hidden="true">
-                  chat_bubble
-                </span>
+                <MessageSquare className="w-5 h-5" aria-hidden="true" />
               </Link>
 
               <div className="h-8 w-px bg-outline-variant/30 mx-2" />
@@ -145,16 +178,17 @@ export default function TopNav({ variant = "public" }: TopNavProps) {
               {/* Post Listing CTA */}
               <Link
                 href={ROUTES.SELL}
-                className="bg-primary-container text-on-primary-container px-5 py-2 rounded-full font-semibold text-small hover:opacity-90 active:scale-95 transition-all"
+                className="bg-primary-container text-on-primary-container px-5 py-2 rounded-full font-semibold text-small hover:opacity-90 active:scale-95 transition-all flex items-center gap-2"
               >
-                Post Listing
+                <PlusCircle className="w-4 h-4" aria-hidden="true" />
+                <span>Post Listing</span>
               </Link>
 
               {/* Avatar + Profile Menu */}
-              <div className="relative">
+              <div className="relative" ref={profileRef}>
                 <button
                   onClick={() => setIsProfileOpen((o) => !o)}
-                  className="w-10 h-10 rounded-full border-2 border-primary-fixed-dim p-0.5 overflow-hidden focus:outline-none focus:ring-2 focus:ring-primary/50"
+                  className="w-10 h-10 rounded-full border-2 border-primary-fixed-dim p-0.5 overflow-hidden focus-visible:ring-2 focus-visible:ring-primary/50 focus-visible:outline-none"
                   aria-label="Profile menu"
                   aria-expanded={isProfileOpen}
                   aria-haspopup="menu"
@@ -196,22 +230,20 @@ export default function TopNav({ variant = "public" }: TopNavProps) {
                       </div>
                       {/* Links */}
                       {[
-                        { href: ROUTES.DASHBOARD, label: "Dashboard", icon: "grid_view" },
-                        { href: ROUTES.PROFILE, label: "My Profile", icon: "person" },
-                        { href: ROUTES.WISHLIST, label: "Wishlist", icon: "favorite" },
-                        { href: ROUTES.SETTINGS, label: "Settings", icon: "settings" },
-                      ].map((item) => (
+                        { href: ROUTES.DASHBOARD, label: "Dashboard", Icon: LayoutDashboard },
+                        { href: ROUTES.PROFILE, label: "My Profile", Icon: UserIcon },
+                        { href: ROUTES.WISHLIST, label: "Wishlist", Icon: Bookmark },
+                        { href: ROUTES.SETTINGS, label: "Settings", Icon: SettingsIcon },
+                      ].map(({ href, label, Icon }) => (
                         <Link
-                          key={item.href}
-                          href={item.href}
+                          key={href}
+                          href={href}
                           role="menuitem"
                           onClick={() => setIsProfileOpen(false)}
                           className="flex items-center gap-3 px-4 py-2.5 text-small text-on-surface hover:bg-surface-container-low transition-colors"
                         >
-                          <span className="material-symbols-outlined text-[18px] text-on-surface-variant" aria-hidden="true">
-                            {item.icon}
-                          </span>
-                          {item.label}
+                          <Icon className="w-4 h-4 text-on-surface-variant" aria-hidden="true" />
+                          {label}
                         </Link>
                       ))}
                       {/* Sign out */}
@@ -221,10 +253,8 @@ export default function TopNav({ variant = "public" }: TopNavProps) {
                           role="menuitem"
                           className="w-full flex items-center gap-3 px-4 py-2.5 text-small text-error hover:bg-error-container transition-colors"
                         >
-                          <span className="material-symbols-outlined text-[18px]" aria-hidden="true">
-                            logout
-                          </span>
-                          Sign out
+                          <LogOut className="w-4 h-4" aria-hidden="true" />
+                          Sign Out
                         </button>
                       </div>
                     </motion.div>
@@ -234,16 +264,6 @@ export default function TopNav({ variant = "public" }: TopNavProps) {
             </>
           ) : (
             <>
-              {/* Notifications icon (public, desktop) */}
-              <button
-                className="hidden md:flex items-center gap-2 px-4 py-2 text-on-surface-variant hover:bg-surface-variant/50 rounded-xl transition-all"
-                aria-label="Notifications"
-              >
-                <span className="material-symbols-outlined" aria-hidden="true">
-                  notifications
-                </span>
-              </button>
-
               {/* Login CTA */}
               <Link
                 href={ROUTES.LOGIN}
@@ -261,9 +281,11 @@ export default function TopNav({ variant = "public" }: TopNavProps) {
             aria-label="Toggle mobile menu"
             aria-expanded={isMobileMenuOpen}
           >
-            <span className="material-symbols-outlined" aria-hidden="true">
-              {isMobileMenuOpen ? "close" : "menu"}
-            </span>
+            {isMobileMenuOpen ? (
+              <X className="w-6 h-6" aria-hidden="true" />
+            ) : (
+              <Menu className="w-6 h-6" aria-hidden="true" />
+            )}
           </button>
         </div>
       </div>

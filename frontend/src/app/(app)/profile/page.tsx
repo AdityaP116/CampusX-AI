@@ -133,7 +133,7 @@ export default function ProfilePage() {
           <h3 className="font-semibold text-title mb-md text-on-surface">Seller Verification</h3>
           <ul className="space-y-md">
             <li className="flex items-center gap-md">
-              <div className="w-10 h-10 rounded-full bg-emerald-100 text-emerald-700 flex items-center justify-center shrink-0">
+              <div className="w-10 h-10 rounded-full bg-surface-container-low text-primary flex items-center justify-center shrink-0">
                 <span className="material-symbols-outlined">alternate_email</span>
               </div>
               <div>
@@ -142,7 +142,7 @@ export default function ProfilePage() {
               </div>
             </li>
             <li className="flex items-center gap-md">
-              <div className="w-10 h-10 rounded-full bg-blue-100 text-blue-700 flex items-center justify-center shrink-0">
+              <div className="w-10 h-10 rounded-full bg-secondary-fixed text-on-secondary-fixed-variant flex items-center justify-center shrink-0">
                 <span className="material-symbols-outlined">credit_card</span>
               </div>
               <div>
@@ -151,7 +151,7 @@ export default function ProfilePage() {
               </div>
             </li>
             <li className="flex items-center gap-md">
-              <div className="w-10 h-10 rounded-full bg-purple-100 text-purple-700 flex items-center justify-center shrink-0">
+              <div className="w-10 h-10 rounded-full bg-primary-fixed text-on-primary-fixed-variant flex items-center justify-center shrink-0">
                 <span className="material-symbols-outlined">format_image_left</span>
               </div>
               <div>

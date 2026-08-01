@@ -103,7 +103,7 @@ export default function NotificationsPage() {
   });
 
   return (
-    <div className="max-w-3xl mx-auto md:px-md">
+    <div className="max-w-3xl mx-auto">
       <div className="flex flex-col md:flex-row md:items-end justify-between gap-md mb-xxl">
         <div>
           <h1 className="font-bold text-h1-mobile md:text-h1 text-on-surface mb-xs">Notifications</h1>

@@ -122,7 +122,7 @@ export default function LandingPage() {
 
       <main className="relative pt-16">
         {/* ═══════════ Hero Section ═══════════ */}
-        <section className="relative min-h-[921px] flex flex-col justify-center items-center px-gutter py-xxl hero-gradient">
+        <section className="relative min-h-[calc(100svh-64px)] flex flex-col justify-center items-center px-gutter py-xxl hero-gradient">
           <div className="max-w-4xl w-full text-center space-y-8">
             {/* Verified badge */}
             <motion.div
@@ -214,16 +214,18 @@ export default function LandingPage() {
                     { value: "45k+", label: "Total Trades" },
                     { value: "100%", label: "Verified" },
                   ].map((stat, i) => (
-                    <div key={stat.label} className="flex flex-col items-center">
+                    <div key={stat.label} className="flex items-center gap-8">
                       {i > 0 && (
-                        <div className="w-px h-8 bg-outline-variant/20 -ml-4 mr-4" />
+                        <div className="w-px h-8 bg-outline-variant/30" />
                       )}
-                      <span className="text-h3 font-bold text-primary">
-                        {stat.value}
-                      </span>
-                      <span className="text-caption text-on-surface-variant">
-                        {stat.label}
-                      </span>
+                      <div className="flex flex-col items-center">
+                        <span className="text-h3 font-bold text-primary">
+                          {stat.value}
+                        </span>
+                        <span className="text-caption text-on-surface-variant">
+                          {stat.label}
+                        </span>
+                      </div>
                     </div>
                   ))}
                 </div>
@@ -448,7 +450,7 @@ export default function LandingPage() {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.5 }}
-            className="relative bg-primary text-on-primary rounded-[32px] p-12 md:p-24 overflow-hidden"
+            className="relative bg-primary text-on-primary rounded-[32px] p-10 md:p-16 overflow-hidden"
           >
             <div className="relative z-10 max-w-2xl space-y-8">
               <h2 className="text-h1 md:text-display font-bold leading-none">

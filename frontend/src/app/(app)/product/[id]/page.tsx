@@ -77,7 +77,7 @@ export default function ProductDetailsPage() {
               <p className="text-on-surface-variant leading-relaxed mb-lg">
                 {PRODUCT.description}
               </p>
-              <div className="inline-flex items-center gap-2 px-3 py-1 bg-green-50 text-green-700 rounded-full font-medium text-small dark:bg-green-900/20 dark:text-green-400">
+              <div className="inline-flex items-center gap-2 px-3 py-1 bg-surface-container-low text-primary rounded-full font-medium text-small border border-primary/20">
                 <span className="material-symbols-outlined text-[18px]">check_circle</span>
                 Condition: {PRODUCT.condition}
               </div>

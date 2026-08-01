@@ -22,6 +22,7 @@ import { ROUTES } from "@/constants/routes";
 import { useToast } from "@/store/ui.store";
 import { fadeInUp } from "@/lib/motion";
 import type { Metadata } from "next";
+import { Mail, Lock, Eye, EyeOff } from "lucide-react";
 
 // ----- Schema -----
 const loginSchema = z.object({
@@ -161,12 +162,7 @@ export default function LoginPage() {
               <div
                 className={`relative flex items-center input-focus-ring rounded-xl bg-surface-container-low transition-all ${errors.email ? "ring-2 ring-error" : ""}`}
               >
-                <span
-                  className="material-symbols-outlined absolute left-md text-outline"
-                  aria-hidden="true"
-                >
-                  school
-                </span>
+                <Mail className="absolute left-md text-outline w-5 h-5 pointer-events-none" aria-hidden="true" />
                 <input
                   {...register("email")}
                   id="email"
@@ -202,12 +198,7 @@ export default function LoginPage() {
               <div
                 className={`relative flex items-center input-focus-ring rounded-xl bg-surface-container-low transition-all ${errors.password ? "ring-2 ring-error" : ""}`}
               >
-                <span
-                  className="material-symbols-outlined absolute left-md text-outline"
-                  aria-hidden="true"
-                >
-                  lock
-                </span>
+                <Lock className="absolute left-md text-outline w-5 h-5 pointer-events-none" aria-hidden="true" />
                 <input
                   {...register("password")}
                   id="password"
@@ -222,9 +213,11 @@ export default function LoginPage() {
                   className="absolute right-md text-outline hover:text-primary transition-colors"
                   aria-label={showPassword ? "Hide password" : "Show password"}
                 >
-                  <span className="material-symbols-outlined">
-                    {showPassword ? "visibility_off" : "visibility"}
-                  </span>
+                  {showPassword ? (
+                    <EyeOff className="w-5 h-5" aria-hidden="true" />
+                  ) : (
+                    <Eye className="w-5 h-5" aria-hidden="true" />
+                  )}
                 </button>
               </div>
               {errors.password && (

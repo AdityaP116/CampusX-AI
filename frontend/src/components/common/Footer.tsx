@@ -6,7 +6,9 @@
 // =========================================================
 
 import Link from "next/link";
+import Image from "next/image";
 import { ROUTES } from "@/constants/routes";
+import { Mail, Users } from "lucide-react";
 
 const PLATFORM_LINKS = [
   { href: ROUTES.MARKETPLACE, label: "Marketplace" },
@@ -27,15 +29,22 @@ export default function Footer() {
     <footer className="bg-surface-container py-xl border-t border-outline-variant/20">
       <div className="max-w-container-max mx-auto px-gutter">
         {/* Grid */}
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-12 mb-16">
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-8 md:gap-12 mb-16">
           {/* Brand column */}
           <div className="col-span-2 space-y-6">
             <Link
               href={ROUTES.HOME}
-              className="font-bold text-title text-primary tracking-tight inline-block"
+              className="flex items-center gap-2.5 font-bold text-title text-primary tracking-tight inline-flex group"
               aria-label="CampusX home"
             >
-              CampusX
+              <Image
+                src="/logo.png"
+                alt="CampusX Logo"
+                width={40}
+                height={40}
+                className="w-10 h-10 object-contain rounded-full bg-white shadow-sm p-0.5 group-hover:scale-105 transition-transform"
+              />
+              <span>CampusX</span>
             </Link>
             <p className="text-body text-on-surface-variant max-w-xs">
               Elevating the student trading experience with security, style,
@@ -48,18 +57,14 @@ export default function Footer() {
                 className="w-10 h-10 rounded-full bg-surface-variant/50 flex items-center justify-center hover:bg-primary/10 hover:text-primary text-on-surface-variant transition-all"
                 aria-label="Email"
               >
-                <span className="material-symbols-outlined text-title" aria-hidden="true">
-                  alternate_email
-                </span>
+                <Mail className="w-5 h-5" aria-hidden="true" />
               </a>
               <a
                 href="#"
                 className="w-10 h-10 rounded-full bg-surface-variant/50 flex items-center justify-center hover:bg-primary/10 hover:text-primary text-on-surface-variant transition-all"
                 aria-label="Community"
               >
-                <span className="material-symbols-outlined text-title" aria-hidden="true">
-                  hub
-                </span>
+                <Users className="w-5 h-5" aria-hidden="true" />
               </a>
             </div>
           </div>
@@ -105,7 +110,7 @@ export default function Footer() {
 
         {/* Bottom bar */}
         <div className="pt-8 border-t border-outline-variant/10 flex flex-col md:flex-row justify-between gap-4 text-caption text-on-surface-variant">
-          <p>© 2024 CampusX Inc. All rights reserved.</p>
+          <p>&copy; {new Date().getFullYear()} CampusX Inc. All rights reserved.</p>
           <div className="flex gap-6">
             <span>Verified in 450+ Universities</span>
             <span>Safe Campus Certified</span>

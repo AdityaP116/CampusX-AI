@@ -1,6 +1,7 @@
 import Link from "next/link";
 import type { Metadata } from "next";
 import { ROUTES } from "@/constants/routes";
+import { FileQuestion, ShoppingBag, Home } from "lucide-react";
 
 export const metadata: Metadata = {
   title: "Page Not Found",
@@ -30,7 +31,10 @@ export default function NotFound() {
         </Link>
 
         {/* 404 number */}
-        <div className="text-[120px] font-extrabold text-on-surface opacity-5 leading-none select-none">
+        <div className="flex justify-center mb-2 text-primary/30">
+          <FileQuestion className="w-24 h-24" aria-hidden="true" />
+        </div>
+        <div className="text-[120px] font-extrabold text-on-surface opacity-5 leading-none select-none -mt-10">
           404
         </div>
 
@@ -44,14 +48,16 @@ export default function NotFound() {
         <div className="flex flex-col sm:flex-row gap-3 justify-center pt-2">
           <Link
             href={ROUTES.MARKETPLACE}
-            className="bg-primary text-on-primary px-8 py-3 rounded-xl font-semibold hover:scale-[1.02] active:scale-95 transition-transform shadow-[var(--shadow-primary)]"
+            className="bg-primary text-on-primary px-8 py-3 rounded-xl font-semibold hover:scale-[1.02] active:scale-95 transition-transform shadow-[var(--shadow-primary)] flex items-center justify-center gap-2"
           >
+            <ShoppingBag className="w-5 h-5" aria-hidden="true" />
             Browse Marketplace
           </Link>
           <Link
             href={ROUTES.HOME}
-            className="border border-outline-variant text-on-surface px-8 py-3 rounded-xl font-semibold hover:bg-surface-container-low transition-colors"
+            className="border border-outline-variant text-on-surface px-8 py-3 rounded-xl font-semibold hover:bg-surface-container-low transition-colors flex items-center justify-center gap-2"
           >
+            <Home className="w-5 h-5" aria-hidden="true" />
             Go Home
           </Link>
         </div>

@@ -11,12 +11,14 @@ import { motion } from "framer-motion";
 import { ROUTES } from "@/constants/routes";
 import { useCurrentUser } from "@/store/auth.store";
 
+import { Inbox, Tag, Bookmark, Package, Settings, HelpCircle } from "lucide-react";
+
 const PROFILE_NAV_ITEMS = [
-  { href: ROUTES.CHAT, label: "Inbox", icon: "inbox" },
-  { href: "/offers", label: "Offers", icon: "local_offer" },
-  { href: ROUTES.WISHLIST, label: "Saved", icon: "bookmark" },
-  { href: "/listings", label: "Listings", icon: "sell" },
-  { href: ROUTES.SETTINGS, label: "Settings", icon: "settings" },
+  { href: ROUTES.CHAT, label: "Inbox", Icon: Inbox },
+  { href: "/offers", label: "Offers", Icon: Tag },
+  { href: ROUTES.WISHLIST, label: "Saved", Icon: Bookmark },
+  { href: "/listings", label: "Listings", Icon: Package },
+  { href: ROUTES.SETTINGS, label: "Settings", Icon: Settings },
 ];
 
 export default function ProfileSideNav() {
@@ -65,13 +67,10 @@ export default function ProfileSideNav() {
                   transition={{ type: "spring", stiffness: 400, damping: 30 }}
                 />
               )}
-              <span
-                className="material-symbols-outlined"
-                style={isActive ? { fontVariationSettings: "'FILL' 1" } : {}}
+              <item.Icon
+                className="w-5 h-5 shrink-0"
                 aria-hidden="true"
-              >
-                {item.icon}
-              </span>
+              />
               <span className="font-medium text-small">{item.label}</span>
             </Link>
           );
@@ -83,9 +82,7 @@ export default function ProfileSideNav() {
           href="#help"
           className="flex items-center gap-md text-on-surface-variant hover:bg-surface-container-high rounded-xl px-md py-sm transition-colors"
         >
-          <span className="material-symbols-outlined" aria-hidden="true">
-            help
-          </span>
+          <HelpCircle className="w-5 h-5 shrink-0" aria-hidden="true" />
           <span className="font-medium text-small">Support</span>
         </Link>
       </div>

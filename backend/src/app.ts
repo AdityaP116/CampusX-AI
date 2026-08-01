@@ -14,13 +14,36 @@ export const createApp = (): Application => {
   const app: Application = express();
 
   // Security Middlewares
-  app.use(helmet());
+  app.use(
+    helmet({
+      contentSecurityPolicy: false,
+      crossOriginResourcePolicy: { policy: "cross-origin" },
+      crossOriginEmbedderPolicy: false,
+    })
+  );
   app.use(
     cors({
       origin: env.CORS_ORIGIN,
       credentials: true,
     })
   );
+
+  // Chrome DevTools Probe Handler
+  app.get("/.well-known/appspecific/com.chrome.devtools.json", (_req: Request, res: Response) => {
+    res.status(204).end();
+  });
+
+  // Root Welcome Endpoint
+  app.get("/", (_req: Request, res: Response) => {
+    res.status(200).json(
+      ApiResponse.success("Welcome to CampusX Backend API Server", {
+        version: "v1",
+        docs: "/docs",
+        health: "/health",
+        status: "UP",
+      })
+    );
+  });
 
   // Request Rate Limiter & Logger
   app.use(globalRateLimiter);
@@ -44,6 +67,13 @@ export const createApp = (): Application => {
         timestamp: new Date().toISOString(),
         environment: env.NODE_ENV,
       })
+    );
+  });
+
+  // 404 Unhandled Route Handler
+  app.use((req: Request, res: Response) => {
+    res.status(404).json(
+      ApiResponse.error(`Route ${req.method} ${req.originalUrl} not found`, null)
     );
   });
 

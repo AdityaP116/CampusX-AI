@@ -8,37 +8,33 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { ROUTES } from "@/constants/routes";
+import { Grid, Compass, Bookmark, MessageSquare, User } from "lucide-react";
 
 const MOBILE_NAV_ITEMS = [
   {
     href: ROUTES.MARKETPLACE,
     label: "Market",
-    icon: "grid_view",
-    activeIcon: "grid_view",
+    Icon: Grid,
   },
   {
     href: ROUTES.CATEGORIES,
     label: "Explore",
-    icon: "explore",
-    activeIcon: "explore",
+    Icon: Compass,
   },
   {
     href: ROUTES.WISHLIST,
     label: "Saved",
-    icon: "favorite",
-    activeIcon: "favorite",
+    Icon: Bookmark,
   },
   {
     href: ROUTES.CHAT,
     label: "Inbox",
-    icon: "chat_bubble",
-    activeIcon: "chat_bubble",
+    Icon: MessageSquare,
   },
   {
     href: ROUTES.PROFILE,
     label: "Profile",
-    icon: "person",
-    activeIcon: "person",
+    Icon: User,
   },
 ];
 
@@ -65,7 +61,7 @@ export default function MobileNav() {
           <Link
             key={item.href}
             href={item.href}
-            className={`flex flex-col items-center gap-1 transition-colors ${
+            className={`flex flex-col items-center gap-1 min-w-[48px] px-2 transition-colors ${
               active
                 ? "text-primary"
                 : "text-on-surface-variant"
@@ -73,14 +69,11 @@ export default function MobileNav() {
             aria-label={item.label}
             aria-current={active ? "page" : undefined}
           >
-            <span
-              className="material-symbols-outlined text-h3"
-              style={active ? { fontVariationSettings: "'FILL' 1" } : {}}
+            <item.Icon
+              className="w-6 h-6"
               aria-hidden="true"
-            >
-              {active ? item.activeIcon : item.icon}
-            </span>
-            <span className="text-[10px] font-bold uppercase tracking-wide">
+            />
+            <span className="text-[11px] font-bold uppercase tracking-wide">
               {item.label}
             </span>
           </Link>

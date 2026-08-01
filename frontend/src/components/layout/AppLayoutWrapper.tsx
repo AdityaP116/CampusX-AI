@@ -27,7 +27,7 @@ export function AppLayoutWrapper({ children }: { children: ReactNode }) {
   return (
     <div className="flex max-w-container-max mx-auto pt-16 min-h-screen">
       {!hideSidebar && (isProfileRoute ? <ProfileSideNav /> : <SideNav />)}
-      <main className="flex-1 min-w-0 px-gutter py-xl pb-24 md:pb-xl">
+      <main className="flex-1 min-w-0 px-gutter py-xl pb-20 md:pb-xl">
         {children}
       </main>
     </div>

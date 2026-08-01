@@ -10,20 +10,33 @@ import { usePathname, useSearchParams } from "next/navigation";
 import { motion } from "framer-motion";
 import { ROUTES } from "@/constants/routes";
 import { useCurrentUser } from "@/store/auth.store";
+import {
+  LayoutDashboard,
+  Grid,
+  MonitorSmartphone,
+  BookOpen,
+  Home,
+  Handshake,
+  Settings,
+  HelpCircle,
+  MapPin,
+  Sparkles,
+} from "lucide-react";
 
 const NAV_ITEMS = [
-  { href: ROUTES.DASHBOARD, label: "Dashboard", icon: "grid_view" },
-  { href: ROUTES.MARKETPLACE, label: "All Products", icon: "grid_view",
+  { href: ROUTES.DASHBOARD, label: "Dashboard", Icon: LayoutDashboard,
+    activeHref: ROUTES.DASHBOARD },
+  { href: ROUTES.MARKETPLACE, label: "All Products", Icon: Grid,
     activeHref: ROUTES.MARKETPLACE },
-  { href: `${ROUTES.MARKETPLACE}?category=electronics`, label: "Electronics", icon: "devices" },
-  { href: `${ROUTES.MARKETPLACE}?category=textbooks`, label: "Textbooks", icon: "menu_book" },
-  { href: `${ROUTES.MARKETPLACE}?category=housing`, label: "Housing", icon: "home_work" },
-  { href: `${ROUTES.MARKETPLACE}?category=services`, label: "Services", icon: "handshake" },
+  { href: `${ROUTES.MARKETPLACE}?category=electronics`, label: "Electronics", Icon: MonitorSmartphone },
+  { href: `${ROUTES.MARKETPLACE}?category=textbooks`, label: "Textbooks", Icon: BookOpen },
+  { href: `${ROUTES.MARKETPLACE}?category=housing`, label: "Housing", Icon: Home },
+  { href: `${ROUTES.MARKETPLACE}?category=services`, label: "Services", Icon: Handshake },
 ];
 
 const BOTTOM_LINKS = [
-  { href: ROUTES.SETTINGS, label: "Settings", icon: "settings" },
-  { href: "#help", label: "Help Center", icon: "help" },
+  { href: ROUTES.SETTINGS, label: "Settings", Icon: Settings },
+  { href: "#help", label: "Help Center", Icon: HelpCircle },
 ];
 
 export default function SideNav() {
@@ -46,13 +59,7 @@ export default function SideNav() {
       <div className="px-6 py-6 mb-4 border-b border-outline-variant/20">
         <div className="flex items-center gap-3">
           <div className="w-8 h-8 md:w-10 md:h-10 bg-primary-fixed rounded-xl flex items-center justify-center">
-            <span
-              className="material-symbols-outlined text-primary text-title"
-              style={{ fontVariationSettings: "'FILL' 1" }}
-              aria-hidden="true"
-            >
-              location_on
-            </span>
+            <MapPin className="w-5 h-5 text-primary" aria-hidden="true" />
           </div>
           <div>
             <p className="font-bold text-body text-on-surface leading-tight">
@@ -70,14 +77,15 @@ export default function SideNav() {
           <section>
             <h4 className="text-small font-medium text-on-surface-variant uppercase tracking-wider mb-4">Category</h4>
             <div className="space-y-1">
-              {["Textbooks", "Electronics", "Housing"].map((cat) => (
-                <button key={cat} className={`w-full text-left font-medium rounded-lg px-4 py-2 flex items-center gap-3 transition-all duration-200 ${cat === "Textbooks" ? "bg-primary-container text-on-primary-container font-semibold" : "text-on-surface-variant hover:bg-surface-variant/50"}`}>
-                  <span className="material-symbols-outlined text-title">
-                    {cat === "Textbooks" ? "menu_book" : cat === "Electronics" ? "devices" : "home_work"}
-                  </span>
-                  {cat}
-                </button>
-              ))}
+              {["Textbooks", "Electronics", "Housing"].map((cat) => {
+                const CatIcon = cat === "Textbooks" ? BookOpen : cat === "Electronics" ? MonitorSmartphone : Home;
+                return (
+                  <button key={cat} className={`w-full text-left font-medium rounded-lg px-4 py-2 flex items-center gap-3 transition-all duration-200 ${cat === "Textbooks" ? "bg-primary-container text-on-primary-container font-semibold" : "text-on-surface-variant hover:bg-surface-variant/50"}`}>
+                    <CatIcon className="w-5 h-5" aria-hidden="true" />
+                    {cat}
+                  </button>
+                );
+              })}
             </div>
           </section>
 
@@ -126,13 +134,7 @@ export default function SideNav() {
                     transition={{ type: "spring", stiffness: 400, damping: 30 }}
                   />
                 )}
-                <span
-                  className="material-symbols-outlined text-title"
-                  style={active ? { fontVariationSettings: "'FILL' 1" } : {}}
-                  aria-hidden="true"
-                >
-                  {item.icon}
-                </span>
+                <item.Icon className="w-5 h-5" aria-hidden="true" />
                 {item.label}
               </Link>
             );
@@ -162,9 +164,7 @@ export default function SideNav() {
               href={link.href}
               className="flex items-center gap-3 px-4 py-2 text-small text-on-surface-variant hover:bg-surface-variant/50 rounded-lg transition-all"
             >
-              <span className="material-symbols-outlined text-[18px]" aria-hidden="true">
-                {link.icon}
-              </span>
+              <link.Icon className="w-5 h-5" aria-hidden="true" />
               {link.label}
             </Link>
           ))}

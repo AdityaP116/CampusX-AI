@@ -5,7 +5,7 @@
 // Pixel-perfect conversion of design/1/conversation
 // =========================================================
 
-import { useState, useRef, useEffect } from "react";
+import { useState, useRef, useEffect, use } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { motion, AnimatePresence } from "framer-motion";
@@ -18,7 +18,9 @@ const MOCK_MESSAGES = [
   { id: "2", senderId: "me", text: "Hey Sarah! Yes, it's still available. I have it with me right now.", time: "10:45 AM", isMine: true, status: "read" },
 ];
 
-export default function ChatConversationPage({ params }: { params: { id: string } }) {
+export default function ChatConversationPage({ params }: { params: Promise<{ id: string }> }) {
+  const unwrappedParams = use(params);
+  const conversationId = unwrappedParams.id;
   const [messages, setMessages] = useState<unknown[]>(MOCK_MESSAGES);
   const [newMessage, setNewMessage] = useState("");
   const [isTyping, setIsTyping] = useState(false);
@@ -32,7 +34,7 @@ export default function ChatConversationPage({ params }: { params: { id: string 
   useEffect(() => {
     if (!socket) return;
     
-    socket.emit("join_conversation", { conversationId: params.id });
+    socket.emit("join_conversation", { conversationId });
     
     socket.on("receive_message", (message: unknown) => {
       setMessages((prev) => [...prev, message]);
@@ -45,11 +47,11 @@ export default function ChatConversationPage({ params }: { params: { id: string 
     });
     
     return () => {
-      socket.emit("leave_conversation", { conversationId: params.id });
+      socket.emit("leave_conversation", { conversationId });
       socket.off("receive_message");
       socket.off("typing_indicator");
     };
-  }, [socket, params.id, currentUser?.id]);
+  }, [socket, conversationId, currentUser?.id]);
 
   useEffect(() => {
     if (scrollRef.current) {
@@ -59,7 +61,7 @@ export default function ChatConversationPage({ params }: { params: { id: string 
 
   const handleTyping = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     setNewMessage(e.target.value);
-    socket?.emit("typing_indicator", { conversationId: params.id, isTyping: e.target.value.length > 0 });
+    socket?.emit("typing_indicator", { conversationId, isTyping: e.target.value.length > 0 });
   };
 
   const handleSendMessage = () => {
@@ -72,10 +74,10 @@ export default function ChatConversationPage({ params }: { params: { id: string 
       isMine: true,
       status: "sent"
     };
-    socket.emit("send_message", { conversationId: params.id, message: msg });
+    socket.emit("send_message", { conversationId, message: msg });
     setMessages((prev) => [...prev, msg]);
     setNewMessage("");
-    socket.emit("typing_indicator", { conversationId: params.id, isTyping: false });
+    socket.emit("typing_indicator", { conversationId, isTyping: false });
   };
 
   return (

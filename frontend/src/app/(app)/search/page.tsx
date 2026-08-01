@@ -48,7 +48,13 @@ export default function SearchPage() {
           {activeFilters.map(filter => (
             <span key={filter} className="flex items-center gap-1 bg-surface-container-high text-on-surface text-caption font-bold px-3 py-1 rounded-full border border-outline-variant/40">
               {filter}
-              <button onClick={() => removeFilter(filter)} className="material-symbols-outlined text-body hover:text-error transition-colors">close</button>
+              <button
+                onClick={() => removeFilter(filter)}
+                aria-label={`Remove ${filter} filter`}
+                className="ml-0.5 flex items-center text-on-surface-variant hover:text-error transition-colors"
+              >
+                <span className="material-symbols-outlined text-[16px]">close</span>
+              </button>
             </span>
           ))}
           <button onClick={clearAll} className="text-primary text-caption font-bold hover:underline">Clear all</button>
@@ -138,16 +144,16 @@ export default function SearchPage() {
       </motion.div>
 
       {/* Pagination */}
-      <nav className="mt-xxl flex justify-center items-center gap-2">
-        <button className="w-10 h-10 rounded-lg border border-outline-variant/30 flex items-center justify-center text-on-surface-variant hover:bg-surface-variant transition-colors disabled:opacity-30" disabled>
+      <nav className="mt-xxl flex justify-center items-center gap-2" aria-label="Pagination">
+        <button className="h-10 w-10 rounded-lg border border-outline-variant/30 flex items-center justify-center text-on-surface-variant hover:bg-surface-variant transition-colors disabled:opacity-30" disabled aria-label="Previous page">
           <span className="material-symbols-outlined">chevron_left</span>
         </button>
-        <button className="w-10 h-10 rounded-lg bg-primary text-on-primary font-bold">1</button>
-        <button className="w-10 h-10 rounded-lg border border-outline-variant/30 text-on-surface-variant hover:bg-surface-variant transition-colors font-medium">2</button>
-        <button className="w-10 h-10 rounded-lg border border-outline-variant/30 text-on-surface-variant hover:bg-surface-variant transition-colors font-medium">3</button>
-        <span className="px-2 text-outline">...</span>
-        <button className="w-10 h-10 rounded-lg border border-outline-variant/30 text-on-surface-variant hover:bg-surface-variant transition-colors font-medium">12</button>
-        <button className="w-10 h-10 rounded-lg border border-outline-variant/30 flex items-center justify-center text-on-surface-variant hover:bg-surface-variant transition-colors">
+        <button className="h-10 w-10 rounded-lg bg-primary text-on-primary font-bold" aria-current="page">1</button>
+        <button className="h-10 w-10 rounded-lg border border-outline-variant/30 text-on-surface-variant hover:bg-surface-variant transition-colors font-medium">2</button>
+        <button className="h-10 w-10 rounded-lg border border-outline-variant/30 text-on-surface-variant hover:bg-surface-variant transition-colors font-medium">3</button>
+        <span className="px-2 text-outline" aria-hidden="true">...</span>
+        <button className="h-10 w-10 rounded-lg border border-outline-variant/30 text-on-surface-variant hover:bg-surface-variant transition-colors font-medium">12</button>
+        <button className="h-10 w-10 rounded-lg border border-outline-variant/30 flex items-center justify-center text-on-surface-variant hover:bg-surface-variant transition-colors" aria-label="Next page">
           <span className="material-symbols-outlined">chevron_right</span>
         </button>
       </nav>

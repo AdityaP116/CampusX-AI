@@ -67,7 +67,7 @@ export default function MarketplacePage() {
           initial={{ opacity: 0, x: 20 }}
           animate={{ opacity: 1, x: 0 }}
           transition={{ delay: 0.3 }}
-          className="hidden xl:block absolute right-12 top-1/2 -translate-y-1/2 w-full max-w-md h-[300px] bg-white/10 backdrop-blur-md rounded-[32px] p-6 shadow-2xl border border-white/20"
+          className="hidden xl:block absolute right-12 top-1/2 -translate-y-1/2 w-full max-w-md min-h-[280px] bg-white/10 backdrop-blur-md rounded-[32px] p-6 shadow-2xl border border-white/20"
         >
           <div className="flex items-center gap-4 mb-4">
             <div className="w-12 h-12 rounded-full bg-secondary-fixed flex items-center justify-center">
@@ -214,7 +214,7 @@ export default function MarketplacePage() {
       </section>
 
       {/* Floating Action Button (Mobile/Desktop) */}
-      <Link href={ROUTES.SELL} className="fixed bottom-24 md:bottom-8 right-6 md:right-8 bg-primary text-white w-14 h-14 md:w-16 md:h-16 rounded-full shadow-2xl flex items-center justify-center hover:scale-110 active:scale-95 transition-all z-40 group hover:shadow-primary/50">
+      <Link href={ROUTES.SELL} className="fixed bottom-20 md:bottom-8 right-6 md:right-8 bg-primary text-white w-14 h-14 md:w-16 md:h-16 rounded-full shadow-2xl flex items-center justify-center hover:scale-110 active:scale-95 transition-all z-40 group hover:shadow-primary/50">
         <span className="material-symbols-outlined text-[28px] md:text-h2">add</span>
         <span className="absolute right-full mr-4 bg-inverse-surface text-inverse-on-surface px-4 py-2 rounded-xl text-caption font-bold whitespace-nowrap opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none hidden md:block">
           Post New Listing
