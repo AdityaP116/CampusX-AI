@@ -1,61 +1,29 @@
-import type { Metadata, Viewport } from "next";
-import { Inter } from "next/font/google";
+import type { Metadata } from "next";
+import { Hanken_Grotesk, Inter, Geist } from "next/font/google";
+import { Navbar } from "@/shared/components/layout/navbar";
+import { FooterWrapper } from "@/shared/components/layout/footer-wrapper";
+import { AuthProvider } from "@/shared/providers/AuthProvider";
+import { QueryProvider } from "@/shared/providers/QueryProvider";
 import "./globals.css";
-import { QueryProvider } from "@/providers/QueryProvider";
-import { AuthProvider } from "@/providers/AuthProvider";
-import { SocketProvider } from "@/providers/SocketProvider";
 
-// =========================================================
-// Inter font — CampusX design system specifies Inter exclusively
-// =========================================================
-const inter = Inter({
+const hankenGrotesk = Hanken_Grotesk({
+  variable: "--font-hanken-grotesk",
   subsets: ["latin"],
-  weight: ["400", "500", "600", "700", "800"],
+});
+
+const inter = Inter({
   variable: "--font-inter",
-  display: "swap",
+  subsets: ["latin"],
+});
+
+const geist = Geist({
+  variable: "--font-geist-mono",
+  subsets: ["latin"],
 });
 
 export const metadata: Metadata = {
-  title: {
-    default: "CampusX | The Premium Student Marketplace",
-    template: "%s | CampusX",
-  },
-  description:
-    "A secure, high-end ecosystem for verified student-to-student trading. Buy, sell, rent, and exchange within your verified university community.",
-  keywords: [
-    "student marketplace",
-    "campus trading",
-    "buy sell campus",
-    "student exchange",
-    "verified student marketplace",
-    "university marketplace",
-  ],
-  authors: [{ name: "CampusX" }],
-  creator: "CampusX",
-  openGraph: {
-    type: "website",
-    locale: "en_US",
-    title: "CampusX | The Premium Student Marketplace",
-    description:
-      "Buy, sell, rent, and exchange within your verified university community.",
-    siteName: "CampusX",
-  },
-  twitter: {
-    card: "summary_large_image",
-    title: "CampusX | The Premium Student Marketplace",
-    description:
-      "Buy, sell, rent, and exchange within your verified university community.",
-  },
-  robots: {
-    index: true,
-    follow: true,
-  },
-};
-
-export const viewport: Viewport = {
-  themeColor: "#3525cd",
-  width: "device-width",
-  initialScale: 1,
+  title: "CampusX | Premium Student Marketplace",
+  description: "A secure, high-end ecosystem for verified student-to-student trading.",
 };
 
 export default function RootLayout({
@@ -64,13 +32,18 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" data-scroll-behavior="smooth" className={inter.variable}>
-      <body className="min-h-screen bg-background text-on-background font-sans antialiased overflow-x-hidden">
+    <html
+      lang="en"
+      className={`${hankenGrotesk.variable} ${inter.variable} ${geist.variable} h-full antialiased`}
+    >
+      <body className="min-h-full flex flex-col bg-surface text-on-surface">
         <QueryProvider>
           <AuthProvider>
-            <SocketProvider>
+            <Navbar />
+            <main className="flex-1 flex flex-col">
               {children}
-            </SocketProvider>
+            </main>
+            <FooterWrapper />
           </AuthProvider>
         </QueryProvider>
       </body>

@@ -19,6 +19,7 @@ export const createApp = (): Application => {
       contentSecurityPolicy: false,
       crossOriginResourcePolicy: { policy: "cross-origin" },
       crossOriginEmbedderPolicy: false,
+      crossOriginOpenerPolicy: { policy: "same-origin-allow-popups" },
     })
   );
   app.use(
@@ -51,7 +52,7 @@ export const createApp = (): Application => {
 
   // Body Parsing Middlewares
   app.use(express.json({ limit: "10mb" }));
-  app.use(express.urlencoded({ extended: true, limit: "10mb" }));
+  app.use(express.urlencoded({ extended: true, limit: "100kb" }));
 
   // Swagger API Documentation
   app.use("/docs", swaggerUi.serve, swaggerUi.setup(swaggerSpec));

@@ -22,6 +22,10 @@ export abstract class BaseRepository<T extends { id?: string }>
     this.collection = db.collection(collectionName);
   }
 
+  public get collectionRef(): CollectionReference<DocumentData> {
+    return this.collection;
+  }
+
   protected docToData(doc: QueryDocumentSnapshot<DocumentData>): T {
     return {
       id: doc.id,

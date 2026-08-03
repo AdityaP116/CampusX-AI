@@ -22,8 +22,8 @@ if (admin.apps.length === 0) {
   } else {
     // Application Default Credentials or Emulator mode
     firebaseApp = admin.initializeApp({
-      projectId: env.FIREBASE_PROJECT_ID || "campusx-dev",
-      storageBucket: env.FIREBASE_STORAGE_BUCKET || "campusx-dev.appspot.com",
+      projectId: env.FIREBASE_PROJECT_ID || "campusx-ai",
+      storageBucket: env.FIREBASE_STORAGE_BUCKET || "campusx-ai.appspot.com",
     });
     logger.info("Firebase Admin initialized with default credentials/project ID.");
   }

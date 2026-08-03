@@ -13,6 +13,7 @@ const envSchema = z.object({
   FIREBASE_CLIENT_EMAIL: z.string().optional(),
   FIREBASE_PRIVATE_KEY: z.string().optional(),
   FIREBASE_STORAGE_BUCKET: z.string().optional(),
+  REDIS_URL: z.string().optional(),
   RATE_LIMIT_WINDOW_MS: z
     .string()
     .default("900000")

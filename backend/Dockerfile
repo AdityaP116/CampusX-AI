@@ -20,7 +20,7 @@ ENV NODE_ENV=production
 ENV PORT=8080
 
 COPY package*.json ./
-RUN npm ci --only=production
+RUN npm ci --only=production && apk add --no-cache dumb-init
 
 COPY --from=builder /app/dist ./dist
 
@@ -28,4 +28,5 @@ EXPOSE 8080
 
 USER node
 
+ENTRYPOINT ["/usr/bin/dumb-init", "--"]
 CMD ["node", "dist/server.js"]

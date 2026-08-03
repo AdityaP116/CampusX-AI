@@ -1,0 +1,354 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>CampusX | Create Listing</title>
+<!-- Google Fonts: Inter, Hanken Grotesk, Geist -->
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&amp;family=Hanken+Grotesk:wght@600;700;800&amp;family=Geist:wght@500&amp;display=swap" rel="stylesheet"/>
+<!-- Material Symbols -->
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Tailwind CSS -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+        tailwind.config = {
+          darkMode: "class",
+          theme: {
+            extend: {
+              "colors": {
+                      "surface-container-lowest": "#ffffff",
+                      "on-secondary": "#ffffff",
+                      "error": "#ba1a1a",
+                      "surface": "#f9f9ff",
+                      "inverse-on-surface": "#edf0ff",
+                      "surface-variant": "#dce2f7",
+                      "on-background": "#141b2b",
+                      "background": "#f9f9ff",
+                      "inverse-primary": "#b3c5ff",
+                      "on-secondary-fixed": "#151c27",
+                      "primary-fixed-dim": "#b3c5ff",
+                      "on-tertiary-container": "#fff6f4",
+                      "tertiary-container": "#cc4204",
+                      "on-secondary-container": "#5e6572",
+                      "primary-fixed": "#dae1ff",
+                      "surface-container-low": "#f1f3ff",
+                      "on-error-container": "#93000a",
+                      "secondary-fixed-dim": "#c0c7d6",
+                      "on-primary-fixed": "#001849",
+                      "outline-variant": "#c2c6d8",
+                      "secondary-fixed": "#dce2f3",
+                      "surface-container": "#e9edff",
+                      "error-container": "#ffdad6",
+                      "on-surface": "#141b2b",
+                      "surface-container-highest": "#dce2f7",
+                      "on-primary-fixed-variant": "#003fa4",
+                      "inverse-surface": "#293040",
+                      "tertiary": "#a33200",
+                      "on-tertiary-fixed": "#390c00",
+                      "surface-tint": "#0054d6",
+                      "on-secondary-fixed-variant": "#404754",
+                      "surface-dim": "#d3daef",
+                      "outline": "#727687",
+                      "surface-bright": "#f9f9ff",
+                      "secondary-container": "#dce2f3",
+                      "tertiary-fixed-dim": "#ffb59d",
+                      "surface-container-high": "#e1e8fd",
+                      "secondary": "#585f6c",
+                      "on-tertiary-fixed-variant": "#832600",
+                      "primary-container": "#0066ff",
+                      "tertiary-fixed": "#ffdbd0",
+                      "on-primary": "#ffffff",
+                      "on-primary-container": "#f8f7ff",
+                      "on-error": "#ffffff",
+                      "primary": "#0050cb",
+                      "on-tertiary": "#ffffff",
+                      "on-surface-variant": "#424656"
+              },
+              "borderRadius": {
+                      "DEFAULT": "0.25rem",
+                      "lg": "0.5rem",
+                      "xl": "0.75rem",
+                      "full": "9999px"
+              },
+              "spacing": {
+                      "xs": "4px",
+                      "gutter": "24px",
+                      "container-max": "1280px",
+                      "unit": "8px",
+                      "md": "16px",
+                      "sm": "8px",
+                      "lg": "24px",
+                      "xl": "32px"
+              },
+              "fontFamily": {
+                      "headline-lg-mobile": ["Hanken Grotesk"],
+                      "body-md": ["Inter"],
+                      "body-sm": ["Inter"],
+                      "display-lg": ["Hanken Grotesk"],
+                      "label-md": ["Geist"],
+                      "headline-sm": ["Hanken Grotesk"],
+                      "headline-lg": ["Hanken Grotesk"]
+              },
+              "fontSize": {
+                      "headline-lg-mobile": ["24px", {"lineHeight": "32px", "fontWeight": "600"}],
+                      "body-md": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                      "body-sm": ["14px", {"lineHeight": "20px", "fontWeight": "400"}],
+                      "display-lg": ["48px", {"lineHeight": "56px", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                      "label-md": ["12px", {"lineHeight": "16px", "letterSpacing": "0.05em", "fontWeight": "500"}],
+                      "headline-sm": ["20px", {"lineHeight": "28px", "fontWeight": "600"}],
+                      "headline-lg": ["32px", {"lineHeight": "40px", "letterSpacing": "-0.02em", "fontWeight": "600"}]
+              }
+            },
+          },
+        }
+    </script>
+<style>
+        .glass-header {
+            background: rgba(255, 255, 255, 0.8);
+            backdrop-filter: blur(12px);
+        }
+        .drag-zone-active {
+            border-color: #0066ff;
+            background-color: #f1f3ff;
+        }
+        .step-transition {
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .no-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+        .no-scrollbar {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+    </style>
+</head>
+<body class="bg-surface font-body-md text-on-surface min-h-screen">
+<!-- TopNavBar -->
+<nav class="fixed top-0 w-full z-50 bg-white/80 dark:bg-surface-container/80 backdrop-blur-md shadow-sm">
+<div class="flex justify-between items-center px-lg py-md max-w-container-max mx-auto">
+<div class="flex items-center gap-xl">
+<span class="font-headline-sm text-headline-sm font-bold text-primary dark:text-inverse-primary">CampusX</span>
+<div class="hidden md:flex gap-lg">
+<a class="font-body-md text-body-md text-secondary dark:text-secondary-fixed-dim hover:text-primary dark:hover:text-primary-fixed transition-colors duration-200" href="#">Browse</a>
+<a class="font-body-md text-body-md text-primary dark:text-inverse-primary font-bold border-b-2 border-primary" href="#">My Listings</a>
+<a class="font-body-md text-body-md text-secondary dark:text-secondary-fixed-dim hover:text-primary dark:hover:text-primary-fixed transition-colors duration-200" href="#">Chats</a>
+</div>
+</div>
+<div class="flex items-center gap-md">
+<button class="p-sm text-secondary hover:text-primary transition-colors active:opacity-80">
+<span class="material-symbols-outlined">search</span>
+</button>
+<button class="p-sm text-secondary hover:text-primary transition-colors active:opacity-80">
+<span class="material-symbols-outlined">notifications</span>
+</button>
+<div class="h-8 w-8 rounded-full bg-surface-variant overflow-hidden ml-sm ring-2 ring-primary/10">
+<img class="w-full h-full object-cover" data-alt="A professional student profile portrait of a young adult looking directly at the camera with a friendly expression. The background is a soft-focus campus setting with bright, natural morning light. The overall aesthetic is clean, high-fidelity, and premium, utilizing a cool-toned color palette consistent with a modern university atmosphere." src="https://lh3.googleusercontent.com/aida-public/AB6AXuC8ls_SmvtekhPbjMZSnw0ysJ0xz7PvXxr-H1LjzNMz61sz-a_VDipuWBzOwU1yZS7dVxvoWRuv3RcqMXhf4Jo4MR8N-J1_LNTgmbrk6uG1ZLbntk10BSG2EflQqY0-8_YTUrwRgBfFhNyrvDpUnkJ87oljUzKRIvBO7dL38FEF67vNCydfFYY1mJuYo8goBmKjm5fxbkZRRH-K-WsKY-3qrFDH42sMQ1iC_9-4Ee2BZ6zNJHE2UcHz"/>
+</div>
+</div>
+</div>
+</nav>
+<!-- Main Content Canvas -->
+<main class="pt-24 pb-32 max-w-[800px] mx-auto px-md">
+<!-- Progress Header -->
+<header class="mb-xl text-center">
+<div class="inline-flex items-center gap-xs mb-md px-md py-xs bg-surface-container-low rounded-full">
+<span class="material-symbols-outlined text-[14px] text-primary" style="font-variation-settings: 'FILL' 1;">verified</span>
+<span class="font-label-md text-label-md text-primary uppercase tracking-wider">Listing Creation Flow</span>
+</div>
+<h1 class="font-headline-lg text-headline-lg text-on-surface mb-sm">What are you listing today?</h1>
+<p class="font-body-md text-body-md text-on-surface-variant max-w-[500px] mx-auto">Complete three simple steps to get your item in front of thousands of verified students.</p>
+</header>
+<!-- Progress Indicator -->
+<div class="relative flex justify-between items-center mb-xl px-lg">
+<div class="absolute top-1/2 left-0 w-full h-[2px] bg-outline-variant -z-10 -translate-y-1/2"></div>
+<div class="absolute top-1/2 left-0 w-1/3 h-[2px] bg-primary -z-10 -translate-y-1/2 step-transition"></div>
+<!-- Step 1 -->
+<div class="flex flex-col items-center gap-sm">
+<div class="w-10 h-10 rounded-full bg-primary text-on-primary flex items-center justify-center font-bold shadow-md">1</div>
+<span class="font-label-md text-label-md text-primary font-bold">Details</span>
+</div>
+<!-- Step 2 -->
+<div class="flex flex-col items-center gap-sm">
+<div class="w-10 h-10 rounded-full bg-surface-container-highest text-on-surface-variant flex items-center justify-center font-bold">2</div>
+<span class="font-label-md text-label-md text-on-surface-variant">Pricing</span>
+</div>
+<!-- Step 3 -->
+<div class="flex flex-col items-center gap-sm">
+<div class="w-10 h-10 rounded-full bg-surface-container-highest text-on-surface-variant flex items-center justify-center font-bold">3</div>
+<span class="font-label-md text-label-md text-on-surface-variant">Review</span>
+</div>
+</div>
+<!-- Form Card -->
+<div class="bg-surface-container-lowest rounded-xl shadow-[0px_1px_2px_rgba(0,0,0,0.05),0px_4px_12px_rgba(0,0,0,0.05)] p-xl border border-outline-variant/30">
+<form class="space-y-xl" id="listing-form">
+<!-- Section: Basic Information -->
+<div class="space-y-lg">
+<h2 class="font-headline-sm text-headline-sm text-on-surface border-b border-outline-variant/20 pb-sm">Basic Details</h2>
+<div class="space-y-sm">
+<label class="font-label-md text-label-md text-on-surface-variant block ml-1" for="title">Listing Title</label>
+<input class="w-full bg-surface-container-low border border-outline-variant rounded-lg px-md py-sm focus:ring-4 focus:ring-primary/10 focus:border-primary outline-none transition-all placeholder:text-outline font-body-md" id="title" name="title" placeholder="e.g., MacBook Pro 14-inch M2 (2023)" type="text"/>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-lg">
+<div class="space-y-sm">
+<label class="font-label-md text-label-md text-on-surface-variant block ml-1" for="category">Category</label>
+<select class="w-full bg-surface-container-low border border-outline-variant rounded-lg px-md py-sm focus:ring-4 focus:ring-primary/10 focus:border-primary outline-none transition-all font-body-md appearance-none" id="category" name="category">
+<option disabled="" selected="" value="">Select category</option>
+<option value="electronics">Electronics</option>
+<option value="textbooks">Textbooks</option>
+<option value="furniture">Furniture</option>
+<option value="clothing">Clothing</option>
+<option value="other">Other</option>
+</select>
+</div>
+<div class="space-y-sm">
+<label class="font-label-md text-label-md text-on-surface-variant block ml-1" for="condition">Condition</label>
+<select class="w-full bg-surface-container-low border border-outline-variant rounded-lg px-md py-sm focus:ring-4 focus:ring-primary/10 focus:border-primary outline-none transition-all font-body-md appearance-none" id="condition" name="condition">
+<option disabled="" selected="" value="">Select condition</option>
+<option value="new">Brand New</option>
+<option value="like-new">Like New</option>
+<option value="good">Good</option>
+<option value="fair">Fair / Used</option>
+</select>
+</div>
+</div>
+</div>
+<!-- Section: Photos -->
+<div class="space-y-lg">
+<div class="flex justify-between items-end border-b border-outline-variant/20 pb-sm">
+<h2 class="font-headline-sm text-headline-sm text-on-surface">Photos</h2>
+<span class="font-label-md text-label-md text-secondary">Up to 8 photos</span>
+</div>
+<div class="relative group cursor-pointer border-2 border-dashed border-outline-variant rounded-xl p-xl flex flex-col items-center justify-center gap-md bg-surface-container-low transition-all hover:bg-surface-container-high hover:border-primary active:scale-[0.99]" id="drop-zone">
+<input class="hidden" id="file-input" multiple="" type="file"/>
+<div class="w-16 h-16 rounded-full bg-primary-container/10 flex items-center justify-center text-primary-container group-hover:scale-110 transition-transform">
+<span class="material-symbols-outlined text-3xl">add_a_photo</span>
+</div>
+<div class="text-center">
+<p class="font-body-md text-body-md font-semibold text-on-surface">Click to upload or drag and drop</p>
+<p class="font-body-sm text-body-sm text-on-surface-variant mt-xs">High-quality photos increase sale speed by 40%</p>
+</div>
+</div>
+<div class="grid grid-cols-2 sm:grid-cols-4 gap-md" id="preview-grid">
+<!-- Placeholder Previews -->
+<div class="aspect-square rounded-lg bg-surface-container-highest flex items-center justify-center text-outline-variant border border-outline-variant/20">
+<span class="material-symbols-outlined">image</span>
+</div>
+<div class="aspect-square rounded-lg bg-surface-container-highest flex items-center justify-center text-outline-variant border border-outline-variant/20">
+<span class="material-symbols-outlined">image</span>
+</div>
+<div class="aspect-square rounded-lg bg-surface-container-highest flex items-center justify-center text-outline-variant border border-outline-variant/20">
+<span class="material-symbols-outlined">image</span>
+</div>
+<div class="aspect-square rounded-lg bg-surface-container-highest flex items-center justify-center text-outline-variant border border-outline-variant/20">
+<span class="material-symbols-outlined">image</span>
+</div>
+</div>
+</div>
+<!-- Section: Description -->
+<div class="space-y-lg">
+<h2 class="font-headline-sm text-headline-sm text-on-surface border-b border-outline-variant/20 pb-sm">Description</h2>
+<div class="space-y-sm">
+<textarea class="w-full bg-surface-container-low border border-outline-variant rounded-lg px-md py-sm focus:ring-4 focus:ring-primary/10 focus:border-primary outline-none transition-all placeholder:text-outline font-body-md resize-none" id="description" name="description" placeholder="Describe what you're selling. Mention any flaws, included accessories, or reasons for selling..." rows="5"></textarea>
+</div>
+</div>
+<!-- Action Buttons -->
+<div class="flex justify-end items-center gap-lg pt-xl border-t border-outline-variant/20 mt-xl">
+<button class="px-xl py-md font-body-md text-body-md text-secondary hover:bg-surface-variant rounded-lg transition-all active:scale-95" type="button">
+                        Save as Draft
+                    </button>
+<button class="px-xl py-md font-body-md text-body-md bg-primary-container text-on-primary-container rounded-lg font-bold shadow-md hover:bg-primary-container/90 transition-all active:scale-95 flex items-center gap-sm" type="submit">
+                        Next: Pricing
+                        <span class="material-symbols-outlined text-[18px]">arrow_forward</span>
+</button>
+</div>
+</form>
+</div>
+</main>
+<!-- Footer -->
+<footer class="w-full py-xl bg-surface-container-lowest dark:bg-surface-container-highest border-t border-outline-variant">
+<div class="max-w-container-max mx-auto px-lg flex flex-col md:flex-row justify-between items-center gap-lg">
+<div class="flex flex-col items-center md:items-start gap-xs">
+<span class="font-headline-sm text-headline-sm font-bold text-primary">CampusX</span>
+<p class="font-body-sm text-body-sm text-on-surface-variant">© 2024 CampusX. Premium Verified Marketplace.</p>
+</div>
+<div class="flex flex-wrap justify-center gap-lg">
+<a class="font-body-sm text-body-sm text-on-surface-variant hover:text-primary transition-colors" href="#">Terms of Service</a>
+<a class="font-body-sm text-body-sm text-on-surface-variant hover:text-primary transition-colors" href="#">Privacy Policy</a>
+<a class="font-body-sm text-body-sm text-on-surface-variant hover:text-primary transition-colors" href="#">Student Safety</a>
+<a class="font-body-sm text-body-sm text-on-surface-variant hover:text-primary transition-colors" href="#">Help Center</a>
+<a class="font-body-sm text-body-sm text-on-surface-variant hover:text-primary transition-colors" href="#">Support</a>
+</div>
+</div>
+</footer>
+<!-- Interactive Logic -->
+<script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const dropZone = document.getElementById('drop-zone');
+            const fileInput = document.getElementById('file-input');
+            const previewGrid = document.getElementById('preview-grid');
+
+            // Trigger file input on click
+            dropZone.addEventListener('click', () => fileInput.click());
+
+            // Visual feedback for drag and drop
+            ['dragenter', 'dragover'].forEach(eventName => {
+                dropZone.addEventListener(eventName, (e) => {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    dropZone.classList.add('drag-zone-active');
+                    dropZone.classList.add('shadow-lg');
+                }, false);
+            });
+
+            ['dragleave', 'drop'].forEach(eventName => {
+                dropZone.addEventListener(eventName, (e) => {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    dropZone.classList.remove('drag-zone-active');
+                    dropZone.classList.remove('shadow-lg');
+                }, false);
+            });
+
+            // Handle file selection
+            fileInput.addEventListener('change', handleFiles);
+            dropZone.addEventListener('drop', (e) => {
+                const dt = e.dataTransfer;
+                const files = dt.files;
+                handleFiles({ target: { files } });
+            });
+
+            function handleFiles(e) {
+                const files = [...e.target.files];
+                if (files.length > 0) {
+                    // In a real app, we would generate actual previews here.
+                    // For this UI demo, we'll simulate adding files to the grid.
+                    console.log('Files selected:', files.map(f => f.name));
+                    
+                    // Simple micro-interaction feedback
+                    dropZone.style.transform = 'scale(0.98)';
+                    setTimeout(() => dropZone.style.transform = 'scale(1)', 100);
+                }
+            }
+
+            // Form Submission Simulation
+            const form = document.getElementById('listing-form');
+            form.addEventListener('submit', (e) => {
+                e.preventDefault();
+                alert('Success! Moving to Step 2: Pricing & Logistics');
+            });
+
+            // Input focus animations
+            const inputs = document.querySelectorAll('input, select, textarea');
+            inputs.forEach(input => {
+                input.addEventListener('focus', () => {
+                    input.parentElement.querySelector('label')?.classList.add('text-primary');
+                });
+                input.addEventListener('blur', () => {
+                    input.parentElement.querySelector('label')?.classList.remove('text-primary');
+                });
+            });
+        });
+    </script>
+</body></html>

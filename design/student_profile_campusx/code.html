@@ -1,0 +1,350 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>CampusX | Student Profile</title>
+<!-- Google Fonts -->
+<link href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@400;500;600;700&amp;family=Inter:wght@400;500;600&amp;family=Geist:wght@400;500&amp;display=swap" rel="stylesheet"/>
+<!-- Material Symbols -->
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Tailwind CSS -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "surface-container-lowest": "#ffffff",
+                        "on-secondary": "#ffffff",
+                        "error": "#ba1a1a",
+                        "surface": "#f9f9ff",
+                        "inverse-on-surface": "#edf0ff",
+                        "surface-variant": "#dce2f7",
+                        "on-background": "#141b2b",
+                        "background": "#f9f9ff",
+                        "inverse-primary": "#b3c5ff",
+                        "on-secondary-fixed": "#151c27",
+                        "primary-fixed-dim": "#b3c5ff",
+                        "on-tertiary-container": "#fff6f4",
+                        "tertiary-container": "#cc4204",
+                        "on-secondary-container": "#5e6572",
+                        "primary-fixed": "#dae1ff",
+                        "surface-container-low": "#f1f3ff",
+                        "on-error-container": "#93000a",
+                        "secondary-fixed-dim": "#c0c7d6",
+                        "on-primary-fixed": "#001849",
+                        "outline-variant": "#c2c6d8",
+                        "secondary-fixed": "#dce2f3",
+                        "surface-container": "#e9edff",
+                        "error-container": "#ffdad6",
+                        "on-surface": "#141b2b",
+                        "surface-container-highest": "#dce2f7",
+                        "on-primary-fixed-variant": "#003fa4",
+                        "inverse-surface": "#293040",
+                        "tertiary": "#a33200",
+                        "on-tertiary-fixed": "#390c00",
+                        "surface-tint": "#0054d6",
+                        "on-secondary-fixed-variant": "#404754",
+                        "surface-dim": "#d3daef",
+                        "outline": "#727687",
+                        "surface-bright": "#f9f9ff",
+                        "secondary-container": "#dce2f3",
+                        "tertiary-fixed-dim": "#ffb59d",
+                        "surface-container-high": "#e1e8fd",
+                        "secondary": "#585f6c",
+                        "on-tertiary-fixed-variant": "#832600",
+                        "primary-container": "#0066ff",
+                        "tertiary-fixed": "#ffdbd0",
+                        "on-primary": "#ffffff",
+                        "on-primary-container": "#f8f7ff",
+                        "on-error": "#ffffff",
+                        "primary": "#0050cb",
+                        "on-tertiary": "#ffffff",
+                        "on-surface-variant": "#424656"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "xs": "4px",
+                        "gutter": "24px",
+                        "container-max": "1280px",
+                        "unit": "8px",
+                        "md": "16px",
+                        "sm": "8px",
+                        "lg": "24px",
+                        "xl": "32px"
+                    },
+                    "fontFamily": {
+                        "headline-lg-mobile": ["Hanken Grotesk"],
+                        "body-md": ["Inter"],
+                        "body-sm": ["Inter"],
+                        "display-lg": ["Hanken Grotesk"],
+                        "label-md": ["Geist"],
+                        "headline-sm": ["Hanken Grotesk"],
+                        "headline-lg": ["Hanken Grotesk"]
+                    },
+                    "fontSize": {
+                        "headline-lg-mobile": ["24px", {"lineHeight": "32px", "fontWeight": "600"}],
+                        "body-md": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                        "body-sm": ["14px", {"lineHeight": "20px", "fontWeight": "400"}],
+                        "display-lg": ["48px", {"lineHeight": "56px", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                        "label-md": ["12px", {"lineHeight": "16px", "letterSpacing": "0.05em", "fontWeight": "500"}],
+                        "headline-sm": ["20px", {"lineHeight": "28px", "fontWeight": "600"}],
+                        "headline-lg": ["32px", {"lineHeight": "40px", "letterSpacing": "-0.02em", "fontWeight": "600"}]
+                    }
+                },
+            },
+        }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+            display: inline-block;
+            vertical-align: middle;
+        }
+        .glass-header {
+            background: rgba(255, 255, 255, 0.8);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+        }
+        .tonal-elevation-1 {
+            background-color: #F9FAFB;
+        }
+        .tonal-elevation-2 {
+            background-color: #FFFFFF;
+            box-shadow: 0px 1px 2px rgba(0,0,0,0.05), 0px 4px 12px rgba(0,0,0,0.05);
+        }
+        .card-hover:hover {
+            box-shadow: 0px 8px 24px rgba(0,0,0,0.08);
+            border: 1px solid rgba(0, 102, 255, 0.1);
+            transform: translateY(-2px);
+            transition: all 0.3s ease;
+        }
+    </style>
+</head>
+<body class="bg-surface font-body-md text-on-surface">
+<!-- TopNavBar -->
+<header class="fixed top-0 w-full z-50 glass-header shadow-sm">
+<div class="max-w-container-max mx-auto px-lg py-md flex justify-between items-center">
+<div class="flex items-center gap-xl">
+<span class="font-headline-sm text-headline-sm font-bold text-primary">CampusX</span>
+<nav class="hidden md:flex gap-lg items-center">
+<a class="text-primary font-bold border-b-2 border-primary font-body-md text-body-md" href="#">Browse</a>
+<a class="text-secondary hover:text-primary transition-colors duration-200 font-body-md text-body-md" href="#">My Listings</a>
+<a class="text-secondary hover:text-primary transition-colors duration-200 font-body-md text-body-md" href="#">Chats</a>
+</nav>
+</div>
+<div class="flex items-center gap-md">
+<button class="p-xs text-secondary hover:text-primary transition-colors">
+<span class="material-symbols-outlined">search</span>
+</button>
+<button class="p-xs text-secondary hover:text-primary transition-colors">
+<span class="material-symbols-outlined">notifications</span>
+</button>
+<div class="w-8 h-8 rounded-full bg-surface-container overflow-hidden border border-outline-variant">
+<img class="w-full h-full object-cover" data-alt="A clean, minimalist profile portrait of a college student in a professional studio setting. The lighting is soft and high-key, emphasizing a modern light-mode aesthetic. The student looks friendly and trustworthy, wearing a simple blue sweater that complements the brand's primary color palette. The background is a soft, out-of-focus academic campus corridor." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDc864dpzly8CzlScrcdfZq6umv01mkycMg-1L8asWU7OOOyYxiiA6tG1XjShvqZJO9pYWZyFDUNDIr7VzwOsxRGcdtV1EJAHb4XaAG_u3qjyOa_ZCLbwxUO29HbtmOZ9xMaxko9WpT2MNuHrEAIgG6-FT4H7SgddVBbykRp8LvvsB9UiiGQ6mmMlFfkMdxLg2C21DSIZCZnos5wQ1dTi5aZ1uqR_U31-KP-Z-fOHzZna4iytxJ19ho"/>
+</div>
+</div>
+</div>
+</header>
+<main class="pt-32 pb-xl max-w-container-max mx-auto px-lg">
+<!-- Profile Header Section -->
+<section class="mb-xl">
+<div class="tonal-elevation-2 rounded-xl p-xl flex flex-col md:flex-row gap-xl items-start md:items-center">
+<!-- Avatar & Identity -->
+<div class="relative">
+<div class="w-32 h-32 md:w-40 md:h-40 rounded-full border-4 border-surface-container overflow-hidden">
+<img class="w-full h-full object-cover" data-alt="Close-up headshot of a smiling, confident female student with high-quality resolution. She is positioned against a clean, minimal white background with soft shadows. The image captures a sense of academic excellence and modern utility, featuring a premium SaaS minimalist aesthetic with bright, natural lighting." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDQuRStORbaqbkfs4z7uaTkayabmZXBwSIJBG_cIHo4aEpt8vNzQJwQBGvSSP5177kfs0IwRT_hNWdIVIR0Onr_OvWV_2InVkpC8ZExrhl8dJ7ZbbSZ-9q44kEVDxrBM5JAvBkz_EpWaY3ajjIB_wkIloT_pO9WJQPRARVH3LM6DnG88iDHNfo6fTueKhCW1G5k-LXGtcZFckOfgxjaWroo5eVKPXezQmhf4P_R0bClTBajgObUFPwe"/>
+</div>
+<div class="absolute bottom-2 right-2 bg-primary-container p-1 rounded-full border-4 border-white">
+<span class="material-symbols-outlined text-white text-md" style="font-variation-settings: 'FILL' 1;">verified</span>
+</div>
+</div>
+<!-- Info Grid -->
+<div class="flex-1 space-y-md">
+<div>
+<div class="flex items-center gap-sm">
+<h1 class="font-headline-lg text-headline-lg">Sarah Jenkins</h1>
+<span class="px-sm py-xs bg-surface-container-low text-primary font-label-md text-label-md rounded-full border border-primary/10">Verified Student</span>
+</div>
+<p class="text-secondary font-body-md text-body-md">Senior at Stanford University • Class of 2024</p>
+</div>
+<div class="flex flex-wrap gap-lg">
+<div class="flex items-center gap-sm">
+<div class="p-sm bg-primary/5 rounded-lg">
+<span class="material-symbols-outlined text-primary">verified_user</span>
+</div>
+<div>
+<p class="font-label-md text-label-md text-secondary">Trust Score</p>
+<p class="font-headline-sm text-headline-sm text-primary">98/100</p>
+</div>
+</div>
+<div class="flex items-center gap-sm">
+<div class="p-sm bg-primary/5 rounded-lg">
+<span class="material-symbols-outlined text-primary">local_shipping</span>
+</div>
+<div>
+<p class="font-label-md text-label-md text-secondary">Successful Trades</p>
+<p class="font-headline-sm text-headline-sm text-on-surface">42</p>
+</div>
+</div>
+<div class="flex items-center gap-sm">
+<div class="p-sm bg-primary/5 rounded-lg">
+<span class="material-symbols-outlined text-primary">star</span>
+</div>
+<div>
+<p class="font-label-md text-label-md text-secondary">Rating</p>
+<p class="font-headline-sm text-headline-sm text-on-surface">4.9/5.0</p>
+</div>
+</div>
+</div>
+</div>
+<div class="w-full md:w-auto flex flex-col gap-sm">
+<button class="w-full px-xl py-md bg-primary-container text-white font-semibold rounded-lg hover:brightness-90 transition-all active:scale-95 shadow-sm">
+                        Contact Sarah
+                    </button>
+<button class="w-full px-xl py-md bg-surface-variant text-on-surface-variant font-semibold rounded-lg hover:bg-outline-variant transition-all">
+                        Report Profile
+                    </button>
+</div>
+</div>
+</section>
+<!-- Main Content Grid -->
+<div class="grid grid-cols-1 lg:grid-cols-3 gap-xl">
+<!-- Left Column: Active Listings -->
+<div class="lg:col-span-2 space-y-lg">
+<div class="flex justify-between items-center px-xs">
+<h2 class="font-headline-lg text-headline-lg">Active Listings</h2>
+<button class="text-primary font-bold hover:underline">View All</button>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-lg">
+<!-- Listing Item 1 -->
+<div class="tonal-elevation-2 rounded-xl overflow-hidden card-hover">
+<div class="h-48 relative">
+<img class="w-full h-full object-cover" data-alt="A high-end, premium photo of a silver iPad Pro resting on a minimalist oak desk. The scene is brightly lit with soft, diffused sunlight, emphasizing the sleek metallic texture of the device. The background is a clean, modern dormitory room with white walls and a hint of greenery from a small plant. The overall aesthetic is professional, reliable, and high-fidelity." src="https://lh3.googleusercontent.com/aida-public/AB6AXuC_Ox0zhmkKv7f39wLLRKSTO2x3W8HP1vqwHMtWNls9uZ9lZBHaA75BM9uXy5GwUIfXnsWGviaR4NJ6S324RYZJyf-qMO0K1hA_5UUr13cIgt9gzJQgo5K9Z2gW9I_CaKp1FZfULpHAbMaOQE6zGGB4vvXJRzOMPJnHzfK6-ywbx2ZjghJ6J6f3nvPlW1eCZbe8h1RiXimAxMiL9Dfbs3UuWpuolL7FL7AZwg41N6YluM8bF0BugZjJ"/>
+<span class="absolute top-md right-md px-md py-xs bg-white/90 backdrop-blur-md rounded-full font-bold text-primary shadow-sm">$450</span>
+</div>
+<div class="p-lg space-y-sm">
+<p class="font-label-md text-label-md text-primary uppercase tracking-wider">Electronics</p>
+<h3 class="font-headline-sm text-headline-sm">iPad Pro 11" (2nd Gen)</h3>
+<p class="text-secondary text-body-sm line-clamp-2">Perfect condition, used for one semester. Includes Apple Pencil and smart cover.</p>
+<div class="pt-md border-t border-outline-variant flex justify-between items-center">
+<span class="text-body-sm text-secondary">Posted 2 days ago</span>
+<span class="material-symbols-outlined text-secondary">favorite</span>
+</div>
+</div>
+</div>
+<!-- Listing Item 2 -->
+<div class="tonal-elevation-2 rounded-xl overflow-hidden card-hover">
+<div class="h-48 relative">
+<img class="w-full h-full object-cover" data-alt="A pile of high-quality hardcover engineering and science textbooks stacked neatly on a white marble tabletop. The lighting is clean and professional, focusing on the crisp edges of the books and vibrant cover designs. The surrounding space is minimalist and academic, using a soft gray and blue color palette to maintain a premium SaaS feel. The mood is organized and studious." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBzLqjMOVH4UztLHTj-IE7PptHEf1F9MZDV5zx_B9IynJU2D3zkKokraTn91vH11kM2vSwoT-lpO4iiuqnA1u7v4dThou1s-6rpOUeriBjSabD9ZF82x7SlaoiRVNFL5XVx1hyhVQa4k078iIayC7RvYOuh4vc9M54fGvTcUOE8_in_iTCmRwBJvNJZYhkGdfMVNqjQEkN6HIxNTfPmKri8CAVyX-KB-jaHKLfgP0Slud9ba_zMykeG"/>
+<span class="absolute top-md right-md px-md py-xs bg-white/90 backdrop-blur-md rounded-full font-bold text-primary shadow-sm">$85</span>
+</div>
+<div class="p-lg space-y-sm">
+<p class="font-label-md text-label-md text-primary uppercase tracking-wider">Books</p>
+<h3 class="font-headline-sm text-headline-sm">Organic Chemistry Bundle</h3>
+<p class="text-secondary text-body-sm line-clamp-2">Hardcover 12th Edition textbook + Study Guide. No highlights or markings.</p>
+<div class="pt-md border-t border-outline-variant flex justify-between items-center">
+<span class="text-body-sm text-secondary">Posted 5 hours ago</span>
+<span class="material-symbols-outlined text-secondary">favorite</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Right Column: Reviews & Trust -->
+<div class="space-y-lg">
+<h2 class="font-headline-lg text-headline-lg px-xs">Reviews from Peers</h2>
+<div class="space-y-md">
+<!-- Review 1 -->
+<div class="tonal-elevation-2 rounded-xl p-lg space-y-md">
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-sm">
+<div class="w-10 h-10 rounded-full bg-surface-container overflow-hidden">
+<img class="w-full h-full object-cover" data-alt="A portrait of a male student with glasses, smiling warmly. He is dressed in a smart-casual white shirt against a neutral, high-key studio background. The lighting is professional and airy, reflecting a premium digital trust ecosystem. The image is crisp and centers on reliability and student community." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAURa9MJZfOC9xhRVCrJTX7nFNlPT1wdIDD8kgh_ES4iRL_iJoQ3QlMD-iy02dYGwfh4NTtSKJq9GzyDU1U_WmFkz1qZJk2BGidLnFVKdcNU5gn1EBKPGqg2qe-dPq3ljdHlf19zqsp2PrNj7yw45EzOwRB5Wfte-5MOr4vl4LYqSczwbWARmTT39nMCCIZpzZx00T_8up8jT74kbgzRIsJ2suKXezsaaIVApC-u9oSTH-v-wJf1Uf3"/>
+</div>
+<div>
+<p class="font-bold text-on-surface">Marcus T.</p>
+<p class="text-xs text-secondary">Verified Buyer</p>
+</div>
+</div>
+<div class="flex text-primary">
+<span class="material-symbols-outlined text-sm" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined text-sm" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined text-sm" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined text-sm" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined text-sm" style="font-variation-settings: 'FILL' 1;">star</span>
+</div>
+</div>
+<p class="text-body-sm text-on-surface-variant">"Sarah was great to deal with. The iPad was exactly as described and she met me right on campus. Super trustworthy!"</p>
+<p class="text-xs text-secondary">Oct 12, 2023</p>
+</div>
+<!-- Review 2 -->
+<div class="tonal-elevation-2 rounded-xl p-lg space-y-md">
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-sm">
+<div class="w-10 h-10 rounded-full bg-surface-container overflow-hidden">
+<img class="w-full h-full object-cover" data-alt="A professional headshot of a female student with a creative flair, featuring a soft pastel background. The lighting is gentle and even, highlighting a clean, sophisticated look. The visual style is modern SaaS minimalism, emphasizing trust and peer-to-peer verification in a high-fidelity academic environment." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAKOZiauV5LddWeiaSlvkTnhdid7zPFJEQi9zgPv9-wGca3nRIUBJDH2CxiWrhmkB8F3fyQTrRqIedWJmMYEVFR5c8SJMEaE74slpbPK2Pw0SGternGbQR9-vpN90B27NBSou1tGfAIeJmzOIoLndhGQ4nAIt7QdOPr2lwDgyXdsQWFozbqvW7_6dXRIyz9CAntRcYA8Khc0EKDTjQ0nmoFlniUuSf3xuzReIDHfHJGslskTwq8Actg"/>
+</div>
+<div>
+<p class="font-bold text-on-surface">Leila K.</p>
+<p class="text-xs text-secondary">Verified Seller</p>
+</div>
+</div>
+<div class="flex text-primary">
+<span class="material-symbols-outlined text-sm" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined text-sm" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined text-sm" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined text-sm" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined text-sm" style="font-variation-settings: 'FILL' 1;">star</span>
+</div>
+</div>
+<p class="text-body-sm text-on-surface-variant">"Sold my old lab coat to her. Quick payment and very polite communication. Highly recommend trading with Sarah."</p>
+<p class="text-xs text-secondary">Sept 28, 2023</p>
+</div>
+<!-- CTA to see more -->
+<button class="w-full py-md text-primary font-bold text-body-sm hover:bg-primary/5 rounded-lg transition-colors border border-dashed border-primary/20">
+                        View All 42 Reviews
+                    </button>
+</div>
+</div>
+</div>
+</main>
+<!-- Footer -->
+<footer class="bg-surface-container-lowest border-t border-outline-variant py-xl mt-xl">
+<div class="max-w-container-max mx-auto px-lg flex flex-col md:flex-row justify-between items-center gap-lg">
+<div class="flex flex-col gap-sm items-center md:items-start">
+<span class="font-headline-sm text-headline-sm font-bold text-primary">CampusX</span>
+<p class="text-on-surface-variant font-body-sm text-body-sm">© 2024 CampusX. Premium Verified Marketplace.</p>
+</div>
+<div class="flex flex-wrap justify-center gap-lg">
+<a class="text-on-surface-variant hover:text-primary transition-colors font-body-sm text-body-sm" href="#">Terms of Service</a>
+<a class="text-on-surface-variant hover:text-primary transition-colors font-body-sm text-body-sm" href="#">Privacy Policy</a>
+<a class="text-on-surface-variant hover:text-primary transition-colors font-body-sm text-body-sm" href="#">Student Safety</a>
+<a class="text-on-surface-variant hover:text-primary transition-colors font-body-sm text-body-sm" href="#">Help Center</a>
+<a class="text-on-surface-variant hover:text-primary transition-colors font-body-sm text-body-sm" href="#">Support</a>
+</div>
+</div>
+</footer>
+<script>
+        // Micro-interactions for hover states and button clicks
+        document.querySelectorAll('button').forEach(button => {
+            button.addEventListener('mousedown', () => {
+                button.classList.add('scale-95');
+            });
+            button.addEventListener('mouseup', () => {
+                button.classList.remove('scale-95');
+            });
+            button.addEventListener('mouseleave', () => {
+                button.classList.remove('scale-95');
+            });
+        });
+    </script>
+</body></html>

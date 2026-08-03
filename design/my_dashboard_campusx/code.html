@@ -1,0 +1,456 @@
+<!DOCTYPE html>
+
+<html lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>CampusX Student Dashboard</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500&family=Hanken+Grotesk:wght@600;700;800&family=Geist:wght@500&family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@100..900&family=Hanken+Grotesk:wght@100..900&family=Inter:wght@100..900&display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+          darkMode: "class",
+          theme: {
+            extend: {
+              "colors": {
+                      "surface-container-lowest": "#ffffff",
+                      "on-secondary": "#ffffff",
+                      "error": "#ba1a1a",
+                      "surface": "#f9f9ff",
+                      "inverse-on-surface": "#edf0ff",
+                      "surface-variant": "#dce2f7",
+                      "on-background": "#141b2b",
+                      "background": "#f9f9ff",
+                      "inverse-primary": "#b3c5ff",
+                      "on-secondary-fixed": "#151c27",
+                      "primary-fixed-dim": "#b3c5ff",
+                      "on-tertiary-container": "#fff6f4",
+                      "tertiary-container": "#cc4204",
+                      "on-secondary-container": "#5e6572",
+                      "primary-fixed": "#dae1ff",
+                      "surface-container-low": "#f1f3ff",
+                      "on-error-container": "#93000a",
+                      "secondary-fixed-dim": "#c0c7d6",
+                      "on-primary-fixed": "#001849",
+                      "outline-variant": "#c2c6d8",
+                      "secondary-fixed": "#dce2f3",
+                      "surface-container": "#e9edff",
+                      "error-container": "#ffdad6",
+                      "on-surface": "#141b2b",
+                      "surface-container-highest": "#dce2f7",
+                      "on-primary-fixed-variant": "#003fa4",
+                      "inverse-surface": "#293040",
+                      "tertiary": "#a33200",
+                      "on-tertiary-fixed": "#390c00",
+                      "surface-tint": "#0054d6",
+                      "on-secondary-fixed-variant": "#404754",
+                      "surface-dim": "#d3daef",
+                      "outline": "#727687",
+                      "surface-bright": "#f9f9ff",
+                      "secondary-container": "#dce2f3",
+                      "tertiary-fixed-dim": "#ffb59d",
+                      "surface-container-high": "#e1e8fd",
+                      "secondary": "#585f6c",
+                      "on-tertiary-fixed-variant": "#832600",
+                      "primary-container": "#0066ff",
+                      "tertiary-fixed": "#ffdbd0",
+                      "on-primary": "#ffffff",
+                      "on-primary-container": "#f8f7ff",
+                      "on-error": "#ffffff",
+                      "primary": "#0050cb",
+                      "on-tertiary": "#ffffff",
+                      "on-surface-variant": "#424656"
+              },
+              "borderRadius": {
+                      "DEFAULT": "0.25rem",
+                      "lg": "0.5rem",
+                      "xl": "0.75rem",
+                      "full": "9999px"
+              },
+              "spacing": {
+                      "xs": "4px",
+                      "gutter": "24px",
+                      "container-max": "1280px",
+                      "unit": "8px",
+                      "md": "16px",
+                      "sm": "8px",
+                      "lg": "24px",
+                      "xl": "32px"
+              },
+              "fontFamily": {
+                      "headline-lg-mobile": ["Hanken Grotesk"],
+                      "body-md": ["Inter"],
+                      "body-sm": ["Inter"],
+                      "display-lg": ["Hanken Grotesk"],
+                      "label-md": ["Geist"],
+                      "headline-sm": ["Hanken Grotesk"],
+                      "headline-lg": ["Hanken Grotesk"]
+              },
+              "fontSize": {
+                      "headline-lg-mobile": ["24px", {"lineHeight": "32px", "fontWeight": "600"}],
+                      "body-md": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                      "body-sm": ["14px", {"lineHeight": "20px", "fontWeight": "400"}],
+                      "display-lg": ["48px", {"lineHeight": "56px", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                      "label-md": ["12px", {"lineHeight": "16px", "letterSpacing": "0.05em", "fontWeight": "500"}],
+                      "headline-sm": ["20px", {"lineHeight": "28px", "fontWeight": "600"}],
+                      "headline-lg": ["32px", {"lineHeight": "40px", "letterSpacing": "-0.02em", "fontWeight": "600"}]
+              }
+            },
+          },
+        }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+            vertical-align: middle;
+        }
+        .glass-nav {
+            background: rgba(255, 255, 255, 0.8);
+            backdrop-filter: blur(12px);
+        }
+        .dashboard-card {
+            background: #ffffff;
+            border-radius: 16px;
+            box-shadow: 0px 1px 2px rgba(0,0,0,0.05), 0px 4px 12px rgba(0,0,0,0.05);
+            transition: all 0.2s ease;
+        }
+        .dashboard-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0px 4px 8px rgba(0,0,0,0.08), 0px 12px 24px rgba(0,0,0,0.08);
+            border: 1px solid rgba(0, 102, 255, 0.1);
+        }
+        .bento-grid {
+            display: grid;
+            grid-template-columns: repeat(12, 1fr);
+            gap: 24px;
+        }
+        .scroll-hide::-webkit-scrollbar { display: none; }
+    </style>
+</head>
+<body class="bg-background text-on-surface font-body-md antialiased min-h-screen">
+<!-- TopNavBar -->
+<header class="fixed top-0 w-full z-50 glass-nav shadow-sm">
+<div class="max-w-container-max mx-auto px-lg py-md flex justify-between items-center">
+<div class="flex items-center space-x-xl">
+<span class="font-headline-sm text-headline-sm font-bold text-primary">CampusX</span>
+<nav class="hidden md:flex space-x-lg">
+<a class="text-secondary hover:text-primary transition-colors duration-200 font-body-md text-body-md" href="#">Browse</a>
+<a class="text-primary font-bold border-b-2 border-primary font-body-md text-body-md" href="#">My Listings</a>
+<a class="text-secondary hover:text-primary transition-colors duration-200 font-body-md text-body-md" href="#">Chats</a>
+</nav>
+</div>
+<div class="flex items-center space-x-md">
+<button class="p-xs text-secondary hover:text-primary transition-colors">
+<span class="material-symbols-outlined" data-icon="search">search</span>
+</button>
+<button class="p-xs text-secondary hover:text-primary transition-colors relative">
+<span class="material-symbols-outlined" data-icon="notifications">notifications</span>
+<span class="absolute top-1 right-1 w-2 h-2 bg-error rounded-full"></span>
+</button>
+<div class="w-8 h-8 rounded-full overflow-hidden border border-outline-variant">
+<img class="w-full h-full object-cover" data-alt="Close-up portrait of a diverse college student with a friendly smile, wearing casual academic attire. The background is a softly blurred modern university campus hallway with bright, clean architectural lines and a premium, high-fidelity aesthetic. The lighting is soft and natural, emphasizing a professional yet approachable verified student identity." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDVIjlmD6UE9BgOGavB_DVwoavMSp4j7EkfSeI3i4dXTO_NDCSzAHrwjr1OMR17Nic1iZ3faOd5MLbOuJYvkoXhDQlaQORE9oCH70Rpfu-lwOGvM-HJ-BiumtboJFvivy9nkLWh-4jWslNgMhNQQBUpLuANangplAtBeBK7BXf1GUW2iy6-4Gto2TEy0Do0h8Hh5__lTsLiXPWeaZrZig1e4CeeEFqehzTm2xoef5-Az0be9mSpNpyj"/>
+</div>
+</div>
+</div>
+</header>
+<!-- SideNavBar (Hidden on Mobile) -->
+<aside class="hidden lg:flex flex-col h-screen w-64 fixed left-0 top-0 bg-surface-container-low p-md space-y-sm z-40 pt-24">
+<div class="mb-xl px-sm">
+<div class="flex items-center space-x-sm mb-xs">
+<span class="font-headline-sm text-headline-sm font-bold text-primary">CampusX</span>
+<span class="material-symbols-outlined text-primary text-[18px]" style="font-variation-settings: 'FILL' 1;">verified</span>
+</div>
+<p class="text-label-md font-label-md text-on-surface-variant">Verified Student Account</p>
+</div>
+<nav class="space-y-xs flex-1">
+<a class="flex items-center space-x-sm p-md bg-primary-container text-on-primary-container rounded-lg font-bold transition-all" href="#">
+<span class="material-symbols-outlined" data-icon="explore">explore</span>
+<span class="font-label-md text-label-md">Browse</span>
+</a>
+<a class="flex items-center space-x-sm p-md text-on-surface-variant hover:bg-surface-variant rounded-lg transition-all" href="#">
+<span class="material-symbols-outlined" data-icon="list_alt">list_alt</span>
+<span class="font-label-md text-label-md">My Listings</span>
+</a>
+<a class="flex items-center space-x-sm p-md text-on-surface-variant hover:bg-surface-variant rounded-lg transition-all" href="#">
+<span class="material-symbols-outlined" data-icon="forum">forum</span>
+<span class="font-label-md text-label-md">Chats</span>
+</a>
+<a class="flex items-center space-x-sm p-md text-on-surface-variant hover:bg-surface-variant rounded-lg transition-all" href="#">
+<span class="material-symbols-outlined" data-icon="favorite">favorite</span>
+<span class="font-label-md text-label-md">Wishlist</span>
+</a>
+<a class="flex items-center space-x-sm p-md text-on-surface-variant hover:bg-surface-variant rounded-lg transition-all" href="#">
+<span class="material-symbols-outlined" data-icon="settings">settings</span>
+<span class="font-label-md text-label-md">Settings</span>
+</a>
+</nav>
+<button class="w-full bg-primary text-on-primary py-md rounded-xl font-bold flex items-center justify-center space-x-sm active:scale-95 transition-transform">
+<span class="material-symbols-outlined" data-icon="add">add</span>
+<span class="font-label-md text-label-md">List an Item</span>
+</button>
+</aside>
+<!-- Main Content Canvas -->
+<main class="lg:ml-64 pt-24 pb-xl px-md md:px-xl max-w-[1440px] mx-auto">
+<!-- Welcome Section -->
+<section class="mb-xl flex flex-col md:flex-row md:items-end justify-between gap-md">
+<div>
+<h1 class="font-headline-lg text-headline-lg text-on-surface mb-xs">Welcome back, Alex</h1>
+<p class="text-body-md text-on-surface-variant">Your marketplace activity is up 12% this week. Keep it up!</p>
+</div>
+<div class="flex space-x-sm">
+<button class="px-lg py-md bg-surface-container-high text-on-surface font-bold rounded-xl active:opacity-80 transition-opacity">
+                    View Activity
+                </button>
+<button class="px-lg py-md bg-primary text-on-primary font-bold rounded-xl active:opacity-80 transition-opacity flex items-center space-x-xs">
+<span class="material-symbols-outlined" data-icon="rocket_launch">rocket_launch</span>
+<span>List an Item</span>
+</button>
+</div>
+</section>
+<!-- Dashboard Bento Grid -->
+<div class="bento-grid">
+<!-- Statistics Widget -->
+<div class="col-span-12 lg:col-span-8 dashboard-card p-xl">
+<div class="flex justify-between items-center mb-xl">
+<h3 class="font-headline-sm text-headline-sm">Listing Engagement</h3>
+<select class="bg-surface-container-low border-none rounded-lg text-label-md font-label-md px-md py-xs focus:ring-2 focus:ring-primary">
+<option>Last 7 Days</option>
+<option>Last 30 Days</option>
+</select>
+</div>
+<div class="h-64 w-full relative flex items-end justify-between px-md">
+<!-- Simple CSS Chart Bars -->
+<div class="w-8 bg-primary/10 rounded-t-lg h-[40%] relative group">
+<div class="absolute -top-8 left-1/2 -translate-x-1/2 bg-inverse-surface text-inverse-on-surface text-[10px] px-xs py-1 rounded opacity-0 group-hover:opacity-100 transition-opacity">124</div>
+<div class="absolute bottom-0 w-full bg-primary rounded-t-lg h-[60%] transition-all duration-500 hover:h-[70%]"></div>
+</div>
+<div class="w-8 bg-primary/10 rounded-t-lg h-[55%] relative group">
+<div class="absolute -top-8 left-1/2 -translate-x-1/2 bg-inverse-surface text-inverse-on-surface text-[10px] px-xs py-1 rounded opacity-0 group-hover:opacity-100 transition-opacity">182</div>
+<div class="absolute bottom-0 w-full bg-primary rounded-t-lg h-[80%] transition-all duration-500 hover:h-[90%]"></div>
+</div>
+<div class="w-8 bg-primary/10 rounded-t-lg h-[45%] relative group">
+<div class="absolute bottom-0 w-full bg-primary rounded-t-lg h-[50%]"></div>
+</div>
+<div class="w-8 bg-primary/10 rounded-t-lg h-[70%] relative group">
+<div class="absolute bottom-0 w-full bg-primary rounded-t-lg h-[90%]"></div>
+</div>
+<div class="w-8 bg-primary/10 rounded-t-lg h-[60%] relative group">
+<div class="absolute bottom-0 w-full bg-primary rounded-t-lg h-[75%]"></div>
+</div>
+<div class="w-8 bg-primary/10 rounded-t-lg h-[85%] relative group">
+<div class="absolute bottom-0 w-full bg-primary rounded-t-lg h-[95%]"></div>
+</div>
+<div class="w-8 bg-primary/10 rounded-t-lg h-[50%] relative group">
+<div class="absolute bottom-0 w-full bg-primary rounded-t-lg h-[65%]"></div>
+</div>
+</div>
+<div class="grid grid-cols-3 gap-md mt-xl pt-xl border-t border-outline-variant">
+<div>
+<p class="text-label-md font-label-md text-on-surface-variant uppercase tracking-wider mb-xs">Total Views</p>
+<p class="text-headline-sm font-bold">2,482</p>
+</div>
+<div>
+<p class="text-label-md font-label-md text-on-surface-variant uppercase tracking-wider mb-xs">Inquiries</p>
+<p class="text-headline-sm font-bold">48</p>
+</div>
+<div>
+<p class="text-label-md font-label-md text-on-surface-variant uppercase tracking-wider mb-xs">Conversion</p>
+<p class="text-headline-sm font-bold">4.2%</p>
+</div>
+</div>
+</div>
+<!-- Recent Chats -->
+<div class="col-span-12 lg:col-span-4 dashboard-card p-xl flex flex-col">
+<div class="flex justify-between items-center mb-lg">
+<h3 class="font-headline-sm text-headline-sm">Recent Chats</h3>
+<a class="text-primary text-label-md font-label-md hover:underline" href="#">View All</a>
+</div>
+<div class="space-y-md flex-1">
+<div class="flex items-center space-x-md p-sm hover:bg-surface-container-low rounded-xl transition-colors cursor-pointer">
+<div class="w-10 h-10 rounded-full bg-secondary-container flex-shrink-0">
+<img class="w-full h-full object-cover rounded-full" data-alt="A close-up high-resolution avatar of a student with soft studio lighting. The style is professional and minimalist, with a clean off-white background. The student has a bright, trustworthy expression, wearing a navy blue collegiate hoodie. The image composition is centered and follows premium UI design standards." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAcKGs_VjaWe_fUb8kPMM5y7vHkd5YygnJ1xw-HnhXOHPstgwM3heQfd9R6Iv0qhYPA5ycCIGKKUR9a5EyyPYCtwjyuLNy02DZ27lIPIj5VrMBOOcBDOorp89Gu6PqGmYzDQqKh3hfYGnTPWrRUqQneZAwW-xgodV9AOgGy5xMFkijVmL0MagnkbA8ACJRSAXy0M4qysybzYu6BCNsc_2-Ok2Tko03TOyS-6YhZVJBXfqYfyxs4l1hY"/>
+</div>
+<div class="flex-1 overflow-hidden">
+<div class="flex justify-between">
+<p class="font-bold text-body-sm">Jordan Smith</p>
+<span class="text-[10px] text-on-surface-variant">2m ago</span>
+</div>
+<p class="text-body-sm text-on-surface-variant truncate">Is the textbook still available for purchase?</p>
+</div>
+</div>
+<div class="flex items-center space-x-md p-sm hover:bg-surface-container-low rounded-xl transition-colors cursor-pointer">
+<div class="w-10 h-10 rounded-full bg-secondary-container flex-shrink-0">
+<img class="w-full h-full object-cover rounded-full" data-alt="A minimalist professional avatar of a young female student with a warm smile, set against a soft pastel background. The lighting is bright and even, typical of high-end SaaS profile pictures. She is wearing a modern, simple knit sweater. The overall aesthetic is clean, modern, and high-fidelity." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAK7o8xdqBo_8sNMQ2QaLGLEakvwTAn_gEDnfmWM6ytgI5_uQECTOsv7DGh-Gt9Dd8h1DWoPhaqwIuuYpACb33LZKfhPE1sg8pbSRLynf5Eml-g8TG0Dpy94LLyYpASz5rA5qKX4Xn5c8urueNX32B-FXFiVYTqoMdkWjCxtZZ5Y1XmNU1w-IzCmPboX5QksoTJ_QK12cPspatXZHbN1F67obDEnSedSOLslkFuAZg90KcRJIY8XO-V"/>
+</div>
+<div class="flex-1 overflow-hidden">
+<div class="flex justify-between">
+<p class="font-bold text-body-sm">Sarah Chen</p>
+<span class="text-[10px] text-on-surface-variant">1h ago</span>
+</div>
+<p class="text-body-sm text-on-surface-variant truncate">Can we meet at the library commons at 3pm?</p>
+</div>
+</div>
+<div class="flex items-center space-x-md p-sm hover:bg-surface-container-low rounded-xl transition-colors cursor-pointer opacity-70">
+<div class="w-10 h-10 rounded-full bg-secondary-container flex-shrink-0">
+<img class="w-full h-full object-cover rounded-full" data-alt="Close-up portrait of a student with a friendly and reliable appearance, captured with soft-focus bokeh background of a university campus. The lighting is natural and high-key, creating a bright and welcoming feel. The visual style is premium and minimal, perfect for a verified student marketplace profile." src="https://lh3.googleusercontent.com/aida-public/AB6AXuB35SrhEnQtdlRVo2AwivDSBwy5x8FIYz7r69lD4ICxrxZn31rQc9TsaMtjlmEzI6kqXWqUz4Mpbt1ByzPI2N43544BgD_WXIfzb8i2Zm1_qz5inBx8ZcoeHO_qJyQHQDFSVE_hDqDkV4vECI-qYpFSN607flYGdAiVIxMoFylVd1L1b50XnqIlpfzjsFAEfOZqtn9AE5tovVtvl8ELe8VXrq2S1wz5UPgyZZwyaPBynCkDWbrnFNcS"/>
+</div>
+<div class="flex-1 overflow-hidden">
+<div class="flex justify-between">
+<p class="font-bold text-body-sm">Marcus Vogt</p>
+<span class="text-[10px] text-on-surface-variant">Yesterday</span>
+</div>
+<p class="text-body-sm text-on-surface-variant truncate">Thanks for the quick trade! Recommended.</p>
+</div>
+</div>
+</div>
+<button class="mt-lg w-full py-md border border-outline-variant text-on-surface-variant font-bold rounded-xl hover:bg-surface-container-low transition-colors text-label-md font-label-md uppercase tracking-wider">
+                    Open Messenger
+                </button>
+</div>
+<!-- Active Listings -->
+<div class="col-span-12 dashboard-card p-xl">
+<div class="flex justify-between items-center mb-xl">
+<div>
+<h3 class="font-headline-sm text-headline-sm">Active Listings</h3>
+<p class="text-body-sm text-on-surface-variant">You have 4 live items currently visible.</p>
+</div>
+<button class="p-sm hover:bg-surface-container-low rounded-full transition-colors">
+<span class="material-symbols-outlined">more_horiz</span>
+</button>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-lg">
+<!-- Listing Card -->
+<div class="group cursor-pointer">
+<div class="relative aspect-square rounded-xl overflow-hidden mb-md border border-outline-variant">
+<img class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" data-alt="High-resolution, minimalist product shot of a sleek silver laptop on a clean white desk. The lighting is soft and architectural, with subtle shadows that emphasize its slim profile. The setting is a bright, airy student dorm with premium decor elements. The mood is clean, professional, and high-fidelity." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAX_1ONjFPgEkLVXdp-EyGG6oy_NOWuSwom-rZTmx-LUXPKqZ5CdK8aUXauPn55vo73NY9-MZZ0YmMRhRsn6RMkuppmbTGKDajCE51G2kAD9s0gupMf7bRrtTWGecX8ylRc0pEAtxMi8xaAJYDJtMoQYUeHqxY-ZWSX-W650eIV2ydqsCcT5PMr-V9EuM4jmiV6-cDdmOAFaHtw1v9ZGpFZeE81DaUJHd17FOOLRMblbuDr9Va0_xQG"/>
+<div class="absolute top-2 right-2 bg-white/90 backdrop-blur px-sm py-1 rounded-full shadow-sm text-[10px] font-bold uppercase text-primary">Active</div>
+</div>
+<h4 class="font-bold text-body-md group-hover:text-primary transition-colors">MacBook Pro M2 - 14"</h4>
+<p class="text-on-surface-variant text-body-sm mb-xs">Slight use, 16GB RAM, 512GB SSD</p>
+<p class="text-primary font-bold">$1,200</p>
+</div>
+<!-- Listing Card -->
+<div class="group cursor-pointer">
+<div class="relative aspect-square rounded-xl overflow-hidden mb-md border border-outline-variant">
+<img class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" data-alt="Studio quality photograph of a set of high-end noise-canceling headphones placed on a minimalist wooden table. The lighting is dramatic but soft, highlighting the premium textures of the leather and matte finish. The background is a blurred modern study space with warm, inviting tones. The style is clean SaaS minimalism." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCvjBK-9--ZEGEWp1Pnousw-fAylt_nDDCPhI6MHOeso_tC-8sY7dyBIFrfG7PplNjeyC9R-IevBhzQ5bshBmUw4QabAc0zjqK0Ui96LLU7jDajS7dyFgY_5CO6YIuN4JV1bnQUCio0e47s1_pbMM1kF7UVuzhp9b3TaYDfNGWxBNWHrXo1d2PNLk7V6pWz_yp2DFYfJERZw4zwu3Wo3Bep0mpAlICK9sbtVDuVlHP3fexKOjrpHmbI"/>
+<div class="absolute top-2 right-2 bg-white/90 backdrop-blur px-sm py-1 rounded-full shadow-sm text-[10px] font-bold uppercase text-primary">Active</div>
+</div>
+<h4 class="font-bold text-body-md group-hover:text-primary transition-colors">Sony WH-1000XM5</h4>
+<p class="text-on-surface-variant text-body-sm mb-xs">Brand new in box, unused.</p>
+<p class="text-primary font-bold">$280</p>
+</div>
+<!-- Listing Card -->
+<div class="group cursor-pointer">
+<div class="relative aspect-square rounded-xl overflow-hidden mb-md border border-outline-variant">
+<img class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" data-alt="A clean, minimalist product shot of a stack of hardcover academic textbooks on a pristine marble surface. The lighting is high-key and professional, giving an air of excellence and value. The background is an out-of-focus modern campus library. The aesthetic is sophisticated and trustworthy, aligned with premium student services." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDpEaJGmKlN1FSSx1G1b9-Tjj2wpqmzZ7oJXJi_7-1nl8exxphoTLweMYV85ZA8XPF9nvUsNcjC_fdy0uvX-jcv0XEnYS_yirzDkCGlPlE8BQK9E42Fsx165oFNEDOmFdGA2rRKlGzOclq2cmIhMwVjGJlxWSs-5FIlGxhuynz_v4EL7ghRXBO3LFiW0e0PesnnaGegNMoVw9OIl-e7pJT0YSD9aHnY3rD8-wTzoDIfyk_6C_bg1elW"/>
+<div class="absolute top-2 right-2 bg-white/90 backdrop-blur px-sm py-1 rounded-full shadow-sm text-[10px] font-bold uppercase text-primary">Active</div>
+</div>
+<h4 class="font-bold text-body-md group-hover:text-primary transition-colors">Organic Chemistry Bundle</h4>
+<p class="text-on-surface-variant text-body-sm mb-xs">Latest editions, includes workbooks.</p>
+<p class="text-primary font-bold">$120</p>
+</div>
+<!-- Empty/Add State -->
+<div class="border-2 border-dashed border-outline-variant rounded-xl flex flex-col items-center justify-center p-xl hover:border-primary hover:bg-primary/5 transition-all cursor-pointer group">
+<div class="w-12 h-12 rounded-full bg-surface-container-high flex items-center justify-center mb-md group-hover:bg-primary group-hover:text-on-primary transition-colors">
+<span class="material-symbols-outlined">add</span>
+</div>
+<p class="font-bold text-body-md">Create New Listing</p>
+<p class="text-on-surface-variant text-body-sm text-center">Ready to sell something else?</p>
+</div>
+</div>
+</div>
+<!-- Wishlist Snippet -->
+<div class="col-span-12 lg:col-span-6 dashboard-card p-xl">
+<div class="flex justify-between items-center mb-lg">
+<h3 class="font-headline-sm text-headline-sm">Wishlist Items</h3>
+<a class="text-primary text-label-md font-label-md hover:underline" href="#">Manage List</a>
+</div>
+<div class="space-y-md">
+<div class="flex items-center space-x-md group">
+<div class="w-16 h-16 rounded-lg overflow-hidden flex-shrink-0 border border-outline-variant">
+<img class="w-full h-full object-cover" data-alt="Minimalist product photo of a designer ergonomic desk chair in a bright, modern studio. The chair is sleek and futuristic, featuring breathable mesh and polished metallic accents. The lighting is soft and bright, casting gentle shadows on a light grey floor. The atmosphere is productive and premium." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCizVnsptaFhEfxx41jKovx09oA8oG56y2Ec-MmmUMUN9R5u_0o0YDhEujiWfs6JeD34PysW-9e963d4iptUfIZQXs_EFaBWFXurZXtxaroQye0jsqW7vCcKEjvhxXJg3ugwm1UhtU0_VSW7d2ZN3ev3ZAqIWy_FeChYjSogJAIC7pQPfOH2gtijXinSHqkBdpDj6e6mFyLF2fpvJgSgjLkIioi998U8j98yAwYFF8ZmL4INhSQfo9q"/>
+</div>
+<div class="flex-1">
+<p class="font-bold text-body-md">Herman Miller Aeron</p>
+<p class="text-on-surface-variant text-body-sm">Price dropped to $450</p>
+</div>
+<button class="px-md py-xs bg-primary-container text-on-primary-container rounded-lg font-bold text-label-md">Buy Now</button>
+</div>
+<div class="flex items-center space-x-md group">
+<div class="w-16 h-16 rounded-lg overflow-hidden flex-shrink-0 border border-outline-variant">
+<img class="w-full h-full object-cover" data-alt="High-resolution photography of a high-end coffee maker on a kitchen counter. The machine is matte black with stainless steel details, looking modern and sophisticated. The lighting is warm and morning-like, suggesting a fresh start. The style is high-fidelity and professional." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCYOSKwZFIzG-bUTHiuW2NpZFKcq9-bRAZNkpQJNzSDWReRAFrREq7BhfFlgfB1X1Wo1q2XITBmlvgFT2-y7CiIxAV8y-tOiUgDNtVyVBCLb0mq98ZUhi9YEb2RRnQIaaEE37mz97nqikK3ilw0JG-StusokjTp975U-pik7duaQeZlz45kidYCKSsTMANinxlwrD63IVRSrbYP4zyJrHcICyUAFrRWMPgWg6ssPMeGWiXvIne4Mw8v"/>
+</div>
+<div class="flex-1">
+<p class="font-bold text-body-md">Breville Barista Express</p>
+<p class="text-on-surface-variant text-body-sm">Watching 3 similar listings</p>
+</div>
+<button class="px-md py-xs border border-outline-variant text-on-surface-variant rounded-lg font-bold text-label-md">View Similar</button>
+</div>
+</div>
+</div>
+<!-- Quick Insights / Identity -->
+<div class="col-span-12 lg:col-span-6 dashboard-card p-xl bg-primary text-on-primary">
+<div class="flex flex-col h-full justify-between">
+<div>
+<div class="flex items-center space-x-sm mb-lg">
+<span class="material-symbols-outlined text-on-primary" style="font-variation-settings: 'FILL' 1;">stars</span>
+<h3 class="font-headline-sm text-headline-sm">Campus Leader</h3>
+</div>
+<p class="text-on-primary/80 text-body-md mb-xl max-w-sm">
+                            You're in the top 5% of sellers at your university this semester. Complete 2 more sales to earn the 'Gold Tier' badge.
+                        </p>
+</div>
+<div class="flex items-center justify-between">
+<div class="flex -space-x-md">
+<div class="w-10 h-10 rounded-full border-2 border-primary bg-white overflow-hidden">
+<img class="w-full h-full object-cover" data-alt="Avatar placeholder" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAk-NWE6S0sPELRs9Of5NiFx2_1cBaLDUeYit6xFk-9rEI91kihermL47ViG75JNS8UAyZQCaClL8CcfqQ2HdRRG0RRMKiAYOSDjAeHFyv3NtPobvjdaQ0VcEvODtTvGG1l-hclN4sqZOcfGlOr9IbznqvnJZfjikocZGNb39jF08H8Ie_zn_JericlKa0Zid7F1Sk5m5M7OitHRdct-6r_q8MGTQLtJQgHakyI1n3kls9NbTrEw4VO"/>
+</div>
+<div class="w-10 h-10 rounded-full border-2 border-primary bg-white overflow-hidden">
+<img class="w-full h-full object-cover" data-alt="Avatar placeholder" src="https://lh3.googleusercontent.com/aida-public/AB6AXuACkb_8xqAzoKxiChRE3UBAF0bvSQqR8DaaS5v0_nMquj1rGNJhtiGe3h2x6L9nGVMDEAZSIZ0zISEX4VyTuGCQgydBc7HxsIzBjdH_eLWgyEOdtX2muWJLDeOZ3CeFme78KBn5FAM_Tf_i9LwccBOrp_JTHaatS7Tfkf9ctwB4DN0OAvadC4Vw2q7eJVLyZRoNgAx9Lf5tvwN07fF4WQ35Xj0pst6kmHM49lq72r8jjlH9RXUdnGCS"/>
+</div>
+<div class="w-10 h-10 rounded-full border-2 border-primary bg-white overflow-hidden">
+<img class="w-full h-full object-cover" data-alt="Avatar placeholder" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBTlZvVoXEMgMYXbldRmX8JZjabN2DrOwu3bDNZsH2MfRhzmSXRsadR9KpWLKw5nDqLWc9pymD6V_Nzl89vUnf9K76SMitkT-WKpm6OdSkuy_fsu_pyCDAsHk8U4r-LYnT3mJhbXyk1ga9D3AcG3ssCgQoLYeMu2XS-PFN5b4b6ShTxm7NQkQe_ZAyH0OKJmVYRdZ0ZDBXnqZizKDSeJKGe_oCju8ZQUmCZ-QdUstIfkslqMVXAUIi8"/>
+</div>
+<div class="w-10 h-10 rounded-full border-2 border-primary bg-surface-container-high flex items-center justify-center text-[10px] font-bold text-primary">+12</div>
+</div>
+<button class="bg-white text-primary px-lg py-md rounded-xl font-bold hover:bg-on-primary-container transition-colors">
+                            Claim Rewards
+                        </button>
+</div>
+</div>
+</div>
+</div>
+</main>
+<!-- Footer -->
+<footer class="w-full py-xl bg-surface-container-lowest border-t border-outline-variant">
+<div class="max-w-container-max mx-auto px-lg flex flex-col md:flex-row justify-between items-center gap-lg">
+<div class="flex flex-col items-center md:items-start">
+<span class="font-headline-sm text-headline-sm font-bold text-primary mb-xs">CampusX</span>
+<p class="text-body-sm text-on-surface-variant text-center md:text-left">© 2024 CampusX. Premium Verified Marketplace.</p>
+</div>
+<div class="flex flex-wrap justify-center gap-lg text-body-sm text-on-surface-variant">
+<a class="hover:text-primary transition-colors" href="#">Terms of Service</a>
+<a class="hover:text-primary transition-colors" href="#">Privacy Policy</a>
+<a class="hover:text-primary transition-colors" href="#">Student Safety</a>
+<a class="hover:text-primary transition-colors" href="#">Help Center</a>
+<a class="hover:text-primary transition-colors" href="#">Support</a>
+</div>
+</div>
+</footer>
+<!-- FAB for Mobile -->
+<button class="md:hidden fixed bottom-6 right-6 w-14 h-14 bg-primary text-on-primary rounded-full shadow-lg flex items-center justify-center z-50 active:scale-90 transition-transform">
+<span class="material-symbols-outlined" style="font-size: 32px;">add</span>
+</button>
+<script>
+        // Simple Micro-interactions
+        document.querySelectorAll('.dashboard-card').forEach(card => {
+            card.addEventListener('mouseenter', () => {
+                // Potential hover effect logic
+            });
+        });
+
+        // Initialize any tooltips or animations if needed
+        console.log('CampusX Dashboard Loaded');
+    </script>
+</body></html>

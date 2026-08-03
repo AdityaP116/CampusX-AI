@@ -1,0 +1,328 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>CampusX | Verified Student Authentication</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@400;600;700&family=Inter:wght@400;500&family=Geist:wght@500&family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@100..900&family=Hanken+Grotesk:wght@100..900&family=Inter:wght@100..900&display=swap" rel="stylesheet"/>
+<style>
+        body {
+            font-family: 'Inter', sans-serif;
+            -webkit-font-smoothing: antialiased;
+        }
+        .font-headline { font-family: 'Hanken Grotesk', sans-serif; }
+        .font-label { font-family: 'Geist', sans-serif; }
+        
+        .glass-card {
+            background: rgba(255, 255, 255, 0.7);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.5);
+            box-shadow: 0px 1px 2px rgba(0,0,0,0.05), 0px 4px 12px rgba(0,0,0,0.05);
+        }
+
+        .auth-bg-gradient {
+            background: radial-gradient(circle at 0% 0%, #dae1ff 0%, transparent 50%),
+                        radial-gradient(circle at 100% 100%, #f1f3ff 0%, transparent 50%);
+        }
+
+        .floating-element {
+            animation: floating 6s ease-in-out infinite;
+        }
+
+        @keyframes floating {
+            0% { transform: translateY(0px); }
+            50% { transform: translateY(-20px); }
+            100% { transform: translateY(0px); }
+        }
+
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+    </style>
+<script id="tailwind-config">
+        tailwind.config = {
+          darkMode: "class",
+          theme: {
+            extend: {
+              "colors": {
+                      "surface-container-lowest": "#ffffff",
+                      "on-secondary": "#ffffff",
+                      "error": "#ba1a1a",
+                      "surface": "#f9f9ff",
+                      "inverse-on-surface": "#edf0ff",
+                      "surface-variant": "#dce2f7",
+                      "on-background": "#141b2b",
+                      "background": "#f9f9ff",
+                      "inverse-primary": "#b3c5ff",
+                      "on-secondary-fixed": "#151c27",
+                      "primary-fixed-dim": "#b3c5ff",
+                      "on-tertiary-container": "#fff6f4",
+                      "tertiary-container": "#cc4204",
+                      "on-secondary-container": "#5e6572",
+                      "primary-fixed": "#dae1ff",
+                      "surface-container-low": "#f1f3ff",
+                      "on-error-container": "#93000a",
+                      "secondary-fixed-dim": "#c0c7d6",
+                      "on-primary-fixed": "#001849",
+                      "outline-variant": "#c2c6d8",
+                      "secondary-fixed": "#dce2f3",
+                      "surface-container": "#e9edff",
+                      "error-container": "#ffdad6",
+                      "on-surface": "#141b2b",
+                      "surface-container-highest": "#dce2f7",
+                      "on-primary-fixed-variant": "#003fa4",
+                      "inverse-surface": "#293040",
+                      "tertiary": "#a33200",
+                      "on-tertiary-fixed": "#390c00",
+                      "surface-tint": "#0054d6",
+                      "on-secondary-fixed-variant": "#404754",
+                      "surface-dim": "#d3daef",
+                      "outline": "#727687",
+                      "surface-bright": "#f9f9ff",
+                      "secondary-container": "#dce2f3",
+                      "tertiary-fixed-dim": "#ffb59d",
+                      "surface-container-high": "#e1e8fd",
+                      "secondary": "#585f6c",
+                      "on-tertiary-fixed-variant": "#832600",
+                      "primary-container": "#0066ff",
+                      "tertiary-fixed": "#ffdbd0",
+                      "on-primary": "#ffffff",
+                      "on-primary-container": "#f8f7ff",
+                      "on-error": "#ffffff",
+                      "primary": "#0050cb",
+                      "on-tertiary": "#ffffff",
+                      "on-surface-variant": "#424656"
+              },
+              "borderRadius": {
+                      "DEFAULT": "0.25rem",
+                      "lg": "0.5rem",
+                      "xl": "0.75rem",
+                      "full": "9999px"
+              },
+              "spacing": {
+                      "xs": "4px",
+                      "gutter": "24px",
+                      "container-max": "1280px",
+                      "unit": "8px",
+                      "md": "16px",
+                      "sm": "8px",
+                      "lg": "24px",
+                      "xl": "32px"
+              },
+              "fontFamily": {
+                      "headline-lg-mobile": ["Hanken Grotesk"],
+                      "body-md": ["Inter"],
+                      "body-sm": ["Inter"],
+                      "display-lg": ["Hanken Grotesk"],
+                      "label-md": ["Geist"],
+                      "headline-sm": ["Hanken Grotesk"],
+                      "headline-lg": ["Hanken Grotesk"]
+              },
+              "fontSize": {
+                      "headline-lg-mobile": ["24px", {"lineHeight": "32px", "fontWeight": "600"}],
+                      "body-md": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                      "body-sm": ["14px", {"lineHeight": "20px", "fontWeight": "400"}],
+                      "display-lg": ["48px", {"lineHeight": "56px", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                      "label-md": ["12px", {"lineHeight": "16px", "letterSpacing": "0.05em", "fontWeight": "500"}],
+                      "headline-sm": ["20px", {"lineHeight": "28px", "fontWeight": "600"}],
+                      "headline-lg": ["32px", {"lineHeight": "40px", "letterSpacing": "-0.02em", "fontWeight": "600"}]
+              }
+            },
+          },
+        }
+      </script>
+</head>
+<body class="bg-surface text-on-surface min-h-screen flex flex-col overflow-x-hidden">
+<!-- Hero Background Animation Section -->
+<div class="fixed inset-0 z-0 pointer-events-none auth-bg-gradient overflow-hidden">
+<div class="absolute top-[10%] left-[10%] w-64 h-64 bg-primary-fixed opacity-30 blur-[100px] floating-element"></div>
+<div class="absolute bottom-[10%] right-[10%] w-96 h-96 bg-secondary-fixed opacity-30 blur-[100px] floating-element" style="animation-delay: -2s;"></div>
+<!-- Subtle Grid Pattern -->
+<div class="absolute inset-0 opacity-[0.03]" style="background-image: radial-gradient(#0050cb 0.5px, transparent 0.5px); background-size: 24px 24px;"></div>
+</div>
+<!-- Top Bar (Brand Only) -->
+<header class="relative z-50 flex items-center justify-between px-lg py-md md:px-xl">
+<div class="flex items-center gap-sm">
+<span class="font-headline-lg text-headline-lg font-bold text-primary tracking-tight">CampusX</span>
+<span class="font-label-md text-label-md px-xs py-[2px] bg-primary-container text-on-primary-container rounded-lg">VERIFIED</span>
+</div>
+<a class="font-body-sm text-body-sm text-secondary hover:text-primary transition-colors" href="#">Help Center</a>
+</header>
+<!-- Main Content Canvas -->
+<main class="relative z-10 flex-grow flex items-center justify-center p-md md:p-xl">
+<!-- Split Layout Container -->
+<div class="w-full max-w-container-max grid lg:grid-cols-2 gap-xl items-center">
+<!-- Left Side: Visual/Context (Hidden on Mobile) -->
+<div class="hidden lg:flex flex-col space-y-lg pr-xl">
+<h1 class="font-display-lg text-display-lg text-on-background max-w-md">
+                    The exclusive marketplace for <span class="text-primary">verified</span> students.
+                </h1>
+<p class="font-body-md text-body-md text-on-surface-variant max-w-sm">
+                    Join over 50,000 students from elite institutions buying and selling within a trusted, academic network.
+                </p>
+<div class="flex items-center gap-md pt-md">
+<div class="flex -space-x-md">
+<div class="w-12 h-12 rounded-full border-4 border-surface overflow-hidden shadow-sm">
+<img class="w-full h-full object-cover" data-alt="A portrait of a confident university student smiling warmly, professional studio lighting with soft bokeh background of a modern campus, high-end commercial aesthetic." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCjxsfsHWTVL6vUJAGDkCKLiWbiGmDyHQOGy7fJqtrNYT-eXbiI0KfYYhF34yO2xbKH6mVouB7z4segnpU0vrDrXqZVQRvewJKTNNXkH57C_x_mU27olEkXZmdIOZCYrJ7r0-DHzNDSX_iVTHLM0IONRQZplTEpaTx3sgoqozIj2K6DplrF9Uu5PSSAQluvpQztq7a6NvvOg5dHbnpWQgGivCoFwytIQR4f6kG4xn0y-gnGFoxmIvK9"/>
+</div>
+<div class="w-12 h-12 rounded-full border-4 border-surface overflow-hidden shadow-sm">
+<img class="w-full h-full object-cover" data-alt="A close up portrait of a young male engineering student looking forward, clean lighting, soft blue and white background palette, high-fidelity professional photography." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCeFHG3wYrUk7mjjeN0X1gUmUaY-R64OmV6LySgEvSmCEnZluyKaVA0EiE3E14uflwe27zqbR5aXc9EGxLOgP0Pzw1KiB2HymDq5lXWdh5ZqZps-5KZyKMXP79nYmUbYfGKnCVt4N4vlWT7dqr0rGnLofbnVDdqC5BJRzpI24zS-7PceaXOzX6kNbZ3G9FovwX8KPxxZnkpXlHWu6YWeiGntKTAVeTTywmWf3k7_CBXm2YK5bozgGbc"/>
+</div>
+<div class="w-12 h-12 rounded-full border-4 border-surface overflow-hidden shadow-sm">
+<img class="w-full h-full object-cover" data-alt="A female law student in professional attire with a minimal academic backdrop, soft natural lighting, premium SaaS design style, soft tones." src="https://lh3.googleusercontent.com/aida-public/AB6AXuD7V0PLt8-GmQCz5c2yjHGeZQmmZnplruRyXdd_54uAPN0Kq3VJ3aG_0vk5Ep8T_Hcjyi-ktn4kIY_I2TlY6ri3b1vExN46g_ijpnFB2bb55d2tw_na0EfFJrWCXYWpHqndQptkL0MlUp3NvVMWfm7uVlLP-orv501RBMhTeUD6CmhUAcStCACibCPO3nCnuEhUu_g-FlsSpl_qilETLAXa_e68a1snNhqLXzxbCw84g20Hi044lVOO"/>
+</div>
+</div>
+<div class="flex flex-col">
+<span class="font-label-md text-label-md text-on-surface-variant">TRUSTED BY STUDENTS AT</span>
+<span class="font-body-sm text-body-sm font-bold text-on-surface">Stanford, MIT, Harvard & 200+ more</span>
+</div>
+</div>
+</div>
+<!-- Right Side: Auth Card -->
+<div class="flex justify-center lg:justify-end">
+<div class="w-full max-w-[480px] glass-card rounded-xl p-lg md:p-xl flex flex-col space-y-xl transition-all duration-500" id="auth-card">
+<!-- Header -->
+<div class="space-y-sm text-center">
+<h2 class="font-headline-lg text-headline-lg text-on-surface" id="card-title">Welcome back</h2>
+<p class="font-body-md text-body-md text-on-surface-variant" id="card-subtitle">Please enter your student credentials.</p>
+</div>
+<!-- Actions -->
+<div class="flex flex-col space-y-md">
+<!-- Social Sign In -->
+<button class="w-full h-12 flex items-center justify-center gap-md bg-white border border-outline-variant hover:bg-surface-container-low transition-all rounded-lg active:scale-[0.98]">
+<svg class="w-5 h-5" viewbox="0 0 24 24">
+<path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4"></path>
+<path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"></path>
+<path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l3.66-2.84z" fill="#FBBC05"></path>
+<path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335"></path>
+</svg>
+<span class="font-body-md text-body-md font-medium text-on-surface">Continue with Google</span>
+</button>
+<div class="flex items-center gap-md">
+<div class="flex-grow h-[1px] bg-outline-variant/30"></div>
+<span class="font-label-md text-label-md text-on-surface-variant uppercase tracking-widest">or email</span>
+<div class="flex-grow h-[1px] bg-outline-variant/30"></div>
+</div>
+<!-- Email Form -->
+<form class="space-y-lg" id="login-form">
+<div class="space-y-xs">
+<label class="font-label-md text-label-md text-on-surface-variant px-xs">STUDENT EMAIL (.EDU)</label>
+<input class="w-full h-12 bg-surface-container-lowest border border-outline-variant rounded-lg px-md font-body-md text-body-md focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all" placeholder="student@university.edu" required="" type="email"/>
+</div>
+<div class="space-y-xs" id="password-field">
+<div class="flex justify-between px-xs">
+<label class="font-label-md text-label-md text-on-surface-variant">PASSWORD</label>
+<a class="font-label-md text-label-md text-primary hover:underline" href="#">FORGOT?</a>
+</div>
+<input class="w-full h-12 bg-surface-container-lowest border border-outline-variant rounded-lg px-md font-body-md text-body-md focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all" placeholder="••••••••" required="" type="password"/>
+</div>
+<button class="w-full h-12 bg-primary-container text-on-primary-container font-body-md text-body-md font-bold rounded-lg shadow-sm hover:opacity-90 active:scale-[0.98] transition-all" type="submit">
+                                Sign In
+                            </button>
+</form>
+</div>
+<!-- Footer Section -->
+<div class="pt-md text-center border-t border-outline-variant/20">
+<p class="font-body-sm text-body-sm text-on-surface-variant" id="toggle-auth-text">
+                            New to CampusX? 
+                            <button class="text-primary font-bold hover:underline" id="toggle-auth-btn">Create an account</button>
+</p>
+</div>
+</div>
+</div>
+</div>
+</main>
+<!-- Footer Component (Minimal for Auth) -->
+<footer class="relative z-10 w-full py-xl">
+<div class="max-w-container-max mx-auto px-lg flex flex-col md:flex-row justify-between items-center space-y-md md:space-y-0">
+<span class="font-body-sm text-body-sm text-on-surface-variant">© 2024 CampusX. Premium Verified Marketplace.</span>
+<div class="flex flex-wrap justify-center gap-md">
+<a class="font-body-sm text-body-sm text-on-surface-variant hover:text-primary transition-colors" href="#">Terms of Service</a>
+<a class="font-body-sm text-body-sm text-on-surface-variant hover:text-primary transition-colors" href="#">Privacy Policy</a>
+<a class="font-body-sm text-body-sm text-on-surface-variant hover:text-primary transition-colors" href="#">Support</a>
+</div>
+</div>
+</footer>
+<script>
+        const card = document.getElementById('auth-card');
+        const title = document.getElementById('card-title');
+        const subtitle = document.getElementById('card-subtitle');
+        const toggleBtn = document.getElementById('toggle-auth-btn');
+        const toggleText = document.getElementById('toggle-auth-text');
+        const submitBtn = card.querySelector('button[type="submit"]');
+        const passwordField = document.getElementById('password-field');
+        
+        let isLogin = true;
+
+        toggleBtn.addEventListener('click', () => {
+            isLogin = !isLogin;
+            
+            // Trigger animation
+            card.classList.add('opacity-0', 'translate-y-4');
+            
+            setTimeout(() => {
+                if (!isLogin) {
+                    title.textContent = 'Join CampusX';
+                    subtitle.textContent = 'Verify your student status to start.';
+                    submitBtn.textContent = 'Create Account';
+                    toggleText.innerHTML = 'Already have an account? <button id="toggle-auth-btn" class="text-primary font-bold hover:underline">Sign In</button>';
+                } else {
+                    title.textContent = 'Welcome back';
+                    subtitle.textContent = 'Please enter your student credentials.';
+                    submitBtn.textContent = 'Sign In';
+                    toggleText.innerHTML = 'New to CampusX? <button id="toggle-auth-btn" class="text-primary font-bold hover:underline">Create an account</button>';
+                }
+                
+                // Re-bind listener because of innerHTML change
+                document.getElementById('toggle-auth-btn').onclick = () => toggleBtn.click();
+                
+                card.classList.remove('opacity-0', 'translate-y-4');
+            }, 300);
+        });
+
+        // Simple interactive feedback on input
+        const inputs = document.querySelectorAll('input');
+        inputs.forEach(input => {
+            input.addEventListener('focus', () => {
+                input.parentElement.querySelector('label').classList.add('text-primary');
+            });
+            input.addEventListener('blur', () => {
+                input.parentElement.querySelector('label').classList.remove('text-primary');
+            });
+        });
+
+        // Student Email Verification Mock Interaction
+        const form = document.getElementById('login-form');
+        form.onsubmit = (e) => {
+            e.preventDefault();
+            if (!isLogin) {
+                // Show Verification Step
+                card.classList.add('opacity-0');
+                setTimeout(() => {
+                    card.innerHTML = `
+                        <div class="space-y-xl text-center py-xl">
+                            <div class="flex justify-center">
+                                <div class="w-16 h-16 bg-primary-container text-on-primary-container rounded-full flex items-center justify-center">
+                                    <span class="material-symbols-outlined text-[32px]">mark_email_read</span>
+                                </div>
+                            </div>
+                            <div class="space-y-sm">
+                                <h2 class="font-headline-lg text-headline-lg text-on-surface">Verify your email</h2>
+                                <p class="font-body-md text-body-md text-on-surface-variant px-md">We've sent a verification link to your institutional email. Check your inbox to complete registration.</p>
+                            </div>
+                            <div class="space-y-md">
+                                <button class="w-full h-12 bg-primary text-on-primary font-bold rounded-lg hover:bg-primary/90 transition-all">Resend Email</button>
+                                <button onclick="window.location.reload()" class="font-body-sm text-body-sm text-secondary hover:text-primary transition-colors">Wrong email? Go back</button>
+                            </div>
+                        </div>
+                    `;
+                    card.classList.remove('opacity-0');
+                }, 400);
+            }
+        };
+    </script>
+</body></html>

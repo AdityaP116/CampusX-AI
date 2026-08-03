@@ -1,1 +1,3 @@
-// Barrel export for services module
+export * from "./user.service";
+export * from "./product.service";
+export * from "./chat.service";
