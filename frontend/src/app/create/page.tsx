@@ -22,7 +22,7 @@ const createListingSchema = z.object({
   condition: z.string().min(1, "Please select a condition"),
   description: z.string().min(10, "Description must be at least 10 characters"),
   price: z.coerce.number().min(0, "Price cannot be negative"),
-  negotiable: z.boolean().default(false),
+  negotiable: z.boolean(),
   listingType: z.enum(["sell", "rent", "exchange", "free"]),
   meetupLocation: z.string().min(3, "Please provide a meetup location"),
 })
