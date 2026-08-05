@@ -62,7 +62,7 @@
 ### DevOps & Deployment
 - **Containerization:** Docker (Multi-stage builds, Alpine Linux)
 - **Process Management:** dumb-init
-- **Target Platform:** Google Cloud Run (Backend), Vercel (Frontend)
+- **Target Platform:** Render / Railway
 
 ---
 
@@ -227,21 +227,27 @@ Custom `.rules` files enforce strict data governance directly at the database la
 
 ---
 
-## Google Cloud Run Deployment
+## Render Deployment
 
-The backend is fully containerized and production-ready for Google Cloud Run.
+The application is configured to be seamlessly deployed on Render as Web Services.
 
-### Docker
-The `Dockerfile` employs a multi-stage Alpine build to minimize image size and attack surface. It utilizes `dumb-init` to handle PID 1 responsibilities and graceful shutdowns. The container runs entirely as a non-root `node` user.
+### Backend Deployment (Docker)
+The backend uses a multi-stage `Dockerfile` with `node:22-alpine` to minimize image size.
+1. Create a **New Web Service** on Render.
+2. Select your repository.
+3. Set **Root Directory** to `backend`.
+4. Set **Environment** to `Docker`.
+5. Add all the required backend environment variables (including Firebase Admin credentials) in the Render dashboard.
 
-### Build & Deploy
-```bash
-cd backend
-docker build -t gcr.io/campusx-ai/backend .
-docker push gcr.io/campusx-ai/backend
-gcloud run deploy campusx-backend --image gcr.io/campusx-ai/backend --platform managed
-```
-*Note: Ensure all environment variables (including the Firebase Private Key) are securely injected using Google Cloud Secret Manager.*
+### Frontend Deployment (Node)
+Since the Next.js frontend uses Server Components and dynamic routes, it must be deployed as a Web Service.
+1. Create a **New Web Service** on Render (do not use Static Site).
+2. Select your repository.
+3. Set **Root Directory** to `frontend`.
+4. Set **Environment** to `Node`.
+5. Set **Build Command** to: `npm install; npm run build`
+6. Set **Start Command** to: `npm run start`
+7. Add all the `NEXT_PUBLIC_FIREBASE_*` environment variables in the Render dashboard.
 
 ---
 
@@ -269,7 +275,7 @@ gcloud run deploy campusx-backend --image gcr.io/campusx-ai/backend --platform m
 1. **Run Locally:** Start Redis (if applicable), followed by the backend and frontend dev servers.
 2. **Create Features:** Adhere to the Feature-Sliced Design in the frontend, and the Controller-Service-Repository pattern in the backend.
 3. **Commit Code:** Ensure all code passes `npm run type-check` and `npm run lint`.
-4. **Deploy:** Backend to Cloud Run, Frontend to Vercel.
+4. **Deploy:** Both Backend and Frontend deploy seamlessly to Render.
 
 ---
 
