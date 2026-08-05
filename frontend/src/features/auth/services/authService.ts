@@ -38,7 +38,7 @@ export async function syncUserWithBackend(credential: UserCredential, displayNam
         "Content-Type": "application/json",
         Authorization: `Bearer ${token}`,
       },
-      body: JSON.stringify({ displayName: name, universityName }),
+      body: JSON.stringify({ displayName: name, universityName, email }),
     })
   }
 }
