@@ -13,8 +13,8 @@ import { registerWithEmail, loginWithGoogle } from "@/features/auth/services/aut
 
 const registerSchema = z.object({
   name: z.string().min(2, "Name must be at least 2 characters"),
-  email: z.string().email("Please enter a valid email address").refine(val => val.endsWith(".edu"), {
-    message: "Must be a valid .edu university email"
+  email: z.string().email("Please enter a valid email address").refine(val => val.endsWith("@nhitm.ac.in"), {
+    message: "Must be a valid @nhitm.ac.in university email"
   }),
   password: z.string().min(8, "Password must be at least 8 characters"),
 })
@@ -45,7 +45,11 @@ export default function RegisterPage() {
       await loginWithGoogle()
       router.push("/marketplace")
     } catch (err: any) {
-      setError(err.message || "Failed to sign up with Google")
+      if (err.message === "REQUIRES_VERIFICATION") {
+        router.push("/register/complete")
+      } else {
+        setError(err.message || "Failed to sign up with Google")
+      }
     }
   }
 

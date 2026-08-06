@@ -35,7 +35,7 @@ export const createListing = async (
   data: Omit<Listing, "id" | "sellerId" | "createdAt" | "status" | "images">,
   imageFiles: File[] = []
 ): Promise<string> => {
-  const listingRef = doc(collection(db, "listings"))
+  const listingRef = doc(collection(db, "products"))
   
   // Upload images (if any)
   const imageUrls: string[] = []
@@ -87,7 +87,7 @@ export const getListings = async (
   // or via Algolia/Typesense for large datasets, as Firestore doesn't support 
   // native full-text search or multiple inequality filters efficiently.
   
-  const q = query(collection(db, "listings"), ...constraints)
+  const q = query(collection(db, "products"), ...constraints)
   const snapshot = await getDocs(q)
   
   let listings = snapshot.docs.map(doc => doc.data() as Listing)
@@ -112,7 +112,7 @@ export const getListings = async (
 }
 
 export const getListingById = async (id: string): Promise<Listing | null> => {
-  const docRef = doc(db, "listings", id)
+  const docRef = doc(db, "products", id)
   const snapshot = await getDoc(docRef)
   
   if (snapshot.exists()) {

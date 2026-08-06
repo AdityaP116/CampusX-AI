@@ -1,11 +1,8 @@
 import rateLimit from "express-rate-limit";
 import { RedisStore } from "rate-limit-redis";
-import Redis from "ioredis";
 import { env } from "../config/env.config";
+import { redisClient } from "../config/redis.config";
 import { ApiResponse } from "../utils/response.util";
-
-// Avoid connecting to localhost Redis in CI/CD without REDIS_URL
-const redisClient = env.REDIS_URL ? new Redis(env.REDIS_URL) : undefined;
 
 export const globalRateLimiter = rateLimit({
   windowMs: env.RATE_LIMIT_WINDOW_MS,
@@ -14,7 +11,7 @@ export const globalRateLimiter = rateLimit({
   legacyHeaders: false,
   ...(redisClient && {
     store: new RedisStore({
-      sendCommand: (...args: string[]) => (redisClient.call as any)(...args),
+      sendCommand: (...args: string[]) => (redisClient!.call as any)(...args),
     })
   }),
   message: ApiResponse.error(

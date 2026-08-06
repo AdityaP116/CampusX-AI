@@ -9,7 +9,8 @@ const router = Router();
 router.post("/register", authenticate, validateRequest(authValidators.register), AuthController.register);
 router.get("/me", authenticate, AuthController.getMe);
 router.patch("/me", authenticate, validateRequest(authValidators.updateProfile), AuthController.updateMe);
-router.post("/verify/student-id", AuthController.verifyStudentId);
-router.post("/verify/email", AuthController.verifyEmail);
+router.post("/verify/student-id", authenticate, AuthController.verifyStudentId);
+router.post("/send-otp", authenticate, validateRequest(authValidators.sendOtp), AuthController.sendOtp);
+router.post("/verify-otp", authenticate, validateRequest(authValidators.verifyOtp), AuthController.verifyOtp);
 
 export default router;

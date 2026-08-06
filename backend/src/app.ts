@@ -19,7 +19,7 @@ export const createApp = (): Application => {
       contentSecurityPolicy: false,
       crossOriginResourcePolicy: { policy: "cross-origin" },
       crossOriginEmbedderPolicy: false,
-      crossOriginOpenerPolicy: { policy: "same-origin-allow-popups" },
+      crossOriginOpenerPolicy: false,
     })
   );
   app.use(

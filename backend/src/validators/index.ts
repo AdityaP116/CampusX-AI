@@ -4,7 +4,7 @@ export const authValidators = {
   register: z.object({
     body: z.object({
       displayName: z.string().min(2, "Name must be at least 2 characters").max(50),
-      email: z.string().email("Invalid university email").endsWith(".edu", "Must be a .edu email address"),
+      email: z.string().email("Invalid university email").endsWith("@nhitm.ac.in", "Must be an @nhitm.ac.in email address"),
       universityName: z.string().min(2, "University name is required"),
     }),
   }),
@@ -12,6 +12,17 @@ export const authValidators = {
     body: z.object({
       displayName: z.string().min(2).max(50).optional(),
       photoURL: z.string().url().optional().nullable(),
+    }),
+  }),
+  sendOtp: z.object({
+    body: z.object({
+      universityEmail: z.string().email("Invalid university email").endsWith("@nhitm.ac.in", "Must be an @nhitm.ac.in email address"),
+    }),
+  }),
+  verifyOtp: z.object({
+    body: z.object({
+      universityEmail: z.string().email("Invalid university email").endsWith("@nhitm.ac.in", "Must be an @nhitm.ac.in email address"),
+      otp: z.string().length(6, "OTP must be exactly 6 digits"),
     }),
   }),
 };

@@ -25,6 +25,14 @@ export class UserService {
     if (existing) {
       throw ApiError.badRequest("User with this UID already exists");
     }
+
+    if (data.verificationStatus === "verified" || data.provider === "email") {
+      const existingEmail = await userRepository.findByUniversityEmail(data.universityEmail);
+      if (existingEmail) {
+        throw ApiError.badRequest("This college email is already linked to another account");
+      }
+    }
+
     return await userRepository.create(data);
   }
 

@@ -9,6 +9,7 @@ import {
   Info, Star, ArrowRight
 } from "lucide-react"
 import { getListingById } from "@/features/marketplace/services/listingService"
+import { ChatButton } from "@/features/chat/components/ChatButton"
 
 export default async function ProductDetailsPage({
   params,
@@ -141,10 +142,16 @@ export default async function ProductDetailsPage({
                 </div>
 
                 <div className="space-y-3">
-                  <Button size="lg" className="w-full gap-2 shadow-md">
-                    <MessageCircle className="w-5 h-5" />
-                    Chat with Seller
-                  </Button>
+                  <ChatButton 
+                    sellerId={listing.sellerId}
+                    product={{
+                      id: listing.id,
+                      title: listing.title,
+                      thumbnailUrl: mainImage,
+                      price: listing.price
+                    }}
+                    className="w-full"
+                  />
                   {listing.negotiable && (
                     <Button variant="secondary" size="lg" className="w-full gap-2 bg-surface-container-highest hover:bg-outline-variant">
                       <BadgeDollarSign className="w-5 h-5" />
@@ -264,10 +271,16 @@ export default async function ProductDetailsPage({
             <span className="text-primary font-bold text-xl font-display">$1,299</span>
             <span className="text-on-surface-variant font-label text-xs block uppercase tracking-wider">Premium Laptop Pro</span>
           </div>
-          <Button size="lg" className="gap-2 shrink-0 rounded-xl">
-            <MessageCircle className="w-5 h-5" />
-            Chat
-          </Button>
+          <ChatButton 
+            sellerId={listing.sellerId}
+            product={{
+              id: listing.id,
+              title: listing.title,
+              thumbnailUrl: mainImage,
+              price: listing.price
+            }}
+            className="shrink-0 rounded-xl"
+          />
         </div>
       </div>
     </div>

@@ -12,7 +12,9 @@ import { Button } from "@/shared/components/ui/button"
 import { loginWithEmail, loginWithGoogle } from "@/features/auth/services/authService"
 
 const loginSchema = z.object({
-  email: z.string().email("Please enter a valid email address"),
+  email: z.string().email("Please enter a valid email address").refine(val => val.endsWith("@nhitm.ac.in"), {
+    message: "Must be a valid @nhitm.ac.in university email"
+  }),
   password: z.string().min(1, "Password is required"),
 })
 
@@ -42,7 +44,11 @@ export default function LoginPage() {
       await loginWithGoogle()
       router.push("/marketplace")
     } catch (err: any) {
-      setError(err.message || "Failed to sign in with Google")
+      if (err.message === "REQUIRES_VERIFICATION") {
+        router.push("/register/complete")
+      } else {
+        setError(err.message || "Failed to sign in with Google")
+      }
     }
   }
 

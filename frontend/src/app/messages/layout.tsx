@@ -1,11 +1,42 @@
+"use client"
+
 import * as React from "react"
 import { Search, Edit } from "lucide-react"
+import { useAuthStore } from "@/features/auth/store/authStore"
+import { useChatStore } from "@/features/chat/store/chatStore"
+import { subscribeToConversations, getUserInfo } from "@/features/chat/services/chatService"
 
 export default function MessagesLayout({
   children,
 }: {
   children: React.ReactNode
 }) {
+  const { user } = useAuthStore()
+  const { conversations, setConversations, activeConversationId, setActiveConversationId } = useChatStore()
+  const [participantInfo, setParticipantInfo] = React.useState<Record<string, any>>({})
+
+  React.useEffect(() => {
+    if (!user) return
+    const unsubscribe = subscribeToConversations(user.uid, (convs) => {
+      setConversations(convs)
+      
+      // Fetch user info for participants
+      convs.forEach(conv => {
+        const otherId = conv.participants.find(p => p !== user.uid)
+        if (otherId && !participantInfo[otherId]) {
+          getUserInfo(otherId).then(info => {
+            setParticipantInfo(prev => ({ ...prev, [otherId]: info }))
+          })
+        }
+      })
+    })
+    return () => unsubscribe()
+  }, [user, setConversations])
+
+  const getOtherParticipant = (participants: string[]) => {
+    return participants.find(p => p !== user?.uid) || participants[0]
+  }
+
   return (
     <div className="flex flex-1 h-[calc(100vh-64px)] overflow-hidden">
       {/* SideNavBar / Conversation Sidebar */}
@@ -28,40 +59,58 @@ export default function MessagesLayout({
           </div>
         </div>
 
-        {/* Conversation List Mock */}
+        {/* Conversation List */}
         <div className="flex-1 overflow-y-auto px-4 pb-4 space-y-1 no-scrollbar">
-          {/* Active Chat Item */}
-          <div className="flex items-center gap-4 p-4 bg-primary-container text-on-primary-container rounded-xl cursor-pointer shadow-sm">
-            <div className="relative flex-shrink-0">
-              <div className="w-12 h-12 rounded-full overflow-hidden bg-primary/20 flex items-center justify-center font-bold text-primary">
-                SJ
-              </div>
-              <span className="absolute bottom-0 right-0 w-3.5 h-3.5 bg-green-500 border-2 border-white rounded-full"></span>
+          {conversations.length === 0 ? (
+            <div className="p-4 text-center text-on-surface-variant text-sm">
+              No conversations yet.
             </div>
-            <div className="flex-1 min-w-0">
-              <div className="flex justify-between items-baseline mb-1">
-                <span className="font-bold truncate text-base font-body">Sarah Jenkins</span>
-                <span className="text-[10px] font-medium opacity-80 uppercase tracking-wider font-label">2m ago</span>
-              </div>
-              <p className="text-sm truncate opacity-90 font-body">Is the Calculus textbook still available?</p>
-            </div>
-          </div>
+          ) : (
+            conversations.map((conv) => {
+              const otherId = getOtherParticipant(conv.participants)
+              const otherInfo = participantInfo[otherId] || { displayName: "Loading...", avatar: null }
+              const initials = otherInfo.displayName ? otherInfo.displayName.substring(0, 2).toUpperCase() : "??"
+              const isActive = activeConversationId === conv.id
+              const lastMsgTime = conv.updatedAt ? new Date(conv.updatedAt).toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'}) : ""
 
-          {/* Inactive Chat Item */}
-          <div className="flex items-center gap-4 p-4 bg-transparent hover:bg-surface-variant/50 rounded-xl cursor-pointer transition-all text-on-surface">
-            <div className="relative flex-shrink-0">
-              <div className="w-12 h-12 rounded-full overflow-hidden bg-surface-container-highest flex items-center justify-center font-bold text-on-surface-variant">
-                MC
-              </div>
-            </div>
-            <div className="flex-1 min-w-0">
-              <div className="flex justify-between items-baseline mb-1">
-                <span className="font-bold truncate text-base font-body">Marcus Chen</span>
-                <span className="text-[10px] text-outline font-medium uppercase tracking-wider font-label">1h ago</span>
-              </div>
-              <p className="text-sm truncate text-on-surface-variant font-body">I can meet at the campus library at 3PM today.</p>
-            </div>
-          </div>
+              return (
+                <div 
+                  key={conv.id}
+                  onClick={() => setActiveConversationId(conv.id)}
+                  className={`flex items-center gap-4 p-4 rounded-xl cursor-pointer transition-all ${
+                    isActive 
+                      ? "bg-primary-container text-on-primary-container shadow-sm" 
+                      : "bg-transparent hover:bg-surface-variant/50 text-on-surface"
+                  }`}
+                >
+                  <div className="relative flex-shrink-0">
+                    <div className={`w-12 h-12 rounded-full overflow-hidden flex items-center justify-center font-bold ${
+                      isActive ? "bg-primary/20 text-primary" : "bg-surface-container-highest text-on-surface-variant"
+                    }`}>
+                      {otherInfo.avatar ? (
+                        <img src={otherInfo.avatar} alt="Avatar" className="w-full h-full object-cover" />
+                      ) : (
+                        initials
+                      )}
+                    </div>
+                  </div>
+                  <div className="flex-1 min-w-0">
+                    <div className="flex justify-between items-baseline mb-1">
+                      <span className="font-bold truncate text-base font-body">{otherInfo.displayName}</span>
+                      <span className={`text-[10px] font-medium uppercase tracking-wider font-label ${
+                        isActive ? "opacity-80" : "text-outline"
+                      }`}>
+                        {lastMsgTime}
+                      </span>
+                    </div>
+                    <p className={`text-sm truncate font-body ${isActive ? "opacity-90" : "text-on-surface-variant"}`}>
+                      {conv.lastMessage?.content || "Started a conversation"}
+                    </p>
+                  </div>
+                </div>
+              )
+            })
+          )}
         </div>
       </aside>
 

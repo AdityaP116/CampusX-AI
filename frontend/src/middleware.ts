@@ -6,7 +6,7 @@ const protectedRoutes = ["/create", "/messages", "/profile"]
 // Routes only for unauthenticated users
 const authRoutes = ["/login", "/register"]
 
-export function proxy(request: NextRequest) {
+export function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl
 
   const isAuthed = request.cookies.has("campusx-authed")

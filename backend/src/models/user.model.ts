@@ -10,4 +10,6 @@ export interface User extends BaseEntity {
   universityName: string;
   universityEmail: string;
   studentIdUrl?: string;
+  provider?: "google" | "email";
+  googleEmail?: string | null;
 }
