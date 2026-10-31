@@ -20,12 +20,25 @@ const db = getFirestore(app);
 const storage = getStorage(app);
 
 let analytics: any = null;
-if (typeof window !== "undefined") {
-  isSupported().then((supported) => {
-    if (supported) {
-      analytics = getAnalytics(app);
-    }
-  });
+
+// Only initialize Firebase Analytics in browser when valid production/staging credentials exist
+const hasValidConfig =
+  typeof window !== "undefined" &&
+  Boolean(process.env.NEXT_PUBLIC_FIREBASE_API_KEY) &&
+  !process.env.NEXT_PUBLIC_FIREBASE_API_KEY?.startsWith("dummy") &&
+  Boolean(process.env.NEXT_PUBLIC_FIREBASE_MEASUREMENT_ID);
+
+if (hasValidConfig) {
+  isSupported()
+    .then((supported) => {
+      if (supported) {
+        analytics = getAnalytics(app);
+      }
+    })
+    .catch((err) => {
+      // Gracefully handle analytics initialization failure in offline or restricted environments
+      console.warn("Firebase Analytics initialization skipped:", err?.message || err);
+    });
 }
 
 export { app, auth, db, storage, analytics };
