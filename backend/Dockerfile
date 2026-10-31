@@ -20,7 +20,7 @@ ENV NODE_ENV=production
 ENV PORT=8080
 
 COPY package*.json ./
-RUN npm ci --only=production && apk add --no-cache dumb-init
+RUN npm ci --omit=dev && apk add --no-cache dumb-init
 
 COPY --from=builder /app/dist ./dist
 

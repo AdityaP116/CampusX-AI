@@ -7,10 +7,18 @@ export class ProductsController {
   public static async getProducts(req: Request, res: Response, next: NextFunction): Promise<void> {
     try {
       const page = Number(req.query.page) || 1;
-      const limit = Number(req.query.limit) || 10;
+      const limit = Number(req.query.limit) || 20;
       const lastDocId = req.query.lastDocId as string | undefined;
-      
-      const paginated = await ProductService.getProducts(page, limit, lastDocId);
+
+      const filters = {
+        category: req.query.category as string | undefined,
+        condition: req.query.condition as string | undefined,
+        search: (req.query.search || req.query.searchQuery) as string | undefined,
+        minPrice: req.query.minPrice ? Number(req.query.minPrice) : undefined,
+        maxPrice: req.query.maxPrice ? Number(req.query.maxPrice) : undefined,
+      };
+
+      const paginated = await ProductService.getProducts(page, limit, lastDocId, filters);
       res.status(200).json(ApiResponse.success("Products retrieved", paginated));
     } catch (error) {
       next(error);
@@ -28,12 +36,26 @@ export class ProductsController {
 
   public static async createProduct(req: Request, res: Response, next: NextFunction): Promise<void> {
     try {
-      const sellerId = req.user?.id || req.firebaseUser?.uid;
+      // Always prefer the Firebase Auth UID for sellerId so it matches Firebase Security Rules
+      const sellerId = req.firebaseUser?.uid || req.user?.uid || req.user?.id;
       if (!sellerId) throw ApiError.unauthorized();
+
+      const images = Array.isArray(req.body.images) ? req.body.images : [];
+      const category = req.body.category || req.body.categoryId || "other";
+      const location = req.body.location || req.body.meetupLocation || "Campus";
+      const meetupLocation = req.body.meetupLocation || location;
+      const transactionType = req.body.transactionType || "SELL";
 
       const newProduct = await ProductService.createProduct({
         ...req.body,
         sellerId,
+        category,
+        categoryId: req.body.categoryId || category,
+        location,
+        meetupLocation,
+        transactionType,
+        images,
+        thumbnailUrl: req.body.thumbnailUrl || (images.length > 0 ? images[0] : ""),
         status: "active",
         viewCount: 0,
         wishlistCount: 0,
@@ -47,7 +69,7 @@ export class ProductsController {
 
   public static async updateProduct(req: Request, res: Response, next: NextFunction): Promise<void> {
     try {
-      const sellerId = req.user?.id || req.firebaseUser?.uid;
+      const sellerId = req.firebaseUser?.uid || req.user?.uid || req.user?.id;
       if (!sellerId) throw ApiError.unauthorized();
 
       const existingProduct = await ProductService.getProductById(req.params.id as string);
@@ -65,7 +87,7 @@ export class ProductsController {
 
   public static async deleteProduct(req: Request, res: Response, next: NextFunction): Promise<void> {
     try {
-      const sellerId = req.user?.id || req.firebaseUser?.uid;
+      const sellerId = req.firebaseUser?.uid || req.user?.uid || req.user?.id;
       if (!sellerId) throw ApiError.unauthorized();
 
       const existingProduct = await ProductService.getProductById(req.params.id as string);
@@ -82,8 +104,7 @@ export class ProductsController {
 
   public static async getProductsBySeller(req: Request, res: Response, next: NextFunction): Promise<void> {
     try {
-      // In a real scenario, this might come from params or a verified token
-      const sellerId = (req.params.sellerId as string) || "user_demo"; 
+      const sellerId = req.params.sellerId as string;
       const products = await ProductService.getProductsBySeller(sellerId);
       res.status(200).json(ApiResponse.success("Seller listings retrieved", products));
     } catch (error) {

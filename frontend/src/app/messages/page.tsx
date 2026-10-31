@@ -1,7 +1,7 @@
 "use client"
 
 import * as React from "react"
-import { Send, Image as ImageIcon, PlusCircle, Phone, Video, Info, CheckCheck } from "lucide-react"
+import { Send, Image as ImageIcon, PlusCircle, Phone, Video, Info, CheckCheck, ArrowLeft } from "lucide-react"
 import { VerifiedBadge } from "@/shared/components/ui/verified-badge"
 import { useAuthStore } from "@/features/auth/store/authStore"
 import { useChatStore } from "@/features/chat/store/chatStore"
@@ -9,7 +9,7 @@ import { subscribeToMessages, sendMessage, markAsRead, getUserInfo } from "@/fea
 
 export default function MessagesPage() {
   const { user } = useAuthStore()
-  const { activeConversationId, conversations, messages, setMessages } = useChatStore()
+  const { activeConversationId, setActiveConversationId, conversations, messages, setMessages } = useChatStore()
   const [inputText, setInputText] = React.useState("")
   const [otherUserInfo, setOtherUserInfo] = React.useState<any>(null)
   const messagesEndRef = React.useRef<HTMLDivElement>(null)
@@ -46,7 +46,6 @@ export default function MessagesPage() {
       await sendMessage(activeConversationId, content)
     } catch (error) {
       console.error("Failed to send message", error)
-      // Might want to restore inputText here or show error toast
     }
   }
 
@@ -61,8 +60,14 @@ export default function MessagesPage() {
   return (
     <>
       {/* Chat Header */}
-      <div className="h-16 flex items-center justify-between px-6 bg-surface/80 backdrop-blur-md border-b border-outline-variant/30 z-10 w-full shrink-0">
-        <div className="flex items-center gap-4">
+      <div className="h-16 flex items-center justify-between px-4 md:px-6 bg-surface/80 backdrop-blur-md border-b border-outline-variant/30 z-10 w-full shrink-0">
+        <div className="flex items-center gap-2 md:gap-4">
+          <button
+            onClick={() => setActiveConversationId(null)}
+            className="md:hidden p-2 text-on-surface-variant hover:text-primary rounded-full transition-colors"
+          >
+            <ArrowLeft className="w-5 h-5" />
+          </button>
           <div className="relative">
             <div className="w-10 h-10 rounded-full overflow-hidden border border-outline-variant/30 bg-surface-container-highest flex items-center justify-center font-bold">
               {otherUserInfo?.avatar ? (
@@ -99,8 +104,8 @@ export default function MessagesPage() {
       </div>
 
       {/* Messages Stream */}
-      <div className="flex-1 overflow-y-auto p-6 space-y-6 flex flex-col">
-        {messages.map((msg, i) => {
+      <div className="flex-1 overflow-y-auto p-4 md:p-6 space-y-4 md:space-y-6 flex flex-col">
+        {messages.map((msg) => {
           const isMe = msg.senderId === user?.uid
           const timeString = new Date(msg.createdAt).toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'})
           

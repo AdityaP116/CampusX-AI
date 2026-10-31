@@ -4,10 +4,17 @@ import { create } from "zustand"
 import { persist } from "zustand/middleware"
 import type { User } from "firebase/auth"
 
+export interface AuthUser {
+  uid: string
+  email: string | null
+  displayName: string | null
+  photoURL: string | null
+}
+
 interface AuthState {
-  user: User | null
+  user: AuthUser | null
   loading: boolean
-  setUser: (user: User | null) => void
+  setUser: (user: User | AuthUser | null) => void
   setLoading: (loading: boolean) => void
 }
 
@@ -16,7 +23,20 @@ export const useAuthStore = create<AuthState>()(
     (set) => ({
       user: null,
       loading: true,
-      setUser: (user) => set({ user }),
+      setUser: (user) => {
+        if (!user) {
+          set({ user: null })
+          return
+        }
+        set({
+          user: {
+            uid: user.uid,
+            email: user.email,
+            displayName: user.displayName,
+            photoURL: user.photoURL,
+          },
+        })
+      },
       setLoading: (loading) => set({ loading }),
     }),
     {

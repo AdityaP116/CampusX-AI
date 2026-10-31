@@ -9,7 +9,7 @@ import { useRouter } from "next/navigation"
 import { Button } from "@/shared/components/ui/button"
 import { Input } from "@/shared/components/ui/input"
 import { VerifiedBadge } from "@/shared/components/ui/verified-badge"
-import { CloudUpload, CheckCircle2, ArrowRight, ArrowLeft } from "lucide-react"
+import { CloudUpload, CheckCircle2, ArrowRight, ArrowLeft, X } from "lucide-react"
 import { cn } from "@/lib/utils"
 import { useCreateListing } from "@/features/marketplace/hooks/useListings"
 import { useAuthStore } from "@/features/auth/store/authStore"
@@ -36,6 +36,8 @@ export default function CreateListingPage() {
   const [step, setStep] = React.useState(0)
   const [dragging, setDragging] = React.useState(false)
   const [files, setFiles] = React.useState<File[]>([])
+  const [previews, setPreviews] = React.useState<string[]>([])
+  const fileInputRef = React.useRef<HTMLInputElement>(null)
   
   const {
     register,
@@ -59,6 +61,28 @@ export default function CreateListingPage() {
   })
 
   const formValues = watch()
+
+  // Manage preview object URLs
+  React.useEffect(() => {
+    const urls = files.map((file) => URL.createObjectURL(file))
+    setPreviews(urls)
+    return () => {
+      urls.forEach((url) => URL.revokeObjectURL(url))
+    }
+  }, [files])
+
+  const handleFiles = (newFiles: FileList | File[]) => {
+    const valid = Array.from(newFiles).filter((f) => {
+      const isImg = f.type.startsWith("image/")
+      const isSize = f.size <= 10 * 1024 * 1024
+      return isImg && isSize
+    })
+    setFiles((prev) => [...prev, ...valid].slice(0, 8))
+  }
+
+  const removeFile = (index: number) => {
+    setFiles((prev) => prev.filter((_, i) => i !== index))
+  }
 
   const handleNext = async () => {
     let isValid = false
@@ -90,7 +114,7 @@ export default function CreateListingPage() {
       router.push("/marketplace")
     } catch (error) {
       console.error(error)
-      alert("Failed to publish listing")
+      alert("Failed to publish listing. Please check your connection and try again.")
     }
   }
 
@@ -211,10 +235,27 @@ export default function CreateListingPage() {
                   <h2 className="font-headline text-xl font-bold text-on-surface border-b border-outline-variant/20 pb-3 mb-6">
                     Photos
                   </h2>
+
+                  <input
+                    ref={fileInputRef}
+                    type="file"
+                    multiple
+                    accept="image/png,image/jpeg,image/webp"
+                    className="hidden"
+                    onChange={(e) => {
+                      if (e.target.files) handleFiles(e.target.files)
+                    }}
+                  />
+
                   <div
                     onDragOver={(e) => { e.preventDefault(); setDragging(true) }}
                     onDragLeave={() => setDragging(false)}
-                    onDrop={(e) => { e.preventDefault(); setDragging(false) }}
+                    onDrop={(e) => {
+                      e.preventDefault()
+                      setDragging(false)
+                      if (e.dataTransfer.files) handleFiles(e.dataTransfer.files)
+                    }}
+                    onClick={() => fileInputRef.current?.click()}
                     className={cn(
                       "border-2 border-dashed rounded-2xl p-10 flex flex-col items-center justify-center gap-4 text-center cursor-pointer transition-all",
                       dragging
@@ -230,13 +271,38 @@ export default function CreateListingPage() {
                         Drag & drop photos here
                       </p>
                       <p className="text-sm text-on-surface-variant font-body mt-1">
-                        or <span className="text-primary font-semibold cursor-pointer hover:underline">browse files</span>
+                        or <span className="text-primary font-semibold hover:underline">browse files</span>
                       </p>
                     </div>
                     <p className="font-label text-xs text-outline uppercase tracking-wider">
                       JPG, PNG or WEBP · Up to 8 photos · Max 10MB each
                     </p>
                   </div>
+
+                  {previews.length > 0 && (
+                    <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 mt-6">
+                      {previews.map((src, i) => (
+                        <div key={i} className="relative group rounded-xl overflow-hidden aspect-square border border-outline-variant/40 shadow-sm">
+                          <img src={src} alt={`Preview ${i + 1}`} className="w-full h-full object-cover" />
+                          <button
+                            type="button"
+                            onClick={(e) => {
+                              e.stopPropagation()
+                              removeFile(i)
+                            }}
+                            className="absolute top-2 right-2 bg-black/60 hover:bg-black/80 text-white p-1 rounded-full transition-colors shadow-sm"
+                          >
+                            <X className="w-4 h-4" />
+                          </button>
+                          {i === 0 && (
+                            <span className="absolute bottom-2 left-2 bg-primary text-white text-[10px] font-bold px-2 py-0.5 rounded shadow">
+                              Cover Photo
+                            </span>
+                          )}
+                        </div>
+                      ))}
+                    </div>
+                  )}
                 </div>
               </div>
             )}
@@ -323,8 +389,12 @@ export default function CreateListingPage() {
 
                 <div className="bg-surface-container-low rounded-2xl p-6 space-y-4">
                   <div className="flex gap-4">
-                    <div className="w-24 h-24 rounded-xl bg-surface-container-highest flex items-center justify-center text-outline font-label text-xs shrink-0">
-                      No Photo
+                    <div className="w-24 h-24 rounded-xl bg-surface-container-highest flex items-center justify-center text-outline font-label text-xs shrink-0 overflow-hidden">
+                      {previews.length > 0 ? (
+                        <img src={previews[0]} alt="Cover" className="w-full h-full object-cover" />
+                      ) : (
+                        "No Photo"
+                      )}
                     </div>
                     <div>
                       <h3 className="font-headline text-lg font-bold text-on-surface">{formValues.title || "Untitled Listing"}</h3>

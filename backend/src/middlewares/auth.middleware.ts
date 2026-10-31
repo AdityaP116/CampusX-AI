@@ -2,14 +2,16 @@ import { Request, Response, NextFunction } from "express";
 import { auth } from "../config/firebase.config";
 import { ApiError } from "../utils/api-error";
 import { UserService } from "../services/user.service";
+import { User } from "../models";
+import * as admin from "firebase-admin";
 
 // Extend Express Request interface to include user
 declare global {
   // eslint-disable-next-line @typescript-eslint/no-namespace
   namespace Express {
     interface Request {
-      user?: any; // Replace with actual User type when we define it here, for now any
-      firebaseUser?: any;
+      user?: User | null;
+      firebaseUser?: admin.auth.DecodedIdToken;
     }
   }
 }
@@ -33,8 +35,9 @@ export const authenticate = async (req: Request, _res: Response, next: NextFunct
     try {
       const user = await UserService.getUserByUid(decodedToken.uid);
       req.user = user;
-    } catch (e) {
-      // If user doesn't exist yet (e.g. during registration), we just have firebaseUser
+    } catch {
+      // If user doesn't exist yet (e.g. during initial registration), req.user is undefined
+      req.user = null;
     }
 
     next();

@@ -2,6 +2,7 @@ import { conversationRepository, messageRepository } from "../repositories/chat.
 import { Conversation, Message } from "../models";
 import { ApiError } from "../utils/api-error";
 import { db } from "../config/firebase.config";
+import { FieldValue } from "firebase-admin/firestore";
 
 export class ChatService {
   public static async getConversations(userId: string): Promise<Conversation[]> {
@@ -11,7 +12,7 @@ export class ChatService {
   public static async getConversationById(id: string): Promise<Conversation> {
     const conv = await conversationRepository.findById(id);
     if (!conv) {
-      throw ApiError.badRequest("Conversation not found");
+      throw ApiError.notFound("Conversation not found");
     }
     return conv;
   }
@@ -27,7 +28,7 @@ export class ChatService {
   public static async sendMessage(conversationId: string, data: Omit<Message, "id" | "conversationId">): Promise<Message> {
     const conv = await conversationRepository.findById(conversationId);
     if (!conv) {
-      throw ApiError.badRequest("Conversation not found");
+      throw ApiError.notFound("Conversation not found");
     }
 
     const batch = db.batch();
@@ -46,7 +47,7 @@ export class ChatService {
     const convRef = conversationRepository.collectionRef.doc(conversationId);
     batch.update(convRef, {
       lastMessage: msgData,
-      unreadCount: (conv.unreadCount || 0) + 1,
+      unreadCount: FieldValue.increment(1),
       updatedAt: new Date().toISOString()
     });
 
@@ -60,7 +61,7 @@ export class ChatService {
       unreadCount: 0
     });
     if (!success) {
-      throw ApiError.badRequest("Conversation not found");
+      throw ApiError.notFound("Conversation not found");
     }
     return true;
   }

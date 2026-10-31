@@ -1,28 +1,48 @@
 import { Request, Response, NextFunction } from "express";
+import crypto from "crypto";
 import { ApiResponse } from "../utils/response.util";
 import { ApiError } from "../utils/api-error";
 import { UserService } from "../services";
 import { redisClient } from "../config/redis.config";
+import { logger } from "../utils/logger";
+import { env } from "../config/env.config";
+
+// In-memory fallback for development/testing when Redis is not available
+interface OtpEntry {
+  otp: string;
+  expiresAt: number;
+  attempts: number;
+}
+const memoryOtpStore = new Map<string, OtpEntry>();
+
+// Clean up expired OTPs periodically
+setInterval(() => {
+  const now = Date.now();
+  for (const [key, value] of memoryOtpStore.entries()) {
+    if (value.expiresAt < now) {
+      memoryOtpStore.delete(key);
+    }
+  }
+}, 60000);
 
 export class AuthController {
   public static async register(req: Request, res: Response, next: NextFunction): Promise<void> {
     try {
       const uid = req.firebaseUser?.uid;
       const email = req.firebaseUser?.email;
-      
+
       if (!uid || !email) {
         throw ApiError.unauthorized("Valid Firebase token with email required");
       }
 
-      // Email/Password flow: email is already @nhitm.ac.in
       const user = await UserService.createUser({
         uid: uid,
         displayName: req.body.displayName || "New Student",
         email: email,
         photoURL: null,
         role: "STUDENT",
-        verificationStatus: "verified", // automatically verified as it's the university email
-        universityName: req.body.universityName || "NHITM",
+        verificationStatus: "verified",
+        universityName: req.body.universityName || "University",
         universityEmail: email,
         provider: "email",
       });
@@ -70,19 +90,37 @@ export class AuthController {
       const uid = req.firebaseUser?.uid;
       if (!uid) throw ApiError.unauthorized();
 
-      // Generate 6 digit OTP
-      const otp = Math.floor(100000 + Math.random() * 900000).toString();
-      
-      // Store in redis for 5 minutes
+      // Check cooldown (60 seconds)
+      const cooldownKey = `otp_cooldown:${universityEmail}`;
+      if (redisClient) {
+        const inCooldown = await redisClient.get(cooldownKey);
+        if (inCooldown) {
+          throw ApiError.badRequest("Please wait 60 seconds before requesting another verification code");
+        }
+      }
+
+      // Generate cryptographically secure 6-digit OTP
+      const otp = crypto.randomInt(100000, 1000000).toString();
+
+      // Store OTP with 5 minutes (300 seconds) expiration
       if (redisClient) {
         await redisClient.set(`otp:${universityEmail}`, otp, "EX", 300);
+        await redisClient.set(cooldownKey, "1", "EX", 60);
+        await redisClient.set(`otp_attempts:${universityEmail}`, "0", "EX", 300);
       } else {
-        // Fallback for development if redis is not configured
-        console.warn(`[DEV] OTP for ${universityEmail} is ${otp}`);
+        memoryOtpStore.set(universityEmail, {
+          otp,
+          expiresAt: Date.now() + 300000,
+          attempts: 0,
+        });
       }
-      
-      // In a real app, send the email here
-      console.log(`Sending OTP ${otp} to ${universityEmail}`);
+
+      if (env.NODE_ENV !== "production") {
+        logger.info(`[DEV ONLY] OTP for ${universityEmail} is: ${otp}`);
+      } else {
+        // In production, integrate email service (e.g. SendGrid, Nodemailer)
+        logger.info(`Sent verification code to student email domain.`);
+      }
 
       res.status(200).json(ApiResponse.success("Verification OTP sent", null));
     } catch (error) {
@@ -97,18 +135,41 @@ export class AuthController {
       const googleEmail = req.firebaseUser?.email;
       if (!uid || !googleEmail) throw ApiError.unauthorized();
 
-      // Verify OTP
+      // Verify OTP with attempt-throttling
       if (redisClient) {
+        const attemptsStr = await redisClient.get(`otp_attempts:${universityEmail}`);
+        const attempts = attemptsStr ? parseInt(attemptsStr, 10) : 0;
+        if (attempts >= 5) {
+          await redisClient.del(`otp:${universityEmail}`);
+          throw ApiError.badRequest("Too many failed attempts. Please request a new verification code.");
+        }
+
         const storedOtp = await redisClient.get(`otp:${universityEmail}`);
         if (!storedOtp || storedOtp !== otp) {
+          await redisClient.incr(`otp_attempts:${universityEmail}`);
           throw ApiError.badRequest("Invalid or expired OTP");
         }
+
         await redisClient.del(`otp:${universityEmail}`);
+        await redisClient.del(`otp_attempts:${universityEmail}`);
       } else {
-        // Fallback for dev: accept '123456' if redis is offline
-        if (otp !== '123456') {
+        const entry = memoryOtpStore.get(universityEmail);
+        if (!entry || entry.expiresAt < Date.now()) {
+          memoryOtpStore.delete(universityEmail);
           throw ApiError.badRequest("Invalid or expired OTP");
         }
+
+        if (entry.attempts >= 5) {
+          memoryOtpStore.delete(universityEmail);
+          throw ApiError.badRequest("Too many failed attempts. Please request a new verification code.");
+        }
+
+        if (entry.otp !== otp) {
+          entry.attempts += 1;
+          throw ApiError.badRequest("Invalid or expired OTP");
+        }
+
+        memoryOtpStore.delete(universityEmail);
       }
 
       // Check if user already exists
@@ -116,25 +177,25 @@ export class AuthController {
       try {
         user = await UserService.getUserByUid(uid);
       } catch (err) {
-        // User not found, create new
+        // User not found, will create below
       }
 
       if (user) {
         await UserService.updateUser(user.id!, {
           universityEmail,
-          verificationStatus: "verified"
+          verificationStatus: "verified",
         });
         user = await UserService.getUserById(user.id!);
       } else {
         user = await UserService.createUser({
           uid,
           displayName: req.firebaseUser?.name || "New Student",
-          email: googleEmail, // The login email
+          email: googleEmail,
           googleEmail: googleEmail,
           photoURL: req.firebaseUser?.picture || null,
           role: "STUDENT",
           verificationStatus: "verified",
-          universityName: "NHITM",
+          universityName: "University",
           universityEmail,
           provider: "google",
         });

@@ -11,7 +11,7 @@ import { loginWithEmail } from "@/features/auth/services/authService"
 
 const loginSchema = z.object({
   email: z.string().email({ message: "Invalid student email address." }),
-  password: z.string().min(6, { message: "Password must be at least 6 characters." }),
+  password: z.string().min(1, { message: "Password is required." }),
 })
 
 type LoginForm = z.infer<typeof loginSchema>
@@ -40,7 +40,7 @@ export function LoginForm() {
       } else if (code === "auth/too-many-requests") {
         setServerError("Too many attempts. Please try again later.")
       } else {
-        setServerError("Something went wrong. Please try again.")
+        setServerError(err.message || "Something went wrong. Please try again.")
       }
     }
   }
@@ -49,7 +49,7 @@ export function LoginForm() {
     <form onSubmit={handleSubmit(onSubmit)} className="space-y-4 w-full">
       <div className="space-y-2">
         <label className="text-sm font-medium text-on-surface">Student Email</label>
-        <Input type="email" placeholder="you@university.edu" {...register("email")} />
+        <Input type="email" placeholder="student@university.edu" {...register("email")} />
         {errors.email && <p className="text-xs text-red-500">{errors.email.message}</p>}
       </div>
       <div className="space-y-2">

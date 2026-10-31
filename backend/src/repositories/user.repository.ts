@@ -8,6 +8,13 @@ export class UserRepository extends BaseRepository<User> {
   }
 
   public async findByUid(uid: string): Promise<User | null> {
+    // When customId is used, the document ID equals the Firebase Auth UID
+    const directDoc = await this.collection.doc(uid).get();
+    if (directDoc.exists) {
+      return { id: directDoc.id, ...directDoc.data() } as User;
+    }
+
+    // Fallback to query by uid field for any legacy documents
     const snapshot = await this.collection.where("uid", "==", uid).limit(1).get();
     if (snapshot.empty || !snapshot.docs[0]) {
       return null;
@@ -16,7 +23,11 @@ export class UserRepository extends BaseRepository<User> {
   }
 
   public async findByUniversityEmail(email: string): Promise<User | null> {
-    const snapshot = await this.collection.where("universityEmail", "==", email).where("verificationStatus", "==", "verified").limit(1).get();
+    const snapshot = await this.collection
+      .where("universityEmail", "==", email)
+      .where("verificationStatus", "==", "verified")
+      .limit(1)
+      .get();
     if (snapshot.empty || !snapshot.docs[0]) {
       return null;
     }

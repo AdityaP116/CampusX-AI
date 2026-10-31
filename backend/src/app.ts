@@ -13,6 +13,9 @@ import { ApiResponse } from "./utils/response.util";
 export const createApp = (): Application => {
   const app: Application = express();
 
+  // Reverse proxy support (Render, Cloud Run, Heroku)
+  app.set("trust proxy", 1);
+
   // Security Middlewares
   app.use(
     helmet({
@@ -22,9 +25,14 @@ export const createApp = (): Application => {
       crossOriginOpenerPolicy: false,
     })
   );
+
+  const allowedOrigins = env.CORS_ORIGIN.includes(",")
+    ? env.CORS_ORIGIN.split(",").map((o) => o.trim())
+    : env.CORS_ORIGIN;
+
   app.use(
     cors({
-      origin: env.CORS_ORIGIN,
+      origin: allowedOrigins,
       credentials: true,
     })
   );

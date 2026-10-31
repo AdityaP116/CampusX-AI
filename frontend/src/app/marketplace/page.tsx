@@ -3,17 +3,17 @@
 import * as React from "react"
 import Link from "next/link"
 import { ChevronDown, MapPin, Heart, ShoppingCart, Timer, Verified, Loader2 } from "lucide-react"
-import { Badge } from "@/shared/components/ui/badge"
 import { Button } from "@/shared/components/ui/button"
-import { Card } from "@/shared/components/ui/card"
 import { FadeIn } from "@/shared/components/ui/fade-in"
 import { useListings } from "@/features/marketplace/hooks/useListings"
 
 export default function MarketplacePage() {
   const { data: listings = [], isLoading } = useListings()
+  const [visibleCount, setVisibleCount] = React.useState(12)
 
-  const featured = listings.slice(0, 4)
-  const latest = listings.slice(4)
+  const displayed = listings.slice(0, visibleCount)
+  const featured = displayed.slice(0, 4)
+  const latest = displayed.slice(4)
 
   return (
     <div className="p-6 md:p-8 max-w-[1280px] mx-auto w-full">
@@ -23,7 +23,7 @@ export default function MarketplacePage() {
         <h1 className="font-display text-4xl font-bold text-on-surface mb-2 tracking-tight">Explore Listings</h1>
         <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
           <p className="text-on-surface-variant font-body text-base max-w-xl">
-            Find premium deals from verified students in your campus area. All listings are manually reviewed for safety.
+            Find premium deals from verified students in your campus area. All listings are verified for community safety.
           </p>
           <div className="flex items-center gap-2">
             <span className="font-label text-sm text-outline">Sort by:</span>
@@ -38,6 +38,16 @@ export default function MarketplacePage() {
       {isLoading ? (
         <div className="flex items-center justify-center py-32">
           <Loader2 className="w-8 h-8 text-primary animate-spin" />
+        </div>
+      ) : listings.length === 0 ? (
+        <div className="text-center py-24 bg-surface-container-low rounded-2xl p-8 border border-outline-variant/30">
+          <p className="font-headline text-xl font-bold text-on-surface mb-2">No listings found</p>
+          <p className="text-on-surface-variant text-sm mb-6">Be the first student to post an item in this category!</p>
+          <Link href="/create">
+            <Button variant="primary" size="lg">
+              Create a Listing
+            </Button>
+          </Link>
         </div>
       ) : (
         <>
@@ -55,7 +65,7 @@ export default function MarketplacePage() {
                   </div>
                   <div className="h-64 md:h-full w-full bg-surface-container relative">
                     <img 
-                      src={featured[0].images?.[0] || "https://lh3.googleusercontent.com/aida-public/AB6AXuDGYrccu0TBbWExHt9MdZCM3sEpJolaBwcl7hink0eppj9lad_IgtMOEwlS5bxkH0qmzXFVSKP5I9Gb4hEmAdzfeDINFwU6LYFaDElYtf7gnno-qXrtV8DRrs8HSnGMsjda2Q5bYgQIm0Kbp-_oNKjgyb3iVtcy2y1dB9XwLMQ8skU--S_x-V-FGH9cfs204LsaKXqvutVgrc8_rM-HSkJ0AeRrgUKJ5f5cQXF1KGGS6692v2Hyk0Z6"} 
+                      src={featured[0].images?.[0] || "https://images.unsplash.com/photo-1517336714731-489689fd1ca8?w=800&q=80"} 
                       alt={featured[0].title} 
                       className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" 
                     />
@@ -78,7 +88,7 @@ export default function MarketplacePage() {
                 <Link href={`/product/${featured[1].id}`} className="md:col-span-2 bg-white rounded-2xl overflow-hidden shadow-[0px_1px_2px_rgba(0,0,0,0.05),_0px_4px_12px_rgba(0,0,0,0.05)] hover:-translate-y-1 hover:shadow-md transition-all group flex flex-row border border-transparent hover:border-primary/10 cursor-pointer h-48 md:h-auto">
                   <div className="w-1/3 bg-surface-container h-full overflow-hidden shrink-0">
                     <img 
-                      src={featured[1].images?.[0] || "https://lh3.googleusercontent.com/aida-public/AB6AXuCG_C0SuT7HNbHviByGMenPjPEaNvSm2zBSlBWKTyTjVrb8VPlsihKhQR79FoPqTpV_JwUcBlSIlpw484nQWMTySTa4Q7nOiWXcYNZ8Ly9dzzpABIH8We2WVyQkgqnN_0TNOu74gHYSJGxUBPcQ0oo989N4lzHuuJyUr4ZCGSkXgsAjX3ytqm3SxfAJWXrAos8a2Se0JVEuCIlDcbwGY7uRfElVxNzl1-afRKGwe3vzW2Rq0L6EkXqu"} 
+                      src={featured[1].images?.[0] || "https://images.unsplash.com/photo-1544716278-ca5e3f4abd8c?w=500&q=80"} 
                       alt={featured[1].title} 
                       className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" 
                     />
@@ -94,9 +104,9 @@ export default function MarketplacePage() {
                     </div>
                     <div className="flex items-center justify-between mt-3">
                       <span className="text-xl font-bold text-primary font-body">${featured[1].price}</span>
-                      <button className="p-2.5 rounded-full bg-primary-container text-white active:scale-95 transition-transform shadow-sm hover:brightness-95">
+                      <div className="p-2.5 rounded-full bg-primary-container text-white shadow-sm">
                         <ShoppingCart className="w-4 h-4" />
-                      </button>
+                      </div>
                     </div>
                   </div>
                 </Link>
@@ -107,7 +117,7 @@ export default function MarketplacePage() {
                 <Link href={`/product/${featured[2].id}`} className="md:col-span-1 bg-white rounded-2xl overflow-hidden shadow-[0px_1px_2px_rgba(0,0,0,0.05),_0px_4px_12px_rgba(0,0,0,0.05)] hover:-translate-y-1 hover:shadow-md transition-all group border border-transparent hover:border-primary/10 cursor-pointer">
                   <div className="h-40 bg-surface-container relative overflow-hidden">
                     <img 
-                      src={featured[2].images?.[0] || "https://lh3.googleusercontent.com/aida-public/AB6AXuBhvcxS-gYOHURZceI15rjfZRSuSM0Kdot8Tk222usFmJLgf_VNJEOp97btuUMik_B4YbQ-VuJzN8Dc6fE_cYRLuPyGynOxKBk5YYyN2m9cLXT2buapfxvu7mJNOteO_DBMM09wZcxv4eUr36_yMD67hBHHTLACLSmw1P-UGNnBBX9fz1gKNBZItsaiNaZj1pRdgwT5e2hRYgbd6e11xMM8D4-ini8Mc4TbhUShxhwRD0zofOgKWQd6"} 
+                      src={featured[2].images?.[0] || "https://images.unsplash.com/photo-1580481077195-c3db82b0b84f?w=500&q=80"} 
                       alt={featured[2].title} 
                       className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" 
                     />
@@ -118,7 +128,7 @@ export default function MarketplacePage() {
                     <div className="flex items-center justify-between mt-3">
                       <span className="font-bold text-primary font-body">${featured[2].price}</span>
                       <div className="flex items-center gap-1 font-label text-[10px] text-outline">
-                        <Timer className="w-3.5 h-3.5" /> 2h ago
+                        <Timer className="w-3.5 h-3.5" /> Recent
                       </div>
                     </div>
                   </div>
@@ -130,7 +140,7 @@ export default function MarketplacePage() {
                 <Link href={`/product/${featured[3].id}`} className="md:col-span-1 bg-white rounded-2xl overflow-hidden shadow-[0px_1px_2px_rgba(0,0,0,0.05),_0px_4px_12px_rgba(0,0,0,0.05)] hover:-translate-y-1 hover:shadow-md transition-all group border border-transparent hover:border-primary/10 cursor-pointer">
                   <div className="h-40 bg-surface-container relative overflow-hidden">
                     <img 
-                      src={featured[3].images?.[0] || "https://lh3.googleusercontent.com/aida-public/AB6AXuCJ4-53Cvxit9bKc8ibNYXVCFAXTKa7QJWqKrWZQDQ7sr_QUVWjWuo6-Mnbdel_DKJEYSCRV30ichKz8YYWzG4Nie3oQaGOg8gv-SxLjvC0ajAq8ult6e46QuN59ibXtlezlUE_o2KOlyR66hpjLWk5XRkVPiGGrtG1kstCIzcJuZUhYPyerSd8dvJGEanBBZYi_zi0HhefQoP0kUi7VrTng7yK79xVisqGXBiMLP61YaQ_u07y4yG5"} 
+                      src={featured[3].images?.[0] || "https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=500&q=80"} 
                       alt={featured[3].title} 
                       className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" 
                     />
@@ -141,7 +151,7 @@ export default function MarketplacePage() {
                     <div className="flex items-center justify-between mt-3">
                       <span className="font-bold text-primary font-body">${featured[3].price}</span>
                       <div className="flex items-center gap-1 font-label text-[10px] text-outline">
-                        <Timer className="w-3.5 h-3.5" /> 5h ago
+                        <Timer className="w-3.5 h-3.5" /> Recent
                       </div>
                     </div>
                   </div>
@@ -156,7 +166,7 @@ export default function MarketplacePage() {
             <FadeIn delay={0.2}>
             <div className="mb-12">
               <h2 className="font-headline text-2xl font-bold mb-6 flex items-center gap-4 text-on-surface">
-                Latest Items 
+                All Listings
                 <span className="h-px flex-1 bg-outline-variant/30"></span>
               </h2>
               
@@ -183,15 +193,22 @@ export default function MarketplacePage() {
             </div>
             </FadeIn>
           )}
+
+          {/* Load More Section */}
+          {visibleCount < listings.length && (
+            <div className="flex justify-center py-8">
+              <Button
+                variant="outline"
+                size="lg"
+                onClick={() => setVisibleCount((prev) => prev + 12)}
+                className="rounded-full px-8 border-primary text-primary hover:bg-primary hover:text-white font-bold transition-all shadow-sm"
+              >
+                Load More Listings ({listings.length - visibleCount} remaining)
+              </Button>
+            </div>
+          )}
         </>
       )}
-
-      {/* Load More Section */}
-      <div className="flex justify-center py-8">
-        <Button variant="outline" size="lg" className="rounded-full px-8 border-primary text-primary hover:bg-primary hover:text-white font-bold transition-all shadow-sm">
-          Load More Listings
-        </Button>
-      </div>
 
       {/* Mobile FAB */}
       <Link href="/create" className="md:hidden fixed bottom-6 right-6 w-14 h-14 bg-primary text-white rounded-full shadow-lg flex items-center justify-center z-50 active:scale-95 transition-transform">

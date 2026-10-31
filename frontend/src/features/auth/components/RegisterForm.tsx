@@ -11,7 +11,10 @@ import { registerWithEmail } from "@/features/auth/services/authService"
 
 const registerSchema = z.object({
   name: z.string().min(2, { message: "Name must be at least 2 characters." }),
-  email: z.string().email({ message: "Invalid student email address." }),
+  email: z.string().email({ message: "Invalid student email address." }).refine(
+    (val) => val.includes(".edu") || val.endsWith("@nhitm.ac.in") || val.includes(".ac."),
+    { message: "Must be a valid student university email (.edu, .ac.in, etc.)" }
+  ),
   password: z.string().min(6, { message: "Password must be at least 6 characters." }),
 })
 
@@ -41,7 +44,7 @@ export function RegisterForm() {
       } else if (code === "auth/invalid-email") {
         setServerError("Please use a valid student email address.")
       } else {
-        setServerError("Something went wrong. Please try again.")
+        setServerError(err.message || "Something went wrong. Please try again.")
       }
     }
   }
@@ -55,7 +58,7 @@ export function RegisterForm() {
       </div>
       <div className="space-y-2">
         <label className="text-sm font-medium text-on-surface">Student Email</label>
-        <Input type="email" placeholder="you@university.edu" {...register("email")} />
+        <Input type="email" placeholder="student@university.edu" {...register("email")} />
         {errors.email && <p className="text-xs text-red-500">{errors.email.message}</p>}
       </div>
       <div className="space-y-2">

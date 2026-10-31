@@ -13,11 +13,15 @@ import { auth } from "@/lib/firebase"
 const BACKEND_URL = process.env.NEXT_PUBLIC_BACKEND_URL || "http://localhost:5000/api/v1"
 
 function setAuthCookie() {
-  document.cookie = "campusx-authed=1; path=/; max-age=2592000; SameSite=Lax"
+  const isSecure = typeof window !== "undefined" && window.location.protocol === "https:"
+  const secureFlag = isSecure ? "; Secure" : ""
+  document.cookie = `campusx-authed=1; path=/; max-age=2592000; SameSite=Lax${secureFlag}`
 }
 
 function clearAuthCookie() {
-  document.cookie = "campusx-authed=; path=/; max-age=0"
+  const isSecure = typeof window !== "undefined" && window.location.protocol === "https:"
+  const secureFlag = isSecure ? "; Secure" : ""
+  document.cookie = `campusx-authed=; path=/; max-age=0; SameSite=Lax${secureFlag}`
 }
 
 export async function syncUserWithBackend(credential: UserCredential): Promise<{ exists: boolean }> {
@@ -45,23 +49,30 @@ export async function registerWithEmail(
 ): Promise<UserCredential> {
   const credential = await createUserWithEmailAndPassword(auth, email, password)
   await updateProfile(credential.user, { displayName: name })
-  
-  const token = await credential.user.getIdToken()
-  const universityName = "NHITM"
 
-  const res = await fetch(`${BACKEND_URL}/auth/register`, {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-      Authorization: `Bearer ${token}`,
-    },
-    body: JSON.stringify({ displayName: name, universityName, email }),
-  })
-  
-  if (!res.ok) {
-    throw new Error("Failed to register on backend")
+  const token = await credential.user.getIdToken()
+  const universityName = "University"
+
+  try {
+    const res = await fetch(`${BACKEND_URL}/auth/register`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+      body: JSON.stringify({ displayName: name, universityName, email }),
+    })
+
+    if (!res.ok) {
+      const errData = await res.json().catch(() => ({}))
+      throw new Error(errData.message || "Failed to register profile on backend")
+    }
+  } catch (backendError) {
+    // Clean up Firebase Auth user if backend registration fails to prevent orphaned accounts
+    await credential.user.delete().catch(() => {})
+    throw backendError
   }
-  
+
   setAuthCookie()
   return credential
 }
@@ -70,12 +81,18 @@ export async function loginWithGoogle(): Promise<UserCredential> {
   const provider = new GoogleAuthProvider()
   const credential = await signInWithPopup(auth, provider)
 
-  const { exists } = await syncUserWithBackend(credential)
-  
-  if (!exists) {
-    // We do NOT set the auth cookie yet, because they are not verified.
-    // Throw special error so UI can redirect to /register/complete
+  const token = await credential.user.getIdToken()
+  const res = await fetch(`${BACKEND_URL}/auth/me`, {
+    headers: { Authorization: `Bearer ${token}` },
+  })
+
+  if (res.status === 404 || res.status === 401) {
+    // User does not have a linked backend profile yet
     throw new Error("REQUIRES_VERIFICATION")
+  }
+
+  if (!res.ok) {
+    throw new Error("Unable to connect to authentication server. Please try again.")
   }
 
   setAuthCookie()

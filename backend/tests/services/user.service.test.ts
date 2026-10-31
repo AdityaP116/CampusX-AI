@@ -8,6 +8,7 @@ vi.mock("../../src/repositories/user.repository", () => {
     userRepository: {
       findById: vi.fn(),
       findByUid: vi.fn(),
+      findByUniversityEmail: vi.fn(),
       create: vi.fn(),
       update: vi.fn(),
     }
@@ -39,13 +40,14 @@ describe("UserService", () => {
   describe("createUser", () => {
     it("should create user if uid does not exist", async () => {
       const newUserData = { uid: "uid123", email: "test@edu", displayName: "Test", role: "STUDENT", verificationStatus: "unverified", universityName: "Test", universityEmail: "test@edu" } as any;
-      const createdUser = { id: "1", ...newUserData };
+      const createdUser = { id: "uid123", ...newUserData };
       
       vi.mocked(userRepository.findByUid).mockResolvedValue(null);
       vi.mocked(userRepository.create).mockResolvedValue(createdUser);
 
       const result = await UserService.createUser(newUserData);
       expect(result).toEqual(createdUser);
+      expect(userRepository.create).toHaveBeenCalledWith(newUserData, "uid123");
     });
 
     it("should throw ApiError if uid already exists", async () => {

@@ -6,7 +6,7 @@ import { ChatService } from "../services";
 export class ChatController {
   public static async getConversations(req: Request, res: Response, next: NextFunction): Promise<void> {
     try {
-      const userId = req.user?.id || req.firebaseUser?.uid;
+      const userId = req.firebaseUser?.uid || req.user?.uid || req.user?.id;
       if (!userId) throw ApiError.unauthorized();
       const conversations = await ChatService.getConversations(userId);
       res.status(200).json(ApiResponse.success("Conversations retrieved", conversations));
@@ -17,7 +17,7 @@ export class ChatController {
 
   public static async getConversationById(req: Request, res: Response, next: NextFunction): Promise<void> {
     try {
-      const userId = req.user?.id || req.firebaseUser?.uid;
+      const userId = req.firebaseUser?.uid || req.user?.uid || req.user?.id;
       if (!userId) throw ApiError.unauthorized();
 
       const conv = await ChatService.getConversationById(req.params.id as string);
@@ -32,16 +32,19 @@ export class ChatController {
 
   public static async createConversation(req: Request, res: Response, next: NextFunction): Promise<void> {
     try {
-      const userId = req.user?.id || req.firebaseUser?.uid;
+      const userId = req.firebaseUser?.uid || req.user?.uid || req.user?.id;
       if (!userId) throw ApiError.unauthorized();
-      
-      const participants = req.body.participants || [];
+
+      const participants = Array.isArray(req.body.participants) ? [...req.body.participants] : [];
       if (!participants.includes(userId)) {
         participants.push(userId);
       }
 
+      const product = req.body.product;
+
       const newConv = await ChatService.createConversation({
         participants,
+        product,
         unreadCount: 0,
       });
       res.status(201).json(ApiResponse.success("Conversation created", newConv));
@@ -52,7 +55,7 @@ export class ChatController {
 
   public static async getMessages(req: Request, res: Response, next: NextFunction): Promise<void> {
     try {
-      const userId = req.user?.id || req.firebaseUser?.uid;
+      const userId = req.firebaseUser?.uid || req.user?.uid || req.user?.id;
       if (!userId) throw ApiError.unauthorized();
 
       const conv = await ChatService.getConversationById(req.params.id as string);
@@ -69,7 +72,7 @@ export class ChatController {
 
   public static async sendMessage(req: Request, res: Response, next: NextFunction): Promise<void> {
     try {
-      const userId = req.user?.id || req.firebaseUser?.uid;
+      const userId = req.firebaseUser?.uid || req.user?.uid || req.user?.id;
       if (!userId) throw ApiError.unauthorized();
 
       const conv = await ChatService.getConversationById(req.params.id as string);
@@ -82,6 +85,13 @@ export class ChatController {
         content: req.body.content || "",
         status: "sent",
       });
+
+      // Emit real-time Socket.IO notification if available
+      const io = req.app.get("io");
+      if (io) {
+        io.to(`conversation:${req.params.id}`).emit("new_message", msg);
+      }
+
       res.status(201).json(ApiResponse.success("Message sent", msg));
     } catch (error) {
       next(error);
@@ -90,7 +100,7 @@ export class ChatController {
 
   public static async markAsRead(req: Request, res: Response, next: NextFunction): Promise<void> {
     try {
-      const userId = req.user?.id || req.firebaseUser?.uid;
+      const userId = req.firebaseUser?.uid || req.user?.uid || req.user?.id;
       if (!userId) throw ApiError.unauthorized();
 
       const conv = await ChatService.getConversationById(req.params.id as string);

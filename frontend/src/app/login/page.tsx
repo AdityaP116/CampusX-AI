@@ -12,9 +12,7 @@ import { Button } from "@/shared/components/ui/button"
 import { loginWithEmail, loginWithGoogle } from "@/features/auth/services/authService"
 
 const loginSchema = z.object({
-  email: z.string().email("Please enter a valid email address").refine(val => val.endsWith("@nhitm.ac.in"), {
-    message: "Must be a valid @nhitm.ac.in university email"
-  }),
+  email: z.string().email("Please enter a valid email address"),
   password: z.string().min(1, "Password is required"),
 })
 
@@ -34,7 +32,14 @@ export default function LoginPage() {
       await loginWithEmail(data.email, data.password)
       router.push("/marketplace")
     } catch (err: any) {
-      setError(err.message || "Failed to sign in")
+      const code = err?.code ?? ""
+      if (code === "auth/invalid-credential" || code === "auth/wrong-password" || code === "auth/user-not-found") {
+        setError("Invalid student email or password.")
+      } else if (code === "auth/too-many-requests") {
+        setError("Too many attempts. Please try again in a few minutes.")
+      } else {
+        setError(err.message || "Failed to sign in. Please try again.")
+      }
     }
   }
 

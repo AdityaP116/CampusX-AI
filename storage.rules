@@ -6,18 +6,26 @@ service firebase.storage {
       return request.auth != null;
     }
 
-    // Only authenticated users can upload product images or avatars
-    match /products/{userId}/{imageId} {
+    // Product and listing images
+    match /listings/{listingId}/{imageId} {
       allow read: if true;
-      allow write: if isAuthenticated() && request.auth.uid == userId 
-                   && request.resource.size < 5 * 1024 * 1024
+      allow write: if isAuthenticated()
+                   && request.resource.size < 10 * 1024 * 1024
                    && request.resource.contentType.matches('image/.*');
     }
 
+    match /products/{userId}/{imageId} {
+      allow read: if true;
+      allow write: if isAuthenticated() && request.auth.uid == userId 
+                   && request.resource.size < 10 * 1024 * 1024
+                   && request.resource.contentType.matches('image/.*');
+    }
+
+    // User profile avatars
     match /avatars/{userId}/{imageId} {
       allow read: if true;
       allow write: if isAuthenticated() && request.auth.uid == userId
-                   && request.resource.size < 2 * 1024 * 1024
+                   && request.resource.size < 5 * 1024 * 1024
                    && request.resource.contentType.matches('image/.*');
     }
     

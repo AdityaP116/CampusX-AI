@@ -1,6 +1,6 @@
 "use client"
 
-import React, { createContext, useContext, useEffect } from "react"
+import React, { createContext, useEffect } from "react"
 import { onAuthStateChanged } from "firebase/auth"
 import { auth } from "@/lib/firebase"
 import { useAuthStore } from "@/features/auth/store/authStore"
@@ -13,7 +13,10 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, async (user) => {
       setUser(user)
-      
+
+      const isSecure = typeof window !== "undefined" && window.location.protocol === "https:"
+      const secureFlag = isSecure ? "; Secure" : ""
+
       if (user) {
         try {
           const token = await user.getIdToken()
@@ -21,17 +24,19 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
           const res = await fetch(`${BACKEND_URL}/auth/me`, {
             headers: { Authorization: `Bearer ${token}` },
           })
+
           if (res.ok) {
-            document.cookie = "campusx-authed=1; path=/; max-age=2592000; SameSite=Lax"
-          } else {
-            // User not registered in backend yet
-            document.cookie = "campusx-authed=; path=/; max-age=0; SameSite=Lax"
+            document.cookie = `campusx-authed=1; path=/; max-age=2592000; SameSite=Lax${secureFlag}`
+          } else if (res.status === 401 || res.status === 404) {
+            // User explicitly unauthorized or not found in database
+            document.cookie = `campusx-authed=; path=/; max-age=0; SameSite=Lax${secureFlag}`
           }
-        } catch (error) {
-          document.cookie = "campusx-authed=; path=/; max-age=0; SameSite=Lax"
+          // Note: If server responded with 500 or timeout during cold-start, we preserve session
+        } catch {
+          // Network error or backend cold start: retain existing auth state
         }
       } else {
-        document.cookie = "campusx-authed=; path=/; max-age=0; SameSite=Lax"
+        document.cookie = `campusx-authed=; path=/; max-age=0; SameSite=Lax${secureFlag}`
       }
       setLoading(false)
     })

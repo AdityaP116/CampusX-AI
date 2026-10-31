@@ -13,10 +13,11 @@ import { registerWithEmail, loginWithGoogle } from "@/features/auth/services/aut
 
 const registerSchema = z.object({
   name: z.string().min(2, "Name must be at least 2 characters"),
-  email: z.string().email("Please enter a valid email address").refine(val => val.endsWith("@nhitm.ac.in"), {
-    message: "Must be a valid @nhitm.ac.in university email"
-  }),
-  password: z.string().min(8, "Password must be at least 8 characters"),
+  email: z.string().email("Please enter a valid email address").refine(
+    (val) => val.includes(".edu") || val.endsWith("@nhitm.ac.in") || val.includes(".ac."),
+    { message: "Must be an authorized student university email (.edu, .ac.in, etc.)" }
+  ),
+  password: z.string().min(6, "Password must be at least 6 characters"),
 })
 
 type RegisterFormValues = z.infer<typeof registerSchema>
@@ -35,7 +36,12 @@ export default function RegisterPage() {
       await registerWithEmail(data.name, data.email, data.password)
       router.push("/marketplace")
     } catch (err: any) {
-      setError(err.message || "Failed to create account")
+      const code = err?.code ?? ""
+      if (code === "auth/email-already-in-use") {
+        setError("An account with this email already exists. Please sign in.")
+      } else {
+        setError(err.message || "Failed to create account. Please try again.")
+      }
     }
   }
 

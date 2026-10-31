@@ -14,6 +14,7 @@ export default function MessagesLayout({
   const { user } = useAuthStore()
   const { conversations, setConversations, activeConversationId, setActiveConversationId } = useChatStore()
   const [participantInfo, setParticipantInfo] = React.useState<Record<string, any>>({})
+  const [searchFilter, setSearchFilter] = React.useState("")
 
   React.useEffect(() => {
     if (!user) return
@@ -37,22 +38,33 @@ export default function MessagesLayout({
     return participants.find(p => p !== user?.uid) || participants[0]
   }
 
+  const filteredConversations = conversations.filter((conv) => {
+    if (!searchFilter.trim()) return true
+    const otherId = getOtherParticipant(conv.participants)
+    const name = participantInfo[otherId]?.displayName || ""
+    return name.toLowerCase().includes(searchFilter.toLowerCase())
+  })
+
   return (
     <div className="flex flex-1 h-[calc(100vh-64px)] overflow-hidden">
-      {/* SideNavBar / Conversation Sidebar */}
-      <aside className="w-full md:w-80 lg:w-96 flex flex-col bg-surface-container-low border-r border-outline-variant/30 h-full flex-shrink-0">
+      {/* SideNavBar / Conversation Sidebar (hidden on mobile if in active chat) */}
+      <aside className={`w-full md:w-80 lg:w-96 flex flex-col bg-surface-container-low border-r border-outline-variant/30 h-full flex-shrink-0 ${
+        activeConversationId ? "hidden md:flex" : "flex"
+      }`}>
         {/* Sidebar Header */}
         <div className="p-6 space-y-4">
           <div className="flex justify-between items-center">
             <h1 className="font-headline text-xl font-bold text-primary">Messages</h1>
-            <button className="p-2 bg-primary-container text-on-primary-container rounded-full hover:shadow-md transition-all active:scale-95">
-              <Edit className="h-5 w-5" />
-            </button>
+            <div className="p-2 bg-primary-container text-on-primary-container rounded-full shadow-sm">
+              <Edit className="h-4 w-4" />
+            </div>
           </div>
           <div className="relative">
             <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-outline h-4 w-4" />
             <input 
               type="text" 
+              value={searchFilter}
+              onChange={(e) => setSearchFilter(e.target.value)}
               placeholder="Search chats..." 
               className="w-full pl-9 pr-4 py-2 bg-surface-container-lowest border border-outline-variant rounded-xl focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none transition-all text-sm font-body"
             />
@@ -61,15 +73,15 @@ export default function MessagesLayout({
 
         {/* Conversation List */}
         <div className="flex-1 overflow-y-auto px-4 pb-4 space-y-1 no-scrollbar">
-          {conversations.length === 0 ? (
-            <div className="p-4 text-center text-on-surface-variant text-sm">
+          {filteredConversations.length === 0 ? (
+            <div className="p-8 text-center text-on-surface-variant text-sm">
               No conversations yet.
             </div>
           ) : (
-            conversations.map((conv) => {
+            filteredConversations.map((conv) => {
               const otherId = getOtherParticipant(conv.participants)
-              const otherInfo = participantInfo[otherId] || { displayName: "Loading...", avatar: null }
-              const initials = otherInfo.displayName ? otherInfo.displayName.substring(0, 2).toUpperCase() : "??"
+              const otherInfo = participantInfo[otherId] || { displayName: "Student", avatar: null }
+              const initials = otherInfo.displayName ? otherInfo.displayName.substring(0, 2).toUpperCase() : "ST"
               const isActive = activeConversationId === conv.id
               const lastMsgTime = conv.updatedAt ? new Date(conv.updatedAt).toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'}) : ""
 
@@ -114,8 +126,10 @@ export default function MessagesLayout({
         </div>
       </aside>
 
-      {/* Main Chat Area */}
-      <section className="hidden md:flex flex-1 flex-col bg-surface overflow-hidden relative">
+      {/* Main Chat Area (shown on mobile when activeConversationId is selected) */}
+      <section className={`flex-1 flex-col bg-surface overflow-hidden relative ${
+        activeConversationId ? "flex" : "hidden md:flex"
+      }`}>
         {children}
       </section>
     </div>

@@ -6,6 +6,7 @@ import { useRouter } from "next/navigation"
 import { Button } from "@/shared/components/ui/button"
 import { createConversation } from "@/features/chat/services/chatService"
 import { useAuthStore } from "@/features/auth/store/authStore"
+import { useChatStore } from "@/features/chat/store/chatStore"
 
 interface ChatButtonProps {
   sellerId: string;
@@ -21,6 +22,7 @@ interface ChatButtonProps {
 export function ChatButton({ sellerId, product, className }: ChatButtonProps) {
   const router = useRouter()
   const { user } = useAuthStore()
+  const { setActiveConversationId } = useChatStore()
   const [isLoading, setIsLoading] = React.useState(false)
 
   const handleChat = async () => {
@@ -37,7 +39,10 @@ export function ChatButton({ sellerId, product, className }: ChatButtonProps) {
 
     try {
       setIsLoading(true)
-      await createConversation(sellerId, product)
+      const res = await createConversation(sellerId, product)
+      if (res?.data?.id) {
+        setActiveConversationId(res.data.id)
+      }
       router.push("/messages")
     } catch (error) {
       console.error("Failed to start chat", error)

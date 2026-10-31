@@ -13,9 +13,12 @@ import { auth } from "@/lib/firebase"
 const BACKEND_URL = process.env.NEXT_PUBLIC_BACKEND_URL || "http://localhost:5000/api/v1"
 
 const emailSchema = z.object({
-  email: z.string().email("Please enter a valid email address").refine(val => val.endsWith("@nhitm.ac.in"), {
-    message: "Must be a valid @nhitm.ac.in university email"
-  })
+  email: z.string().email("Please enter a valid email address").refine(
+    (val) => val.includes(".edu") || val.endsWith("@nhitm.ac.in") || val.includes(".ac."),
+    {
+      message: "Must be a valid student university email (.edu, .ac.in, etc.)"
+    }
+  )
 })
 
 const otpSchema = z.object({
@@ -89,7 +92,9 @@ export default function CompleteRegistrationPage() {
       }
 
       // Set cookie and redirect
-      document.cookie = "campusx-authed=1; path=/; max-age=2592000; SameSite=Lax"
+      const isSecure = typeof window !== "undefined" && window.location.protocol === "https:"
+      const secureFlag = isSecure ? "; Secure" : ""
+      document.cookie = `campusx-authed=1; path=/; max-age=2592000; SameSite=Lax${secureFlag}`
       router.push("/marketplace")
     } catch (err: any) {
       setError(err.message || "Failed to verify OTP")
@@ -103,7 +108,7 @@ export default function CompleteRegistrationPage() {
           <h1 className="font-headline text-3xl font-bold text-on-surface">Verify College Email</h1>
           <p className="text-on-surface-variant font-body mt-2">
             {step === "email" 
-              ? "Since you signed in with Google, we need to link and verify your official @nhitm.ac.in email address before activating your account."
+              ? "Since you signed in with Google, we need to link and verify your official university email address before activating your account."
               : `We've sent a 6-digit OTP to ${email}. Please enter it below to verify.`}
           </p>
         </div>
@@ -117,8 +122,8 @@ export default function CompleteRegistrationPage() {
         {step === "email" ? (
           <form onSubmit={handleEmailSubmit(onEmailSubmit)} className="space-y-5">
             <div className="space-y-2">
-              <label className="font-label text-sm font-bold text-on-surface uppercase tracking-wider">NHITM Email</label>
-              <Input {...registerEmail("email")} type="email" placeholder="student@nhitm.ac.in" className="h-12" />
+              <label className="font-label text-sm font-bold text-on-surface uppercase tracking-wider">University Email</label>
+              <Input {...registerEmail("email")} type="email" placeholder="student@university.edu" className="h-12" />
               {emailErrors.email && <p className="text-xs font-medium text-error">{emailErrors.email.message}</p>}
             </div>
 

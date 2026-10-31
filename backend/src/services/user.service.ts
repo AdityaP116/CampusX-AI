@@ -6,7 +6,7 @@ export class UserService {
   public static async getUserById(id: string): Promise<User> {
     const user = await userRepository.findById(id);
     if (!user) {
-      throw ApiError.badRequest("User not found");
+      throw ApiError.notFound("User not found");
     }
     return user;
   }
@@ -14,7 +14,7 @@ export class UserService {
   public static async getUserByUid(uid: string): Promise<User> {
     const user = await userRepository.findByUid(uid);
     if (!user) {
-      throw ApiError.unauthorized("User not found for this Firebase account");
+      throw ApiError.notFound("User not found for this Firebase account");
     }
     return user;
   }
@@ -33,13 +33,14 @@ export class UserService {
       }
     }
 
-    return await userRepository.create(data);
+    // Pass data.uid as customId so Firestore document ID equals Firebase Auth UID
+    return await userRepository.create(data, data.uid);
   }
 
   public static async updateUser(id: string, data: Partial<Omit<User, "id">>): Promise<boolean> {
     const success = await userRepository.update(id, data);
     if (!success) {
-      throw ApiError.badRequest("User not found or update failed");
+      throw ApiError.notFound("User not found or update failed");
     }
     return true;
   }

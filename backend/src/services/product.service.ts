@@ -1,16 +1,21 @@
-import { productRepository, PaginatedResult } from "../repositories/product.repository";
+import { productRepository, PaginatedResult, ProductFilters } from "../repositories/product.repository";
 import { Product } from "../models";
 import { ApiError } from "../utils/api-error";
 
 export class ProductService {
-  public static async getProducts(_page: number, limit: number, lastDocId?: string): Promise<PaginatedResult<Product>> {
-    return await productRepository.findPaginated(limit, lastDocId);
+  public static async getProducts(
+    _page: number,
+    limit: number,
+    lastDocId?: string,
+    filters?: ProductFilters
+  ): Promise<PaginatedResult<Product>> {
+    return await productRepository.findPaginated(limit, lastDocId, filters);
   }
 
   public static async getProductById(id: string): Promise<Product> {
     const product = await productRepository.findById(id);
     if (!product) {
-      throw ApiError.badRequest("Product not found");
+      throw ApiError.notFound("Product not found");
     }
     return product;
   }
@@ -22,7 +27,7 @@ export class ProductService {
   public static async updateProduct(id: string, data: Partial<Omit<Product, "id">>): Promise<boolean> {
     const success = await productRepository.update(id, data);
     if (!success) {
-      throw ApiError.badRequest("Product not found or update failed");
+      throw ApiError.notFound("Product not found or update failed");
     }
     return true;
   }
@@ -30,7 +35,7 @@ export class ProductService {
   public static async deleteProduct(id: string): Promise<boolean> {
     const success = await productRepository.delete(id);
     if (!success) {
-      throw ApiError.badRequest("Product not found or delete failed");
+      throw ApiError.notFound("Product not found or delete failed");
     }
     return true;
   }
