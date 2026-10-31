@@ -13,19 +13,36 @@ import { ApiResponse } from "./utils/response.util";
 export const createApp = (): Application => {
   const app: Application = express();
 
-  // Reverse proxy support (Render, Cloud Run, Heroku)
+  // 1. Reverse proxy trust (Render, Cloud Run, AWS ALB, NGINX)
   app.set("trust proxy", 1);
 
-  // Security Middlewares
+  // 2. HTTP Security Headers (Strict-Transport-Security, X-Content-Type-Options, etc.)
   app.use(
     helmet({
       contentSecurityPolicy: false,
       crossOriginResourcePolicy: { policy: "cross-origin" },
       crossOriginEmbedderPolicy: false,
       crossOriginOpenerPolicy: false,
+      hsts: {
+        maxAge: 31536000,
+        includeSubDomains: true,
+        preload: true,
+      },
     })
   );
 
+  // 3. Strict HTTPS Enforcement in Production
+  if (env.NODE_ENV === "production") {
+    app.use((req: Request, res: Response, next) => {
+      const isHttps = req.secure || req.headers["x-forwarded-proto"] === "https";
+      if (!isHttps) {
+        return res.redirect(301, `https://${req.headers.host}${req.url}`);
+      }
+      next();
+    });
+  }
+
+  // 4. CORS Whitelisting
   const allowedOrigins = env.CORS_ORIGIN.includes(",")
     ? env.CORS_ORIGIN.split(",").map((o) => o.trim())
     : env.CORS_ORIGIN;
@@ -54,18 +71,18 @@ export const createApp = (): Application => {
     );
   });
 
-  // Request Rate Limiter & Logger
+  // 5. Global Rate Limiter & Audit Logger
   app.use(globalRateLimiter);
   app.use(requestLogger);
 
-  // Body Parsing Middlewares
-  app.use(express.json({ limit: "10mb" }));
+  // 6. Body Parsing with Safe Payload Size Quotas
+  app.use(express.json({ limit: "5mb" }));
   app.use(express.urlencoded({ extended: true, limit: "100kb" }));
 
   // Swagger API Documentation
   app.use("/docs", swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 
-  // API Routes
+  // 7. Protected & Validated API Routes
   app.use("/api/v1", apiRoutes);
 
   // Health Check Endpoint
