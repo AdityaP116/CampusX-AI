@@ -21,13 +21,13 @@ export function Breadcrumbs({ items }: BreadcrumbsProps) {
         "@type": "ListItem",
         "position": 1,
         "name": "Home",
-        "item": process.env.NEXT_PUBLIC_SITE_URL || "https://campusx.market"
+        "item": process.env.NEXT_PUBLIC_SITE_URL || "https://campusx-ai.onrender.com"
       },
       ...items.map((it, idx) => ({
         "@type": "ListItem",
         "position": idx + 2,
         "name": it.label,
-        ...(it.href ? { "item": `${process.env.NEXT_PUBLIC_SITE_URL || "https://campusx.market"}${it.href}` } : {})
+        ...(it.href ? { "item": `${process.env.NEXT_PUBLIC_SITE_URL || "https://campusx-ai.onrender.com"}${it.href}` } : {})
       }))
     ]
   };

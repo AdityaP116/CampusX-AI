@@ -1,102 +1,118 @@
 <div align="center">
   <img src="frontend/public/logo.png" alt="CampusX Logo" width="120" height="120" style="border-radius: 50%" />
   <h1>CampusX</h1>
-  <p>A premium, verified student-only marketplace for buying, selling, renting, and exchanging items on campus.</p>
+  <p><strong>A premium, verified student-only marketplace for buying, selling, renting, and trading items safely on campus.</strong></p>
+
+  <p>
+    <a href="https://campusx-ai.onrender.com"><strong>🌐 Live Web App (Frontend)</strong></a> •
+    <a href="https://campusx-api-zuks.onrender.com"><strong>🚀 Live REST API (Backend)</strong></a> •
+    <a href="https://campusx-api-zuks.onrender.com/docs"><strong>📖 Swagger API Docs</strong></a> •
+    <a href="https://campusx-api-zuks.onrender.com/health"><strong>🩺 Health Check</strong></a>
+  </p>
+
+  <p>
+    <img src="https://img.shields.io/badge/status-active-success.svg" alt="Status" />
+    <img src="https://img.shields.io/badge/frontend-Next.js%2016-black.svg" alt="Next.js" />
+    <img src="https://img.shields.io/badge/backend-Express%20%7C%20TypeScript-blue.svg" alt="Backend" />
+    <img src="https://img.shields.io/badge/database-Firestore-orange.svg" alt="Firestore" />
+    <img src="https://img.shields.io/badge/hosting-Render-46E3B7.svg" alt="Render" />
+    <img src="https://img.shields.io/badge/license-ISC-green.svg" alt="License" />
+  </p>
 </div>
 
 ---
 
-## Overview
+## 🌐 Live Deployments (Render)
 
-**CampusX** is an exclusive, enterprise-grade marketplace designed explicitly for verified college students. It solves the problem of unsafe, unverified peer-to-peer campus trading by strictly restricting access to verified student identities. The platform empowers students to safely buy, sell, rent, and exchange items directly within their trusted campus community.
-
----
-
-## Features
-
-### Authentication
-- **Firebase Authentication:** Secure login and registration flows.
-- **Identity Verification:** Endpoint stubs for Student ID and `.edu` email verification.
-- **Session Management:** Persisted client-side sessions integrated with Zustand.
-
-### Marketplace (Products)
-- **Product Listings:** Browse items via cursor-based pagination.
-- **CRUD Operations:** Verified students can create, read, update, and delete their own products.
-- **Seller Filtering:** View products explicitly by specific sellers.
-- **Trending:** Highlighted popular products.
-
-### Chat
-- **Real-time Conversations:** Dedicated messaging interfaces between buyers and sellers.
-- **Message History:** Paginated access to past conversations.
-- **Read Receipts:** Track unread message counts.
-
-### Security
-- **Strict Authorization:** Server-side ownership checks before mutations (e.g., you can only delete your own products; you can only read chats you participate in).
-- **Rate Limiting:** Redis-backed request throttling to prevent abuse.
-- **Data Validation:** Zod schema validation applied to all incoming API requests.
-- **Firebase Security Rules:** Highly granular Firestore and Storage rules restricting payload sizes and document access.
+| Component | Production URL | Description | Health Status |
+| :--- | :--- | :--- | :---: |
+| **Frontend Web App** | [https://campusx-ai.onrender.com](https://campusx-ai.onrender.com) | Next.js 16 (React 19) Marketplace UI | 🟢 Online |
+| **Backend REST API** | [https://campusx-api-zuks.onrender.com](https://campusx-api-zuks.onrender.com) | Express + TypeScript API Server | 🟢 Online |
+| **API Documentation** | [https://campusx-api-zuks.onrender.com/docs](https://campusx-api-zuks.onrender.com/docs) | Interactive Swagger UI Explorer | 🟢 Active |
+| **API Health Check** | [https://campusx-api-zuks.onrender.com/health](https://campusx-api-zuks.onrender.com/health) | Uptime & System Metrics Endpoint | 🟢 `200 OK` |
 
 ---
 
-## Tech Stack
+## 📖 Overview
 
-### Frontend
-- **Framework:** Next.js 16 (App Router)
-- **UI Library:** React 19
-- **Styling:** Tailwind CSS 4, Framer Motion
-- **State Management:** Zustand (Global State), React Query (Server State)
-- **Forms & Validation:** React Hook Form, Zod
+**CampusX** is an exclusive, enterprise-grade marketplace designed explicitly for verified college and university students. It eliminates the fraud, safety hazards, and fee exploitation of generic platforms (e.g. Craigslist, Facebook Marketplace) by requiring university institutional email verification (`.edu`, `.ac.in`) and restricting trading to trusted campus peers.
 
-### Backend
-- **Framework:** Node.js (v22+), Express.js
-- **Language:** TypeScript
-- **Architecture:** Clean Architecture (Controllers -> Services -> Repositories)
-- **API Documentation:** Swagger UI / JSDoc
-- **Logging:** Pino (Structured JSON logging)
-
-### Database & Storage
-- **Database:** Firebase Firestore (NoSQL)
-- **Storage:** Firebase Cloud Storage
-- **Cache / Rate Limiting:** Redis (ioredis)
-
-### DevOps & Deployment
-- **Containerization:** Docker (Multi-stage builds, Alpine Linux)
-- **Process Management:** dumb-init
-- **Target Platform:** Render / Railway
+Students can buy and sell textbooks, electronics, dorm furniture, and gear with on-campus safe-zone exchanges, real-time messaging, and zero platform fees.
 
 ---
 
-## Project Architecture
+## ✨ Features
 
-The repository is structured as a monorepo containing distinct `frontend` and `backend` directories.
+### 🔐 Verified Authentication & Zero-Trust Security
+- **Firebase Auth + Server ID Token Verification:** Strict token verification on every mutation endpoint via `firebase-admin`.
+- **Institutional Email Validation:** Dynamic `.edu` and approved domain verification with OTP challenge-response.
+- **Brute-Force & Flood Protection:** Multi-tiered rate limiting (global IP limit, 10-req/15-min auth throttling, 20-post/hour listing quotas).
+- **HSTS & HTTPS Enforced:** Automatic 301 redirection on insecure connections, preloaded `Strict-Transport-Security`, and hardened Helmet headers.
+- **Granular Storage Rules:** Dedicated `/listings/{id}/{file}` rules rejecting files over 10MB or non-image MIME types.
+
+### 🛍️ Campus Marketplace (Products & Listings)
+- **Harmonized Data Layer:** Full dual-mode resilience — queries the backend REST API with fallback to Firestore SDK.
+- **Comprehensive Filtering:** Real-time search, category classification, condition badges, and price range sliders.
+- **Bento Media Gallery:** Drag-and-drop multiple image uploads, preview strips, cover photo selection, and WebP/AVIF compression.
+- **Owner-Protected Mutations:** `sellerId` is securely resolved server-side from verified tokens (`req.firebaseUser.uid`), ensuring students can only edit or delete their own items.
+
+### 💬 Real-Time Peer Chat & Negotiations
+- **WebSocket Handshakes:** Socket.IO authenticated via Firebase Bearer tokens with origin restriction.
+- **Atomic Unread Badges:** Uses Firestore atomic `FieldValue.increment(1)` per conversation to eliminate concurrency race conditions.
+- **Contextual Inquiries:** Starts conversations directly pre-populated with the target product thumbnail, title, and asking price.
+
+### 🔍 Production SEO & Accessibility (20-Point Checklist)
+- **100% Valid Semantics:** Single `<h1>` per route, structured `<h2>` hierarchies, and descriptive image `alt` tags.
+- **Dynamic Sitemap & Robots:** `/sitemap.xml` and `/robots.txt` automatically reflect canonical live routes.
+- **Rich Structured Data:** JSON-LD `Organization` schema and `Product` schemas for Google Rich Snippets.
+- **Custom Branded 404:** Streamlined fallback page redirecting students back into the marketplace.
+
+---
+
+## 🛠️ Tech Stack
 
 ```text
-CampusX-AI/
-├── frontend/
-│   ├── public/              # Static assets (logo.png, icons)
-│   ├── src/
-│   │   ├── app/             # Next.js App Router pages
-│   │   ├── features/        # Feature-sliced modules (auth, products)
-│   │   ├── lib/             # Utility functions and API clients
-│   │   └── shared/          # Shared UI components and layouts
-│   └── package.json
-│
-└── backend/
-    ├── src/
-    │   ├── config/          # Firebase & env configuration
-    │   ├── controllers/     # Express route handlers
-    │   ├── middlewares/     # Auth, rate-limiting, and validation layers
-    │   ├── models/          # TypeScript interfaces (DTOs)
-    │   ├── repositories/    # Firestore data access layer
-    │   ├── routes/          # API route definitions
-    │   └── services/        # Core business logic
-    ├── Dockerfile           # Cloud Run deployment config
-    └── package.json
+Frontend: Next.js 16 (App Router) • React 19 • Tailwind CSS 4 • Zustand • React Query • Lucide Icons
+Backend:  Node.js 22 • Express.js • TypeScript • Socket.IO • Pino Logger • Helmet • Zod
+Cloud:    Render (Docker & Web Services) • Firebase Firestore • Firebase Storage • Redis
 ```
 
 ---
 
-## Installation
+## 📂 Repository Structure
+
+```text
+CampusX-AI/
+├── frontend/                     # Next.js 16 Web Application
+│   ├── src/
+│   │   ├── app/                  # App Router pages (SSR, layouts, sitemap, robots)
+│   │   ├── features/             # Feature modules (auth, marketplace, chat)
+│   │   ├── lib/                  # Firebase client configuration
+│   │   └── shared/               # Reusable UI primitives, stores, and providers
+│   ├── next.config.ts            # Image domains, formats (AVIF/WebP), and 301 redirects
+│   └── package.json
+│
+├── backend/                      # Express + TypeScript REST API
+│   ├── src/
+│   │   ├── config/               # Environment, Firebase Admin, and Redis configs
+│   │   ├── controllers/          # Request handlers with clean architecture
+│   │   ├── docs/                 # Swagger / OpenAPI documentation
+│   │   ├── middlewares/          # Auth JWT, rate limiters, Zod validators, audit logger
+│   │   ├── models/               # TypeScript data models and DTO interfaces
+│   │   ├── repositories/         # Firestore database access layer
+│   │   ├── routes/               # API endpoint definitions
+│   │   ├── services/             # Core business and authorization logic
+│   │   └── validators/           # Zod schema definitions
+│   ├── Dockerfile                # Production multi-stage Alpine build
+│   └── package.json
+│
+├── firestore.rules               # Firestore security rules
+└── storage.rules                 # Cloud Storage upload security rules
+```
+
+---
+
+## 🚀 Local Development Setup
 
 ### 1. Clone the repository
 ```bash
@@ -109,19 +125,21 @@ cd CampusX-AI
 cd backend
 npm install
 ```
-Create a `.env` file in the `backend/` directory:
+Create `backend/.env`:
 ```env
 PORT=5000
 NODE_ENV=development
-CORS_ORIGIN=http://localhost:3000
-FIREBASE_PROJECT_ID=campusx-ai
-FIREBASE_CLIENT_EMAIL=firebase-adminsdk@...
-FIREBASE_PRIVATE_KEY="-----BEGIN PRIVATE KEY-----\n...\n-----END PRIVATE KEY-----\n"
-FIREBASE_STORAGE_BUCKET=campusx-ai.firebasestorage.app
+CORS_ORIGIN=http://localhost:3000,https://campusx-ai.onrender.com
+ALLOWED_EMAIL_DOMAINS=nhitm.ac.in,edu
 RATE_LIMIT_WINDOW_MS=900000
 RATE_LIMIT_MAX_REQUESTS=100
+# Optional: Real Firebase Admin credentials (defaults to campusx-ai project emulator)
+# FIREBASE_PROJECT_ID=campusx-ai
+# FIREBASE_CLIENT_EMAIL=firebase-adminsdk@...
+# FIREBASE_PRIVATE_KEY="-----BEGIN PRIVATE KEY-----\n..."
+# FIREBASE_STORAGE_BUCKET=campusx-ai.firebasestorage.app
 ```
-Start the backend server:
+Start backend:
 ```bash
 npm run dev
 ```
@@ -131,198 +149,74 @@ npm run dev
 cd ../frontend
 npm install
 ```
-Create a `.env.local` file in the `frontend/` directory:
+Create `frontend/.env.local`:
 ```env
-NEXT_PUBLIC_FIREBASE_API_KEY=your_api_key
-NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN=campusx-ai.firebaseapp.com
-NEXT_PUBLIC_FIREBASE_PROJECT_ID=campusx-ai
-NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET=campusx-ai.firebasestorage.app
-NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID=your_sender_id
-NEXT_PUBLIC_FIREBASE_APP_ID=your_app_id
+NEXT_PUBLIC_BACKEND_URL=https://campusx-api-zuks.onrender.com/api/v1
+NEXT_PUBLIC_SITE_URL=https://campusx-ai.onrender.com
 ```
-Start the frontend server:
+Start frontend:
 ```bash
 npm run dev
 ```
 
----
-
-## Environment Variables
-
-### Backend (`backend/.env`)
-
-| Variable | Purpose | Required | Example |
-|----------|---------|----------|---------|
-| `PORT` | API listening port | Yes | `5000` |
-| `NODE_ENV` | Environment context | Yes | `development` |
-| `CORS_ORIGIN` | Allowed client origin | Yes | `http://localhost:3000` |
-| `FIREBASE_PROJECT_ID` | GCP Project ID | Yes | `campusx-ai` |
-| `FIREBASE_CLIENT_EMAIL` | Service Account Email | Yes | `admin@...` |
-| `FIREBASE_PRIVATE_KEY` | Service Account Key | Yes | `"-----BEGIN..."` |
-| `FIREBASE_STORAGE_BUCKET`| Cloud Storage Bucket | Yes | `campusx-ai.appspot.com`|
-| `REDIS_URL` | Redis connection string| No | `redis://localhost:6379`|
-
-### Frontend (`frontend/.env.local`)
-
-| Variable | Purpose | Required | Example |
-|----------|---------|----------|---------|
-| `NEXT_PUBLIC_FIREBASE_API_KEY` | Client SDK Key | Yes | `AIzaSy...` |
-| `NEXT_PUBLIC_FIREBASE_PROJECT_ID` | GCP Project ID | Yes | `campusx-ai` |
+Open [http://localhost:3000](http://localhost:3000) in your browser.
 
 ---
 
-## Available Scripts
+## 🚢 Render Deployment Guide
 
-### Frontend
-- `npm run dev` - Starts the Next.js development server.
-- `npm run build` - Builds the application for production.
-- `npm run start` - Runs the compiled production server.
-- `npm run lint` - Executes ESLint to verify code quality.
+### Backend Service (Web Service via Docker)
+1. In the [Render Dashboard](https://dashboard.render.com), create a **New Web Service**.
+2. Connect `https://github.com/AdityaP116/CampusX-AI`.
+3. Set **Root Directory** to: `backend`.
+4. Set **Runtime** to: `Docker`.
+5. Add the following **Environment Variables**:
+   - `NODE_ENV`: `production`
+   - `PORT`: `8080` (or `5000`)
+   - `CORS_ORIGIN`: `https://campusx-ai.onrender.com`
+   - `ALLOWED_EMAIL_DOMAINS`: `nhitm.ac.in,edu`
+   - `FIREBASE_PROJECT_ID`: Your Firebase Project ID
+   - `FIREBASE_CLIENT_EMAIL`: Your Firebase Service Account Email
+   - `FIREBASE_PRIVATE_KEY`: Your Firebase Service Account Private Key (with newlines)
+   - `FIREBASE_STORAGE_BUCKET`: Your Firebase Storage Bucket URL
+   - `REDIS_URL`: *(Optional)* Your Redis connection string
 
-### Backend
-- `npm run dev` - Starts the Express server with hot-reloading (`tsx watch`).
-- `npm run build` - Compiles TypeScript to JavaScript in the `/dist` directory.
-- `npm run start` - Runs the compiled Node.js production server.
-- `npm run type-check` - Runs the TypeScript compiler without emitting files.
-- `npm run lint` - Executes ESLint checks.
-- `npm run test` - Runs the Vitest test suite.
-
----
-
-## API Overview
-
-All API endpoints are prefixed with `/api/v1`. 
-
-### Authentication (`/auth`)
-- `POST /register` - Register a new verified student.
-- `GET /me` - Retrieve current user profile.
-- `PATCH /me` - Update current user profile.
-
-### Products (`/products`)
-- `GET /` - Paginated product discovery.
-- `GET /:id` - Fetch single product details.
-- `POST /` - Create a new listing (Auth required).
-- `PATCH /:id` - Update a listing (Owner required).
-- `DELETE /:id` - Delete a listing (Owner required).
-
-### Chat (`/chat`)
-- `GET /conversations` - List user's active chats.
-- `POST /conversations` - Start a new chat.
-- `GET /conversations/:id/messages` - Fetch messages for a specific chat.
-- `POST /conversations/:id/messages` - Send a new message.
-- `PATCH /conversations/:id/read` - Mark a conversation as read.
+### Frontend Service (Web Service via Node)
+1. Create a **New Web Service** (Node runtime).
+2. Connect `https://github.com/AdityaP116/CampusX-AI`.
+3. Set **Root Directory** to: `frontend`.
+4. Set **Build Command** to: `npm install && npm run build`
+5. Set **Start Command** to: `npm run start`
+6. Add the following **Environment Variables**:
+   - `NEXT_PUBLIC_BACKEND_URL`: `https://campusx-api-zuks.onrender.com/api/v1`
+   - `NEXT_PUBLIC_SITE_URL`: `https://campusx-ai.onrender.com`
+   - `NEXT_PUBLIC_FIREBASE_API_KEY`: Your Firebase Web API Key
+   - `NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN`: `your-app.firebaseapp.com`
+   - `NEXT_PUBLIC_FIREBASE_PROJECT_ID`: `your-app-id`
+   - `NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET`: `your-app.firebasestorage.app`
+   - `NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID`: Your Sender ID
+   - `NEXT_PUBLIC_FIREBASE_APP_ID`: Your Firebase Web App ID
 
 ---
 
-## Firebase Configuration
+## 🧪 Testing & Code Quality
 
-### Authentication
-CampusX leverages Firebase Authentication for seamless client-side authentication and JWT generation. The backend strictly verifies these ID tokens using the `firebase-admin` SDK before allowing sensitive operations.
+```bash
+# Run backend unit & integration tests
+cd backend && npm run test
 
-### Firestore
-A NoSQL document database utilizing Collections: `users`, `products`, `conversations`, and `messages`. 
-
-### Security Rules
-Custom `.rules` files enforce strict data governance directly at the database layer, ensuring that even direct client SDK usage remains highly secure.
-
----
-
-## Render Deployment
-
-The application is configured to be seamlessly deployed on Render as Web Services.
-
-### Backend Deployment (Docker)
-The backend uses a multi-stage `Dockerfile` with `node:22-alpine` to minimize image size.
-1. Create a **New Web Service** on Render.
-2. Select your repository.
-3. Set **Root Directory** to `backend`.
-4. Set **Environment** to `Docker`.
-5. Add all the required backend environment variables (including Firebase Admin credentials) in the Render dashboard.
-
-### Frontend Deployment (Node)
-Since the Next.js frontend uses Server Components and dynamic routes, it must be deployed as a Web Service.
-1. Create a **New Web Service** on Render (do not use Static Site).
-2. Select your repository.
-3. Set **Root Directory** to `frontend`.
-4. Set **Environment** to `Node`.
-5. Set **Build Command** to: `npm install; npm run build`
-6. Set **Start Command** to: `npm run start`
-7. Add all the `NEXT_PUBLIC_FIREBASE_*` environment variables in the Render dashboard.
+# Run TypeScript strict type-check
+cd backend && npm run type-check
+cd ../frontend && npm run type-check
+```
 
 ---
 
-## Security
-
-- **Authentication:** Cryptographically verified Firebase ID Tokens.
-- **Authorization:** Strict controller-level ownership checks (e.g., verifying `sellerId === req.user.id`).
-- **Validation:** 100% of incoming request payloads are validated and stripped of unknown fields using Zod schemas.
-- **Helmet:** HTTP headers are secured against common web vulnerabilities.
-- **Rate Limiting:** Global rate limiting is applied via Redis to prevent brute-force and DDoS attacks.
-- **CORS:** Restricted strictly to authorized frontend origins.
+## 📄 License
+This project is licensed under the **ISC License**.
 
 ---
 
-## Performance
-
-- **Pagination:** Cursor-based pagination (`lastDocId`) implemented in Firestore queries to guarantee consistent read performance regardless of collection size.
-- **Lazy Loading:** Frontend components use Next.js dynamic imports where appropriate.
-- **Lean Architecture:** The backend utilizes thin controllers and dedicated repository classes to minimize memory overhead.
-
----
-
-## Development Workflow
-
-1. **Run Locally:** Start Redis (if applicable), followed by the backend and frontend dev servers.
-2. **Create Features:** Adhere to the Feature-Sliced Design in the frontend, and the Controller-Service-Repository pattern in the backend.
-3. **Commit Code:** Ensure all code passes `npm run type-check` and `npm run lint`.
-4. **Deploy:** Both Backend and Frontend deploy seamlessly to Render.
-
----
-
-## Contributing
-
-We welcome contributions from the open-source community!
-1. Fork the repository.
-2. Create a feature branch (`git checkout -b feature/amazing-feature`).
-3. Ensure your code passes all linting and type checks.
-4. Commit your changes (`git commit -m 'feat: add amazing feature'`).
-5. Push to the branch (`git push origin feature/amazing-feature`).
-6. Open a Pull Request.
-
----
-
-## Code Quality
-
-This project enforces strict code quality standards:
-- **TypeScript:** 100% strict type safety across both frontend and backend.
-- **ESLint:** Enforced linting rules to prevent anti-patterns and unused variables.
-- **Architecture:** Predictable separation of concerns ensuring high maintainability.
-
----
-
-## Deployment Checklist
-
-- [ ] Environment variables configured in Secret Manager
-- [ ] Redis instance provisioned and connected
-- [ ] Firestore Composite Indexes deployed
-- [ ] Firebase Storage Rules deployed
-- [ ] Docker build passes successfully
-- [ ] Cloud Run container deployed
-- [ ] `/health` endpoint verified returning `200 OK`
-
----
-
-## License
-
-This project is licensed under the ISC License.
-
----
-
-## Author
-
-**CampusX Core Engineering Team**  
-Built with a passion for robust developer experiences and secure, scalable architectures.
-
-## Support
-
-For issues, bug reports, or feature requests, please [open an issue](https://github.com/AdityaP116/CampusX-AI/issues) on GitHub.
+<div align="center">
+  <sub>Built for students, by students. CampusX Core Engineering.</sub>
+</div>

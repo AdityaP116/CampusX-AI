@@ -22,7 +22,7 @@ const geist = Geist({
   subsets: ["latin"],
 });
 
-const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://campusx.market";
+const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://campusx-ai.onrender.com";
 
 export const metadata: Metadata = {
   metadataBase: new URL(baseUrl),

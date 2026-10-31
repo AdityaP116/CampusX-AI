@@ -1,7 +1,7 @@
 import { auth, db } from "@/lib/firebase";
 import { collection, query, where, orderBy, onSnapshot, doc, getDoc } from "firebase/firestore";
 
-const BACKEND_URL = process.env.NEXT_PUBLIC_BACKEND_URL || "http://localhost:5000/api/v1";
+const BACKEND_URL = process.env.NEXT_PUBLIC_BACKEND_URL || "https://campusx-api-zuks.onrender.com/api/v1";
 
 export interface Conversation {
   id: string;

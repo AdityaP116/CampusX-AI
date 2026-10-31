@@ -20,7 +20,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       if (user) {
         try {
           const token = await user.getIdToken()
-          const BACKEND_URL = process.env.NEXT_PUBLIC_BACKEND_URL || "http://localhost:5000/api/v1"
+          const BACKEND_URL = process.env.NEXT_PUBLIC_BACKEND_URL || "https://campusx-api-zuks.onrender.com/api/v1"
           const res = await fetch(`${BACKEND_URL}/auth/me`, {
             headers: { Authorization: `Bearer ${token}` },
           })

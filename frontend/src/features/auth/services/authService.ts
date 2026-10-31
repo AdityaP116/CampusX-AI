@@ -10,7 +10,7 @@ import {
 } from "firebase/auth"
 import { auth } from "@/lib/firebase"
 
-const BACKEND_URL = process.env.NEXT_PUBLIC_BACKEND_URL || "http://localhost:5000/api/v1"
+const BACKEND_URL = process.env.NEXT_PUBLIC_BACKEND_URL || "https://campusx-api-zuks.onrender.com/api/v1"
 
 function setAuthCookie() {
   const isSecure = typeof window !== "undefined" && window.location.protocol === "https:"

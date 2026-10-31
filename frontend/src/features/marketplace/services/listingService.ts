@@ -14,7 +14,7 @@ import {
 import { ref, uploadBytes, getDownloadURL } from "firebase/storage"
 import type { Category, Condition } from "@/shared/store/useMarketplaceStore"
 
-const BACKEND_URL = process.env.NEXT_PUBLIC_BACKEND_URL || "http://localhost:5000/api/v1"
+const BACKEND_URL = process.env.NEXT_PUBLIC_BACKEND_URL || "https://campusx-api-zuks.onrender.com/api/v1"
 
 export interface Listing {
   id: string
