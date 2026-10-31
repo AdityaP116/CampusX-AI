@@ -1,5 +1,6 @@
 import * as React from "react"
 import Link from "next/link"
+import Image from "next/image"
 import { Button } from "@/shared/components/ui/button"
 import { Badge } from "@/shared/components/ui/badge"
 import { 
@@ -14,7 +15,7 @@ export default function Home() {
     <div className="flex flex-col w-full">
       {/* Hero Section */}
       <FadeIn>
-      <section className="max-w-[1280px] mx-auto px-6 py-12 md:py-32 flex flex-col md:flex-row items-center gap-12">
+      <section className="max-w-[1280px] mx-auto px-6 py-12 md:py-28 flex flex-col md:flex-row items-center gap-12">
         <div className="w-full md:w-1/2 space-y-8">
           <div className="inline-flex items-center gap-2 px-4 py-1.5 bg-primary-container/10 text-primary rounded-full">
             <BadgeCheck className="w-5 h-5 text-primary" />
@@ -33,8 +34,10 @@ export default function Home() {
           
           <form action="/marketplace" method="GET" className="flex flex-col sm:flex-row gap-4 pt-4">
             <div className="relative flex-grow max-w-md">
+              <label htmlFor="hero-search" className="sr-only">Search listings</label>
               <Search className="absolute left-4 top-1/2 -translate-y-1/2 text-outline w-5 h-5" />
               <input 
+                id="hero-search"
                 type="text" 
                 name="search"
                 placeholder="Search textbooks, tech, furniture..." 
@@ -50,14 +53,17 @@ export default function Home() {
         <div className="w-full md:w-1/2 relative h-[400px] md:h-[500px]">
           <div className="absolute inset-0 bg-gradient-to-tr from-primary/10 to-transparent rounded-3xl -z-10 rotate-3"></div>
           <div className="w-full h-full rounded-3xl overflow-hidden shadow-[0px_8px_24px_rgba(0,0,0,0.08)] border border-primary/10 relative group bg-surface-container">
-            <img 
+            <Image 
               src="https://images.unsplash.com/photo-1523240795612-9a054b0db644?w=1000&q=80" 
-              alt="Campus Life" 
-              className="w-full h-full object-cover"
+              alt="Students collaborating and trading textbooks on college campus"
+              fill
+              priority
+              sizes="(max-width: 768px) 100vw, 50vw"
+              className="object-cover"
             />
             
             {/* Glass Floating UI Element */}
-            <div className="absolute bottom-6 right-6 p-4 bg-white/60 backdrop-blur-md rounded-xl border border-white/40 shadow-xl max-w-[200px]">
+            <div className="absolute bottom-6 right-6 p-4 bg-white/70 backdrop-blur-md rounded-xl border border-white/50 shadow-xl max-w-[200px]">
               <div className="flex items-center gap-3">
                 <div className="w-8 h-8 rounded-full bg-primary flex items-center justify-center text-white shrink-0">
                   <TrendingUp className="w-4 h-4" />
@@ -95,7 +101,7 @@ export default function Home() {
             ].map((cat, i) => (
               <Link 
                 key={i} 
-                href={`/marketplace`}
+                href={`/marketplace?category=${cat.id}`}
                 className="flex flex-col items-center p-6 bg-surface rounded-2xl shadow-[0px_1px_2px_rgba(0,0,0,0.05),_0px_4px_12px_rgba(0,0,0,0.05)] hover:-translate-y-1 hover:shadow-[0px_8px_24px_rgba(0,0,0,0.08)] hover:border-primary/10 border border-transparent transition-all group"
               >
                 <div className="w-16 h-16 rounded-full bg-primary-container/10 text-primary flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
@@ -115,7 +121,7 @@ export default function Home() {
         <div className="max-w-[1280px] mx-auto px-6">
           <div className="text-center max-w-2xl mx-auto mb-20">
             <h2 className="font-display text-4xl md:text-5xl font-bold text-on-surface mb-4">Safe. Simple. Student-Only.</h2>
-            <p className="text-on-surface-variant text-base md:text-lg">We've built CampusX to be the safest way to trade items with your peers, removing the friction and risk of public marketplaces.</p>
+            <p className="text-on-surface-variant text-base md:text-lg">We&apos;ve built CampusX to be the safest way to trade items with your peers, removing the friction and risk of public marketplaces.</p>
           </div>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-16 md:gap-8">
             <div className="text-center space-y-4">
@@ -165,7 +171,7 @@ export default function Home() {
           </div>
           <div className="space-y-6 lg:pl-8">
             <h2 className="font-display text-4xl md:text-5xl font-bold text-on-surface">Powering the Campus Economy.</h2>
-            <p className="text-on-surface-variant text-base md:text-lg">By keeping trades within the campus, we reduce waste, save money, and build a more connected student body. CampusX is more than a store—it's a sustainable community.</p>
+            <p className="text-on-surface-variant text-base md:text-lg">By keeping trades within the campus, we reduce waste, save money, and build a more connected student body. CampusX is more than a store—it&apos;s a sustainable community.</p>
             <ul className="space-y-4 pt-4">
               <li className="flex items-center gap-3">
                 <CheckCircle2 className="w-6 h-6 text-primary" />
