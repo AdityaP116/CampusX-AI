@@ -67,12 +67,14 @@ export default function MarketplaceLayout({
                 className="w-full bg-white border border-outline-variant rounded-lg px-2 py-1.5 text-sm font-body focus:ring-1 focus:ring-primary outline-none text-on-surface"
               >
                 <option value="all">All Categories</option>
-                <option value="electronics">Electronics</option>
-                <option value="textbooks">Textbooks</option>
-                <option value="furniture">Furniture</option>
-                <option value="clothing">Clothing</option>
-                <option value="sports">Sports</option>
-                <option value="other">Other</option>
+                <option value="electronics">📱 Electronics</option>
+                <option value="books">📖 Books / Textbooks</option>
+                <option value="furniture">🛋️ Furniture</option>
+                <option value="clothing">👕 Clothing</option>
+                <option value="services">🔧 Services</option>
+                <option value="tickets">🎟️ Tickets</option>
+                <option value="sports">🏀 Sports</option>
+                <option value="other">📦 Other</option>
               </select>
             </div>
             

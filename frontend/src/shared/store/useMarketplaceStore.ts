@@ -1,6 +1,6 @@
 import { create } from "zustand"
 
-export type Category = "all" | "textbooks" | "electronics" | "furniture" | "clothing" | "sports" | "other"
+export type Category = "all" | "electronics" | "books" | "textbooks" | "furniture" | "clothing" | "services" | "tickets" | "sports" | "other"
 export type Condition = "any" | "new" | "like-new" | "good" | "fair" | "poor"
 
 interface MarketplaceState {
