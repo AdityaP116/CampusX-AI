@@ -11,7 +11,7 @@ export default function MessagesPage() {
   const { user } = useAuthStore()
   const { activeConversationId, setActiveConversationId, conversations, messages, setMessages } = useChatStore()
   const [inputText, setInputText] = React.useState("")
-  const [otherUserInfo, setOtherUserInfo] = React.useState<any>(null)
+  const [otherUserInfo, setOtherUserInfo] = React.useState<{ displayName?: string; photoURL?: string; avatar?: string } | null>(null)
   const messagesEndRef = React.useRef<HTMLDivElement>(null)
 
   const activeConversation = conversations.find(c => c.id === activeConversationId)

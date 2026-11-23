@@ -11,6 +11,7 @@ import { useAuthStore } from "@/features/auth/store/authStore"
 import { useQuery } from "@tanstack/react-query"
 import { collection, query, where, getDocs } from "firebase/firestore"
 import { db } from "@/lib/firebase"
+import type { Listing } from "@/features/marketplace/services/listingService"
 
 export default function ProfilePage() {
   const { user } = useAuthStore()
@@ -21,7 +22,7 @@ export default function ProfilePage() {
       if (!user?.uid) return []
       const q = query(collection(db, "products"), where("sellerId", "==", user.uid))
       const snapshot = await getDocs(q)
-      return snapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() } as any))
+      return snapshot.docs.map((d) => ({ id: d.id, ...d.data() } as unknown as Listing))
     },
     enabled: !!user?.uid,
   })
@@ -132,7 +133,7 @@ export default function ProfilePage() {
             </div>
           ) : (
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
-              {userListings.map((listing: any) => (
+              {userListings.map((listing: Listing) => (
                 <Link key={listing.id} href={`/product/${listing.id}`}>
                   <Card className="group cursor-pointer hover:shadow-md transition-shadow">
                     <div className="h-48 relative overflow-hidden rounded-t-2xl bg-surface-container">
@@ -147,7 +148,7 @@ export default function ProfilePage() {
                     </div>
                     <CardContent className="p-5 space-y-2 pt-4">
                       <p className="font-label text-xs text-primary uppercase tracking-wider font-bold">
-                        {listing.category || listing.categoryId || "Item"}
+                        {listing.category || "Item"}
                       </p>
                       <h3 className="font-headline text-lg font-bold text-on-surface group-hover:text-primary transition-colors line-clamp-1">
                         {listing.title}

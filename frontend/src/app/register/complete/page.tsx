@@ -4,50 +4,56 @@ import * as React from "react"
 import { useRouter } from "next/navigation"
 import { useForm } from "react-hook-form"
 import { zodResolver } from "@hookform/resolvers/zod"
-import { z } from "zod"
-import { AuthLayout } from "@/features/auth/components/AuthLayout"
-import { Input } from "@/shared/components/ui/input"
+import * as z from "zod"
 import { Button } from "@/shared/components/ui/button"
+import { Input } from "@/shared/components/ui/input"
+import { AuthLayout } from "@/features/auth/components/AuthLayout"
 import { auth } from "@/lib/firebase"
 
 const BACKEND_URL = process.env.NEXT_PUBLIC_BACKEND_URL || "https://campusx-api-zuks.onrender.com/api/v1"
 
 const emailSchema = z.object({
-  email: z.string().email("Please enter a valid email address").refine(
-    (val) => val.includes(".edu") || val.endsWith("@nhitm.ac.in") || val.includes(".ac."),
-    {
-      message: "Must be a valid student university email (.edu, .ac.in, etc.)"
-    }
+  email: z.string().email("Invalid email").refine(
+    (e) => e.endsWith(".edu") || e.endsWith(".ac.in") || e.endsWith("nhitm.ac.in"),
+    "Must be a valid student email (.edu or approved university domain)"
   )
 })
 
 const otpSchema = z.object({
-  otp: z.string().length(6, "OTP must be exactly 6 digits")
+  otp: z.string().length(6, "OTP must be exactly 6 digits"),
 })
 
 type EmailFormValues = z.infer<typeof emailSchema>
 type OtpFormValues = z.infer<typeof otpSchema>
+
+function setAuthCookies(token: string) {
+  if (typeof window === "undefined") return
+  const isSecure = window.location.protocol === "https:"
+  const secureFlag = isSecure ? "; Secure" : ""
+  window.document.cookie = `campusx-token=${encodeURIComponent(token)}; path=/; max-age=2592000; SameSite=Lax${secureFlag}`
+  window.document.cookie = `campusx-authed=1; path=/; max-age=2592000; SameSite=Lax${secureFlag}`
+}
 
 export default function CompleteRegistrationPage() {
   const router = useRouter()
   const [step, setStep] = React.useState<"email" | "otp">("email")
   const [email, setEmail] = React.useState("")
   const [error, setError] = React.useState<string | null>(null)
-  
-  const { register: registerEmail, handleSubmit: handleEmailSubmit, formState: { errors: emailErrors, isSubmitting: isSubmittingEmail } } = useForm<EmailFormValues>({
+
+  const emailForm = useForm<EmailFormValues>({
     resolver: zodResolver(emailSchema)
   })
 
-  const { register: registerOtp, handleSubmit: handleOtpSubmit, formState: { errors: otpErrors, isSubmitting: isSubmittingOtp } } = useForm<OtpFormValues>({
+  const otpForm = useForm<OtpFormValues>({
     resolver: zodResolver(otpSchema)
   })
 
   const onEmailSubmit = async (data: EmailFormValues) => {
     try {
       setError(null)
-      const user = auth.currentUser;
-      if (!user) throw new Error("You must be logged in with Google first.")
-      
+      const user = auth.currentUser
+      if (!user) throw new Error("No authenticated session found. Please sign in again.")
+
       const token = await user.getIdToken()
       const res = await fetch(`${BACKEND_URL}/auth/send-otp`, {
         method: "POST",
@@ -73,9 +79,9 @@ export default function CompleteRegistrationPage() {
   const onOtpSubmit = async (data: OtpFormValues) => {
     try {
       setError(null)
-      const user = auth.currentUser;
-      if (!user) throw new Error("You must be logged in with Google first.")
-      
+      const user = auth.currentUser
+      if (!user) throw new Error("No authenticated session found. Please sign in again.")
+
       const token = await user.getIdToken()
       const res = await fetch(`${BACKEND_URL}/auth/verify-otp`, {
         method: "POST",
@@ -91,13 +97,7 @@ export default function CompleteRegistrationPage() {
         throw new Error(responseData.message || "Failed to verify OTP")
       }
 
-      // Set cookie and redirect
-      if (typeof window !== "undefined") {
-        const isSecure = window.location.protocol === "https:"
-        const secureFlag = isSecure ? "; Secure" : ""
-        window.document.cookie = `campusx-token=${encodeURIComponent(token)}; path=/; max-age=2592000; SameSite=Lax${secureFlag}`
-        window.document.cookie = `campusx-authed=1; path=/; max-age=2592000; SameSite=Lax${secureFlag}`
-      }
+      setAuthCookies(token)
       router.push("/marketplace")
     } catch (err: unknown) {
       setError((err as Error).message || "Failed to verify OTP")
@@ -117,38 +117,67 @@ export default function CompleteRegistrationPage() {
         </div>
 
         {error && (
-          <div className="p-4 text-sm font-medium text-on-error-container bg-error-container rounded-xl">
+          <div className="p-3 bg-error-container text-error rounded-xl text-sm font-body border border-error/20">
             {error}
           </div>
         )}
 
         {step === "email" ? (
-          <form onSubmit={handleEmailSubmit(onEmailSubmit)} className="space-y-5">
-            <div className="space-y-2">
-              <label className="font-label text-sm font-bold text-on-surface uppercase tracking-wider">University Email</label>
-              <Input {...registerEmail("email")} type="email" placeholder="student@university.edu" className="h-12" />
-              {emailErrors.email && <p className="text-xs font-medium text-error">{emailErrors.email.message}</p>}
+          <form onSubmit={emailForm.handleSubmit(onEmailSubmit)} className="space-y-4">
+            <div>
+              <label className="text-xs font-label font-bold text-on-surface uppercase tracking-wider block mb-2">University Email</label>
+              <Input
+                {...emailForm.register("email")}
+                placeholder="yourname@college.edu"
+                className="w-full"
+              />
+              {emailForm.formState.errors.email && (
+                <p className="text-error text-xs mt-1 font-body">{emailForm.formState.errors.email.message}</p>
+              )}
             </div>
 
-            <Button type="submit" className="w-full" size="lg" disabled={isSubmittingEmail}>
-              {isSubmittingEmail ? "Sending..." : "Send Verification OTP"}
+            <Button
+              type="submit"
+              variant="primary"
+              size="lg"
+              className="w-full"
+              disabled={emailForm.formState.isSubmitting}
+            >
+              {emailForm.formState.isSubmitting ? "Sending OTP..." : "Send Verification Code"}
             </Button>
           </form>
         ) : (
-          <form onSubmit={handleOtpSubmit(onOtpSubmit)} className="space-y-5">
-            <div className="space-y-2">
-              <label className="font-label text-sm font-bold text-on-surface uppercase tracking-wider">6-Digit OTP</label>
-              <Input {...registerOtp("otp")} type="text" placeholder="123456" className="h-12 text-center tracking-widest text-xl font-bold" maxLength={6} />
-              {otpErrors.otp && <p className="text-xs font-medium text-error">{otpErrors.otp.message}</p>}
+          <form onSubmit={otpForm.handleSubmit(onOtpSubmit)} className="space-y-4">
+            <div>
+              <label className="text-xs font-label font-bold text-on-surface uppercase tracking-wider block mb-2">6-Digit Code</label>
+              <Input
+                {...otpForm.register("otp")}
+                placeholder="123456"
+                maxLength={6}
+                className="w-full text-center tracking-widest text-lg font-mono"
+              />
+              {otpForm.formState.errors.otp && (
+                <p className="text-error text-xs mt-1 font-body">{otpForm.formState.errors.otp.message}</p>
+              )}
             </div>
 
-            <Button type="submit" className="w-full" size="lg" disabled={isSubmittingOtp}>
-              {isSubmittingOtp ? "Verifying..." : "Verify & Complete Setup"}
+            <Button
+              type="submit"
+              variant="primary"
+              size="lg"
+              className="w-full"
+              disabled={otpForm.formState.isSubmitting}
+            >
+              {otpForm.formState.isSubmitting ? "Verifying..." : "Verify & Complete Setup"}
             </Button>
-            
-            <Button type="button" variant="ghost" className="w-full" onClick={() => setStep("email")}>
-              Change Email
-            </Button>
+
+            <button
+              type="button"
+              onClick={() => setStep("email")}
+              className="text-xs text-primary font-bold hover:underline block text-center w-full mt-2"
+            >
+              Change Email Address
+            </button>
           </form>
         )}
       </div>

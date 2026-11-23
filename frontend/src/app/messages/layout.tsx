@@ -13,7 +13,7 @@ export default function MessagesLayout({
 }) {
   const { user } = useAuthStore()
   const { conversations, setConversations, activeConversationId, setActiveConversationId } = useChatStore()
-  const [participantInfo, setParticipantInfo] = React.useState<Record<string, { displayName?: string; photoURL?: string } | null>>({})
+  const [participantInfo, setParticipantInfo] = React.useState<Record<string, { displayName?: string; photoURL?: string; avatar?: string | null } | null>>({})
   const [searchFilter, setSearchFilter] = React.useState("")
 
   React.useEffect(() => {

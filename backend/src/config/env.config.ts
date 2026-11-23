@@ -9,7 +9,7 @@ const envSchema = z.object({
     .enum(["development", "production", "test"])
     .default("development"),
   CORS_ORIGIN: z.string().default("http://localhost:3000,https://campusx-ai.onrender.com"),
-  ALLOWED_EMAIL_DOMAINS: z.string().default("nhitm.ac.in,edu"),
+  ALLOWED_EMAIL_DOMAINS: z.string().default("nhitm.ac.in,edu,ac.in"),
   FIREBASE_PROJECT_ID: z.string().optional(),
   FIREBASE_CLIENT_EMAIL: z.string().optional(),
   FIREBASE_PRIVATE_KEY: z.string().optional(),
