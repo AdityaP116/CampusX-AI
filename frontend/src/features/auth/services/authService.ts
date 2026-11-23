@@ -101,17 +101,20 @@ export async function loginWithGoogle(): Promise<UserCredential> {
   }
 
   const token = await credential.user.getIdToken()
-  const res = await fetch(`${BACKEND_URL}/auth/me`, {
-    headers: { Authorization: `Bearer ${token}` },
-  })
+  try {
+    const res = await fetch(`${BACKEND_URL}/auth/me`, {
+      headers: { Authorization: `Bearer ${token}` },
+    })
 
-  if (res.status === 404 || res.status === 401) {
-    // User does not have a linked backend profile yet
-    throw new Error("REQUIRES_VERIFICATION")
-  }
-
-  if (!res.ok) {
-    throw new Error("Unable to connect to authentication server. Please try again.")
+    if (res.status === 404 || res.status === 401) {
+      // User does not have a linked backend profile yet
+      throw new Error("REQUIRES_VERIFICATION")
+    }
+  } catch (checkErr: unknown) {
+    if ((checkErr as Error).message === "REQUIRES_VERIFICATION") {
+      throw checkErr
+    }
+    // Network or server down: proceed with valid Firebase session
   }
 
   await syncAuthSession(token)

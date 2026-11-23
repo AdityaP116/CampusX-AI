@@ -21,7 +21,8 @@ export function middleware(request: NextRequest) {
   }
 
   if (authRoutes.includes(pathname) && isAuthed) {
-    return NextResponse.redirect(new URL("/marketplace", request.url))
+    const redirectTarget = request.nextUrl.searchParams.get("redirect") || request.nextUrl.searchParams.get("from") || "/"
+    return NextResponse.redirect(new URL(redirectTarget, request.url))
   }
 
   return NextResponse.next()

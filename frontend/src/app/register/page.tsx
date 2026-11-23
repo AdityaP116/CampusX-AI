@@ -2,7 +2,7 @@
 
 import * as React from "react"
 import Link from "next/link"
-import { useRouter } from "next/navigation"
+import { useRouter, useSearchParams } from "next/navigation"
 import { useForm } from "react-hook-form"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { z } from "zod"
@@ -22,10 +22,13 @@ const registerSchema = z.object({
 
 type RegisterFormValues = z.infer<typeof registerSchema>
 
-export default function RegisterPage() {
+function RegisterFormContent() {
   const router = useRouter()
+  const searchParams = useSearchParams()
   const [error, setError] = React.useState<string | null>(null)
   
+  const redirectTarget = searchParams.get("redirect") || searchParams.get("from") || "/"
+
   const { register, handleSubmit, formState: { errors, isSubmitting } } = useForm<RegisterFormValues>({
     resolver: zodResolver(registerSchema)
   })
@@ -34,7 +37,8 @@ export default function RegisterPage() {
     try {
       setError(null)
       await registerWithEmail(data.name, data.email, data.password)
-      router.push("/marketplace")
+      router.push(redirectTarget)
+      router.refresh()
     } catch (err: unknown) {
       const errorObj = err as { code?: string; message?: string }
       const code = errorObj?.code ?? ""
@@ -50,7 +54,8 @@ export default function RegisterPage() {
     try {
       setError(null)
       await loginWithGoogle()
-      router.push("/marketplace")
+      router.push(redirectTarget)
+      router.refresh()
     } catch (err: unknown) {
       const errorObj = err as { message?: string }
       if (errorObj?.message === "REQUIRES_VERIFICATION") {
@@ -129,5 +134,13 @@ export default function RegisterPage() {
         </p>
       </div>
     </AuthLayout>
+  )
+}
+
+export default function RegisterPage() {
+  return (
+    <React.Suspense fallback={<div className="min-h-screen flex items-center justify-center"><div className="w-8 h-8 rounded-full border-2 border-primary border-t-transparent animate-spin" /></div>}>
+      <RegisterFormContent />
+    </React.Suspense>
   )
 }

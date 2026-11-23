@@ -2,7 +2,7 @@
 
 import * as React from "react"
 import Link from "next/link"
-import { useRouter } from "next/navigation"
+import { useRouter, useSearchParams } from "next/navigation"
 import { useForm } from "react-hook-form"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { z } from "zod"
@@ -18,10 +18,13 @@ const loginSchema = z.object({
 
 type LoginFormValues = z.infer<typeof loginSchema>
 
-export default function LoginPage() {
+function LoginFormContent() {
   const router = useRouter()
+  const searchParams = useSearchParams()
   const [error, setError] = React.useState<string | null>(null)
   
+  const redirectTarget = searchParams.get("redirect") || searchParams.get("from") || "/"
+
   const { register, handleSubmit, formState: { errors, isSubmitting } } = useForm<LoginFormValues>({
     resolver: zodResolver(loginSchema)
   })
@@ -30,7 +33,8 @@ export default function LoginPage() {
     try {
       setError(null)
       await loginWithEmail(data.email, data.password)
-      router.push("/marketplace")
+      router.push(redirectTarget)
+      router.refresh()
     } catch (err: unknown) {
       const errorObj = err as { code?: string; message?: string }
       const code = errorObj?.code ?? ""
@@ -48,7 +52,8 @@ export default function LoginPage() {
     try {
       setError(null)
       await loginWithGoogle()
-      router.push("/marketplace")
+      router.push(redirectTarget)
+      router.refresh()
     } catch (err: unknown) {
       const errorObj = err as { message?: string }
       if (errorObj?.message === "REQUIRES_VERIFICATION") {
@@ -126,5 +131,13 @@ export default function LoginPage() {
         </p>
       </div>
     </AuthLayout>
+  )
+}
+
+export default function LoginPage() {
+  return (
+    <React.Suspense fallback={<div className="min-h-screen flex items-center justify-center"><div className="w-8 h-8 rounded-full border-2 border-primary border-t-transparent animate-spin" /></div>}>
+      <LoginFormContent />
+    </React.Suspense>
   )
 }
