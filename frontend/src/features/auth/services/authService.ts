@@ -81,7 +81,24 @@ export async function registerWithEmail(
 
 export async function loginWithGoogle(): Promise<UserCredential> {
   const provider = new GoogleAuthProvider()
-  const credential = await signInWithPopup(auth, provider)
+  provider.setCustomParameters({ prompt: "select_account" })
+  
+  let credential: UserCredential
+  try {
+    credential = await signInWithPopup(auth, provider)
+  } catch (popupError: unknown) {
+    const err = popupError as { code?: string; message?: string }
+    if (
+      err?.code === "auth/popup-blocked" ||
+      err?.code === "auth/popup-closed-by-user" ||
+      err?.code === "auth/cancelled-popup-request"
+    ) {
+      throw new Error(err.message || "Google sign-in was cancelled or blocked by the browser.")
+    } else if (err?.code === "auth/unauthorized-domain") {
+      throw new Error("This domain is not authorized for Google Sign-In in Firebase Console. Please add your domain to Authorized Domains.")
+    }
+    throw popupError
+  }
 
   const token = await credential.user.getIdToken()
   const res = await fetch(`${BACKEND_URL}/auth/me`, {

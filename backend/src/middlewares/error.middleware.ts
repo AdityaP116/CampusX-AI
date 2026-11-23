@@ -30,9 +30,8 @@ export const globalErrorHandler = (
 
   // Handle generic unhandled errors
   const isProduction = process.env.NODE_ENV === "production";
-  const message = isProduction
-    ? "Internal Server Error"
-    : err.message || "An unexpected error occurred";
+  // Provide meaningful message if available rather than opaque "Internal Server Error"
+  const message = err.message || (isProduction ? "Internal Server Error" : "An unexpected error occurred");
   const errors = isProduction ? null : [err.stack];
 
   res.status(500).json(ApiResponse.error(message, errors));
