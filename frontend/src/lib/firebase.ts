@@ -2,7 +2,7 @@ import { initializeApp, getApps, getApp } from "firebase/app";
 import { getAuth } from "firebase/auth";
 import { getFirestore } from "firebase/firestore";
 import { getStorage } from "firebase/storage";
-import { getAnalytics, isSupported } from "firebase/analytics";
+import { getAnalytics, isSupported, Analytics } from "firebase/analytics";
 
 const firebaseConfig = {
   apiKey: process.env.NEXT_PUBLIC_FIREBASE_API_KEY || "dummy-api-key-for-build",
@@ -19,7 +19,7 @@ const auth = getAuth(app);
 const db = getFirestore(app);
 const storage = getStorage(app);
 
-let analytics: any = null;
+let analytics: Analytics | null = null;
 
 // Only initialize Firebase Analytics in browser when valid production/staging credentials exist
 const hasValidConfig =
@@ -35,9 +35,9 @@ if (hasValidConfig) {
         analytics = getAnalytics(app);
       }
     })
-    .catch((err) => {
+    .catch((err: unknown) => {
       // Gracefully handle analytics initialization failure in offline or restricted environments
-      console.warn("Firebase Analytics initialization skipped:", err?.message || err);
+      console.warn("Firebase Analytics initialization skipped:", (err as Error)?.message || err);
     });
 }
 

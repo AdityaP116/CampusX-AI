@@ -35,12 +35,13 @@ export default function RegisterPage() {
       setError(null)
       await registerWithEmail(data.name, data.email, data.password)
       router.push("/marketplace")
-    } catch (err: any) {
-      const code = err?.code ?? ""
+    } catch (err: unknown) {
+      const errorObj = err as { code?: string; message?: string }
+      const code = errorObj?.code ?? ""
       if (code === "auth/email-already-in-use") {
         setError("An account with this email already exists. Please sign in.")
       } else {
-        setError(err.message || "Failed to create account. Please try again.")
+        setError(errorObj?.message || "Failed to create account. Please try again.")
       }
     }
   }
@@ -50,11 +51,12 @@ export default function RegisterPage() {
       setError(null)
       await loginWithGoogle()
       router.push("/marketplace")
-    } catch (err: any) {
-      if (err.message === "REQUIRES_VERIFICATION") {
+    } catch (err: unknown) {
+      const errorObj = err as { message?: string }
+      if (errorObj?.message === "REQUIRES_VERIFICATION") {
         router.push("/register/complete")
       } else {
-        setError(err.message || "Failed to sign up with Google")
+        setError(errorObj?.message || "Failed to sign up with Google")
       }
     }
   }

@@ -31,14 +31,15 @@ export default function LoginPage() {
       setError(null)
       await loginWithEmail(data.email, data.password)
       router.push("/marketplace")
-    } catch (err: any) {
-      const code = err?.code ?? ""
+    } catch (err: unknown) {
+      const errorObj = err as { code?: string; message?: string }
+      const code = errorObj?.code ?? ""
       if (code === "auth/invalid-credential" || code === "auth/wrong-password" || code === "auth/user-not-found") {
         setError("Invalid student email or password.")
       } else if (code === "auth/too-many-requests") {
         setError("Too many attempts. Please try again in a few minutes.")
       } else {
-        setError(err.message || "Failed to sign in. Please try again.")
+        setError(errorObj?.message || "Failed to sign in. Please try again.")
       }
     }
   }
@@ -48,11 +49,12 @@ export default function LoginPage() {
       setError(null)
       await loginWithGoogle()
       router.push("/marketplace")
-    } catch (err: any) {
-      if (err.message === "REQUIRES_VERIFICATION") {
+    } catch (err: unknown) {
+      const errorObj = err as { message?: string }
+      if (errorObj?.message === "REQUIRES_VERIFICATION") {
         router.push("/register/complete")
       } else {
-        setError(err.message || "Failed to sign in with Google")
+        setError(errorObj?.message || "Failed to sign in with Google")
       }
     }
   }
@@ -120,7 +122,7 @@ export default function LoginPage() {
         </Button>
 
         <p className="text-center text-sm text-on-surface-variant font-body pt-4">
-          Don't have an account? <Link href="/register" className="font-bold text-primary hover:underline">Sign up</Link>
+          Don&apos;t have an account? <Link href="/register" className="font-bold text-primary hover:underline">Sign up</Link>
         </p>
       </div>
     </AuthLayout>

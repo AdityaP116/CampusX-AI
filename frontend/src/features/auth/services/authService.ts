@@ -12,16 +12,17 @@ import { auth } from "@/lib/firebase"
 
 const BACKEND_URL = process.env.NEXT_PUBLIC_BACKEND_URL || "https://campusx-api-zuks.onrender.com/api/v1"
 
-function setAuthCookie() {
+async function syncAuthSession(token?: string) {
   const isSecure = typeof window !== "undefined" && window.location.protocol === "https:"
   const secureFlag = isSecure ? "; Secure" : ""
-  document.cookie = `campusx-authed=1; path=/; max-age=2592000; SameSite=Lax${secureFlag}`
-}
 
-function clearAuthCookie() {
-  const isSecure = typeof window !== "undefined" && window.location.protocol === "https:"
-  const secureFlag = isSecure ? "; Secure" : ""
-  document.cookie = `campusx-authed=; path=/; max-age=0; SameSite=Lax${secureFlag}`
+  if (token) {
+    document.cookie = `campusx-token=${encodeURIComponent(token)}; path=/; max-age=2592000; SameSite=Lax${secureFlag}`
+    document.cookie = `campusx-authed=1; path=/; max-age=2592000; SameSite=Lax${secureFlag}`
+  } else {
+    document.cookie = `campusx-token=; path=/; max-age=0; SameSite=Lax${secureFlag}`
+    document.cookie = `campusx-authed=; path=/; max-age=0; SameSite=Lax${secureFlag}`
+  }
 }
 
 export async function syncUserWithBackend(credential: UserCredential): Promise<{ exists: boolean }> {
@@ -38,7 +39,8 @@ export async function loginWithEmail(
   password: string
 ): Promise<UserCredential> {
   const credential = await signInWithEmailAndPassword(auth, email, password)
-  setAuthCookie()
+  const token = await credential.user.getIdToken()
+  await syncAuthSession(token)
   return credential
 }
 
@@ -73,7 +75,7 @@ export async function registerWithEmail(
     throw backendError
   }
 
-  setAuthCookie()
+  await syncAuthSession(token)
   return credential
 }
 
@@ -95,12 +97,12 @@ export async function loginWithGoogle(): Promise<UserCredential> {
     throw new Error("Unable to connect to authentication server. Please try again.")
   }
 
-  setAuthCookie()
+  await syncAuthSession(token)
   return credential
 }
 
 export async function logout(): Promise<void> {
-  clearAuthCookie()
+  await syncAuthSession()
   return signOut(auth)
 }
 

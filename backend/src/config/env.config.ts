@@ -23,6 +23,13 @@ const envSchema = z.object({
     .string()
     .default("100")
     .transform((val) => parseInt(val, 10)),
+  // Email delivery configuration (SMTP or Resend API key)
+  SMTP_HOST: z.string().optional(),
+  SMTP_PORT: z.string().optional().transform((val) => (val ? parseInt(val, 10) : 587)),
+  SMTP_USER: z.string().optional(),
+  SMTP_PASS: z.string().optional(),
+  SMTP_FROM: z.string().default("noreply@campusx.ai"),
+  RESEND_API_KEY: z.string().optional(),
 });
 
 const parsedEnv = envSchema.safeParse(process.env);

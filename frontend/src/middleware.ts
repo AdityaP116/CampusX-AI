@@ -1,15 +1,18 @@
 import { NextResponse } from "next/server"
 import type { NextRequest } from "next/server"
 
-// Routes that require authentication
+// Routes that strictly require authenticated student session
 const protectedRoutes = ["/create", "/messages", "/profile"]
-// Routes only for unauthenticated users
+// Routes only accessible to unauthenticated guests
 const authRoutes = ["/login", "/register"]
 
 export function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl
 
-  const isAuthed = request.cookies.has("campusx-authed")
+  // Check for the presence of session token or auth indicator cookie
+  // Note: Backend REST API enforces cryptographically signed Firebase ID token verification for all sensitive mutations
+  const sessionCookie = request.cookies.get("campusx-token")?.value || request.cookies.get("campusx-authed")?.value
+  const isAuthed = Boolean(sessionCookie && sessionCookie.trim().length > 0)
 
   if (protectedRoutes.some((r) => pathname.startsWith(r)) && !isAuthed) {
     const loginUrl = new URL("/login", request.url)
@@ -25,5 +28,5 @@ export function middleware(request: NextRequest) {
 }
 
 export const config = {
-  matcher: ["/create", "/messages", "/profile", "/login", "/register"],
+  matcher: ["/create/:path*", "/messages/:path*", "/profile/:path*", "/login", "/register"],
 }

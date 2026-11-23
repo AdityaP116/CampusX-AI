@@ -3,17 +3,22 @@ import crypto from "crypto";
 import { ApiResponse } from "../utils/response.util";
 import { ApiError } from "../utils/api-error";
 import { UserService } from "../services";
+import { EmailService } from "../services/email.service";
 import { redisClient } from "../config/redis.config";
 import { logger } from "../utils/logger";
-import { env } from "../config/env.config";
+
+// Helper to hash OTP with SHA-256 to ensure no plaintext secrets are stored
+const hashOtp = (email: string, otp: string): string => {
+  return crypto.createHash("sha256").update(`${email.toLowerCase()}:${otp}`).digest("hex");
+};
 
 // In-memory fallback for development/testing when Redis is not available
-interface OtpEntry {
-  otp: string;
+interface HashedOtpEntry {
+  hashedOtp: string;
   expiresAt: number;
   attempts: number;
 }
-const memoryOtpStore = new Map<string, OtpEntry>();
+const memoryOtpStore = new Map<string, HashedOtpEntry>();
 
 // Clean up expired OTPs periodically
 setInterval(() => {
@@ -90,8 +95,10 @@ export class AuthController {
       const uid = req.firebaseUser?.uid;
       if (!uid) throw ApiError.unauthorized();
 
-      // Check cooldown (60 seconds)
-      const cooldownKey = `otp_cooldown:${universityEmail}`;
+      const normalizedEmail = universityEmail.toLowerCase().trim();
+
+      // Enforce 60s cooldown between requests
+      const cooldownKey = `otp_cooldown:${normalizedEmail}`;
       if (redisClient) {
         const inCooldown = await redisClient.get(cooldownKey);
         if (inCooldown) {
@@ -101,28 +108,25 @@ export class AuthController {
 
       // Generate cryptographically secure 6-digit OTP
       const otp = crypto.randomInt(100000, 1000000).toString();
+      const hashed = hashOtp(normalizedEmail, otp);
 
-      // Store OTP with 5 minutes (300 seconds) expiration
+      // Store hashed OTP with 5 minutes (300 seconds) expiration
       if (redisClient) {
-        await redisClient.set(`otp:${universityEmail}`, otp, "EX", 300);
+        await redisClient.set(`otp:${normalizedEmail}`, hashed, "EX", 300);
         await redisClient.set(cooldownKey, "1", "EX", 60);
-        await redisClient.set(`otp_attempts:${universityEmail}`, "0", "EX", 300);
+        await redisClient.set(`otp_attempts:${normalizedEmail}`, "0", "EX", 300);
       } else {
-        memoryOtpStore.set(universityEmail, {
-          otp,
+        memoryOtpStore.set(normalizedEmail, {
+          hashedOtp: hashed,
           expiresAt: Date.now() + 300000,
           attempts: 0,
         });
       }
 
-      if (env.NODE_ENV !== "production") {
-        logger.info(`[DEV ONLY] OTP for ${universityEmail} is: ${otp}`);
-      } else {
-        // In production, integrate email service (e.g. SendGrid, Nodemailer)
-        logger.info(`Sent verification code to student email domain.`);
-      }
+      // Dispatch OTP via EmailService
+      await EmailService.sendOtpEmail(normalizedEmail, otp);
 
-      res.status(200).json(ApiResponse.success("Verification OTP sent", null));
+      res.status(200).json(ApiResponse.success("Verification OTP sent to university email", null));
     } catch (error) {
       next(error);
     }
@@ -135,54 +139,59 @@ export class AuthController {
       const googleEmail = req.firebaseUser?.email;
       if (!uid || !googleEmail) throw ApiError.unauthorized();
 
-      // Verify OTP with attempt-throttling
+      const normalizedEmail = universityEmail.toLowerCase().trim();
+      const candidateHash = hashOtp(normalizedEmail, otp);
+
+      // Verify OTP with attempt-throttling (max 5 attempts)
       if (redisClient) {
-        const attemptsStr = await redisClient.get(`otp_attempts:${universityEmail}`);
+        const attemptsStr = await redisClient.get(`otp_attempts:${normalizedEmail}`);
         const attempts = attemptsStr ? parseInt(attemptsStr, 10) : 0;
         if (attempts >= 5) {
-          await redisClient.del(`otp:${universityEmail}`);
+          await redisClient.del(`otp:${normalizedEmail}`);
           throw ApiError.badRequest("Too many failed attempts. Please request a new verification code.");
         }
 
-        const storedOtp = await redisClient.get(`otp:${universityEmail}`);
-        if (!storedOtp || storedOtp !== otp) {
-          await redisClient.incr(`otp_attempts:${universityEmail}`);
+        const storedHash = await redisClient.get(`otp:${normalizedEmail}`);
+        if (!storedHash || storedHash !== candidateHash) {
+          await redisClient.incr(`otp_attempts:${normalizedEmail}`);
           throw ApiError.badRequest("Invalid or expired OTP");
         }
 
-        await redisClient.del(`otp:${universityEmail}`);
-        await redisClient.del(`otp_attempts:${universityEmail}`);
+        // Single-use: delete immediately upon successful verification
+        await redisClient.del(`otp:${normalizedEmail}`);
+        await redisClient.del(`otp_attempts:${normalizedEmail}`);
       } else {
-        const entry = memoryOtpStore.get(universityEmail);
+        const entry = memoryOtpStore.get(normalizedEmail);
         if (!entry || entry.expiresAt < Date.now()) {
-          memoryOtpStore.delete(universityEmail);
+          memoryOtpStore.delete(normalizedEmail);
           throw ApiError.badRequest("Invalid or expired OTP");
         }
 
         if (entry.attempts >= 5) {
-          memoryOtpStore.delete(universityEmail);
+          memoryOtpStore.delete(normalizedEmail);
           throw ApiError.badRequest("Too many failed attempts. Please request a new verification code.");
         }
 
-        if (entry.otp !== otp) {
+        if (entry.hashedOtp !== candidateHash) {
           entry.attempts += 1;
           throw ApiError.badRequest("Invalid or expired OTP");
         }
 
-        memoryOtpStore.delete(universityEmail);
+        // Single-use: delete immediately
+        memoryOtpStore.delete(normalizedEmail);
       }
 
-      // Check if user already exists
+      // Link or create student record
       let user;
       try {
         user = await UserService.getUserByUid(uid);
-      } catch (err) {
+      } catch {
         // User not found, will create below
       }
 
       if (user) {
         await UserService.updateUser(user.id!, {
-          universityEmail,
+          universityEmail: normalizedEmail,
           verificationStatus: "verified",
         });
         user = await UserService.getUserById(user.id!);
@@ -196,11 +205,12 @@ export class AuthController {
           role: "STUDENT",
           verificationStatus: "verified",
           universityName: "University",
-          universityEmail,
+          universityEmail: normalizedEmail,
           provider: "google",
         });
       }
 
+      logger.info(`Student ${normalizedEmail} successfully verified and linked to UID ${uid}`);
       res.status(200).json(ApiResponse.success("OTP verified and account linked", user));
     } catch (error) {
       next(error);

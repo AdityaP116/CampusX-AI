@@ -33,14 +33,15 @@ export function LoginForm() {
     try {
       await loginWithEmail(values.email, values.password)
       router.push("/marketplace")
-    } catch (err: any) {
-      const code = err?.code ?? ""
+    } catch (err: unknown) {
+      const errorObj = err as { code?: string; message?: string }
+      const code = errorObj?.code ?? ""
       if (code === "auth/invalid-credential" || code === "auth/wrong-password" || code === "auth/user-not-found") {
         setServerError("Invalid email or password.")
       } else if (code === "auth/too-many-requests") {
         setServerError("Too many attempts. Please try again later.")
       } else {
-        setServerError(err.message || "Something went wrong. Please try again.")
+        setServerError(errorObj?.message || "Something went wrong. Please try again.")
       }
     }
   }

@@ -28,7 +28,7 @@ export interface Listing {
   listingType: string
   meetupLocation: string
   images: string[]
-  createdAt: any
+  createdAt: unknown
   status: "active" | "sold" | "archived" | "hidden"
   thumbnailUrl?: string
   seller?: {
@@ -36,6 +36,27 @@ export interface Listing {
     photoURL?: string
     email?: string
   }
+}
+
+export interface RawProductDoc {
+  id?: string
+  title?: string
+  category?: string
+  categoryId?: string
+  condition?: string
+  description?: string
+  price?: number | string
+  negotiable?: boolean
+  listingType?: string
+  transactionType?: string
+  meetupLocation?: string
+  location?: string
+  images?: string[]
+  thumbnailUrl?: string
+  sellerId?: string
+  status?: "active" | "sold" | "archived" | "hidden"
+  createdAt?: unknown
+  [key: string]: unknown
 }
 
 export const createListing = async (
@@ -61,7 +82,7 @@ export const createListing = async (
   const category = data.category || "other"
   const location = data.meetupLocation || "Main Campus"
 
-  const listingData: any = {
+  const listingData: Record<string, unknown> = {
     ...data,
     id: listingRef.id,
     sellerId,
@@ -80,7 +101,7 @@ export const createListing = async (
     updatedAt: serverTimestamp(),
   }
 
-  // Try saving via backend API first if authenticated; fallback to direct Firestore
+  // Attempt backend API first if authenticated; fallback to direct Firestore only on network error
   try {
     const user = auth.currentUser
     if (user) {
@@ -100,10 +121,17 @@ export const createListing = async (
       if (res.ok) {
         const json = await res.json()
         return json.data?.id || listingRef.id
+      } else if (res.status === 400 || res.status === 401 || res.status === 403) {
+        // Business or authorization error: do not silently bypass via Firestore SDK
+        const errJson = await res.json().catch(() => ({}))
+        throw new Error(errJson.message || "Failed to create listing on backend")
       }
     }
-  } catch {
-    // Backend API unreachable, falling back to direct Firestore setDoc
+  } catch (err: unknown) {
+    if ((err as Error).message?.includes("Failed to create listing")) {
+      throw err
+    }
+    // Network or server offline: proceed to Firestore SDK direct fallback
   }
 
   await setDoc(listingRef, listingData)
@@ -132,11 +160,20 @@ export const getListings = async (
     if (res.ok) {
       const json = await res.json()
       if (Array.isArray(json.data?.items)) {
-        return json.data.items.map((item: any) => ({
+        return json.data.items.map((item: RawProductDoc) => ({
           ...item,
+          id: item.id || "",
+          sellerId: item.sellerId || "",
+          title: item.title || "",
+          description: item.description || "",
+          price: Number(item.price) || 0,
+          negotiable: Boolean(item.negotiable),
+          images: Array.isArray(item.images) ? item.images : [],
+          status: item.status || "active",
           category: item.category || item.categoryId || "other",
           meetupLocation: item.meetupLocation || item.location || "Campus",
           listingType: (item.listingType || item.transactionType || "sell").toLowerCase(),
+          createdAt: item.createdAt,
         }))
       }
     }
@@ -160,31 +197,39 @@ export const getListings = async (
   const q = query(collection(db, "products"), ...constraints)
   const snapshot = await getDocs(q)
   
-  let listings = snapshot.docs.map(doc => {
-    const data = doc.data() as any
+  let listings: Listing[] = snapshot.docs.map((d) => {
+    const data = d.data() as RawProductDoc
     return {
       ...data,
-      id: doc.id,
+      id: d.id,
+      sellerId: data.sellerId || "",
+      title: data.title || "",
+      description: data.description || "",
+      price: Number(data.price) || 0,
+      negotiable: Boolean(data.negotiable),
+      images: Array.isArray(data.images) ? data.images : [],
+      status: data.status || "active",
       category: data.category || data.categoryId || "other",
       meetupLocation: data.meetupLocation || data.location || "Campus",
       listingType: (data.listingType || data.transactionType || "sell").toLowerCase(),
+      createdAt: data.createdAt,
     } as Listing
   })
   
   // Client-side filtering for search & price
   if (filters?.searchQuery) {
     const term = filters.searchQuery.toLowerCase()
-    listings = listings.filter(l => 
+    listings = listings.filter((l) => 
       l.title?.toLowerCase().includes(term) || 
       l.description?.toLowerCase().includes(term)
     )
   }
   
   if (filters?.minPrice !== undefined && filters.minPrice !== null) {
-    listings = listings.filter(l => l.price >= filters.minPrice!)
+    listings = listings.filter((l) => l.price >= filters.minPrice!)
   }
   if (filters?.maxPrice !== undefined && filters.maxPrice !== null) {
-    listings = listings.filter(l => l.price <= filters.maxPrice!)
+    listings = listings.filter((l) => l.price <= filters.maxPrice!)
   }
   
   return listings
@@ -197,12 +242,21 @@ export const getListingById = async (id: string): Promise<Listing | null> => {
     if (res.ok) {
       const json = await res.json()
       if (json.data) {
-        const item = json.data
+        const item: RawProductDoc = json.data
         return {
           ...item,
+          id: item.id || id,
+          sellerId: item.sellerId || "",
+          title: item.title || "",
+          description: item.description || "",
+          price: Number(item.price) || 0,
+          negotiable: Boolean(item.negotiable),
+          images: Array.isArray(item.images) ? item.images : [],
+          status: item.status || "active",
           category: item.category || item.categoryId || "other",
           meetupLocation: item.meetupLocation || item.location || "Campus",
           listingType: (item.listingType || item.transactionType || "sell").toLowerCase(),
+          createdAt: item.createdAt,
         } as Listing
       }
     }
@@ -214,13 +268,21 @@ export const getListingById = async (id: string): Promise<Listing | null> => {
   const snapshot = await getDoc(docRef)
   
   if (snapshot.exists()) {
-    const data = snapshot.data() as any
+    const data = snapshot.data() as RawProductDoc
     return {
       ...data,
       id: snapshot.id,
+      sellerId: data.sellerId || "",
+      title: data.title || "",
+      description: data.description || "",
+      price: Number(data.price) || 0,
+      negotiable: Boolean(data.negotiable),
+      images: Array.isArray(data.images) ? data.images : [],
+      status: data.status || "active",
       category: data.category || data.categoryId || "other",
       meetupLocation: data.meetupLocation || data.location || "Campus",
       listingType: (data.listingType || data.transactionType || "sell").toLowerCase(),
+      createdAt: data.createdAt,
     } as Listing
   }
   

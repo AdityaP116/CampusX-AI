@@ -65,8 +65,8 @@ export default function CompleteRegistrationPage() {
 
       setEmail(data.email)
       setStep("otp")
-    } catch (err: any) {
-      setError(err.message || "Failed to send verification email")
+    } catch (err: unknown) {
+      setError((err as Error).message || "Failed to send verification email")
     }
   }
 
@@ -92,12 +92,15 @@ export default function CompleteRegistrationPage() {
       }
 
       // Set cookie and redirect
-      const isSecure = typeof window !== "undefined" && window.location.protocol === "https:"
-      const secureFlag = isSecure ? "; Secure" : ""
-      document.cookie = `campusx-authed=1; path=/; max-age=2592000; SameSite=Lax${secureFlag}`
+      if (typeof window !== "undefined") {
+        const isSecure = window.location.protocol === "https:"
+        const secureFlag = isSecure ? "; Secure" : ""
+        window.document.cookie = `campusx-token=${encodeURIComponent(token)}; path=/; max-age=2592000; SameSite=Lax${secureFlag}`
+        window.document.cookie = `campusx-authed=1; path=/; max-age=2592000; SameSite=Lax${secureFlag}`
+      }
       router.push("/marketplace")
-    } catch (err: any) {
-      setError(err.message || "Failed to verify OTP")
+    } catch (err: unknown) {
+      setError((err as Error).message || "Failed to verify OTP")
     }
   }
 

@@ -37,14 +37,15 @@ export function RegisterForm() {
     try {
       await registerWithEmail(values.name, values.email, values.password)
       router.push("/marketplace")
-    } catch (err: any) {
-      const code = err?.code ?? ""
+    } catch (err: unknown) {
+      const errorObj = err as { code?: string; message?: string }
+      const code = errorObj?.code ?? ""
       if (code === "auth/email-already-in-use") {
         setServerError("An account with this email already exists.")
       } else if (code === "auth/invalid-email") {
         setServerError("Please use a valid student email address.")
       } else {
-        setServerError(err.message || "Something went wrong. Please try again.")
+        setServerError(errorObj?.message || "Something went wrong. Please try again.")
       }
     }
   }
