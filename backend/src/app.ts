@@ -22,7 +22,7 @@ export const createApp = (): Application => {
       contentSecurityPolicy: false,
       crossOriginResourcePolicy: { policy: "cross-origin" },
       crossOriginEmbedderPolicy: false,
-      crossOriginOpenerPolicy: false,
+      crossOriginOpenerPolicy: { policy: "same-origin-allow-popups" },
       hsts: {
         maxAge: 31536000,
         includeSubDomains: true,

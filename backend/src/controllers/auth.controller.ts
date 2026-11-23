@@ -61,7 +61,13 @@ export class AuthController {
     try {
       const uid = req.firebaseUser?.uid;
       if (!uid) throw ApiError.unauthorized();
+      
       const currentUser = await UserService.getUserByUid(uid);
+      if (!currentUser) {
+        res.status(404).json(ApiResponse.error("User profile not found. Onboarding required.", null));
+        return;
+      }
+      
       res.status(200).json(ApiResponse.success("User profile retrieved", currentUser));
     } catch (error) {
       next(error);
@@ -73,6 +79,9 @@ export class AuthController {
       const uid = req.firebaseUser?.uid;
       if (!uid) throw ApiError.unauthorized();
       const currentUser = await UserService.getUserByUid(uid);
+      if (!currentUser) {
+        throw ApiError.notFound("User profile not found");
+      }
       await UserService.updateUser(currentUser.id!, req.body);
       const updatedUser = await UserService.getUserById(currentUser.id!);
       res.status(200).json(ApiResponse.success("Profile updated", updatedUser));

@@ -37,6 +37,24 @@ describe("UserService", () => {
     });
   });
 
+  describe("getUserByUid", () => {
+    it("should return null gracefully if user not found without throwing unhandled error", async () => {
+      vi.mocked(userRepository.findByUid).mockResolvedValue(null);
+
+      const result = await UserService.getUserByUid("non-existent-uid");
+      expect(result).toBeNull();
+      expect(userRepository.findByUid).toHaveBeenCalledWith("non-existent-uid");
+    });
+
+    it("should return user if user exists by uid", async () => {
+      const mockUser = { id: "uid123", uid: "uid123", email: "student@nhitm.ac.in" } as any;
+      vi.mocked(userRepository.findByUid).mockResolvedValue(mockUser);
+
+      const result = await UserService.getUserByUid("uid123");
+      expect(result).toEqual(mockUser);
+    });
+  });
+
   describe("createUser", () => {
     it("should create user if uid does not exist", async () => {
       const newUserData = { uid: "uid123", email: "test@edu", displayName: "Test", role: "STUDENT", verificationStatus: "unverified", universityName: "Test", universityEmail: "test@edu" } as any;

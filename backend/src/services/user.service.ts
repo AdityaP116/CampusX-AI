@@ -11,12 +11,8 @@ export class UserService {
     return user;
   }
 
-  public static async getUserByUid(uid: string): Promise<User> {
-    const user = await userRepository.findByUid(uid);
-    if (!user) {
-      throw ApiError.notFound("User not found for this Firebase account");
-    }
-    return user;
+  public static async getUserByUid(uid: string): Promise<User | null> {
+    return await userRepository.findByUid(uid);
   }
 
   public static async createUser(data: Omit<User, "id">): Promise<User> {
