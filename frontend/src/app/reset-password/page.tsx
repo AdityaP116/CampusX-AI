@@ -54,25 +54,31 @@ function ResetPasswordContent() {
 
   // Verify Firebase oobCode if present in query params
   React.useEffect(() => {
-    if (oobCode) {
-      setCodeValidating(true)
-      verifyPasswordResetCode(auth, oobCode)
-        .then((email) => {
-          setEmailForReset(email)
-          setMode("confirm")
-          setCodeValidating(false)
-        })
-        .catch((err: unknown) => {
-          const errorObj = err as { code?: string; message?: string }
-          if (errorObj?.code === "auth/invalid-action-code") {
-            setCodeError("This password reset link is invalid or has already been used.")
-          } else if (errorObj?.code === "auth/expired-action-code") {
-            setCodeError("This password reset link has expired. Please request a new one.")
-          } else {
-            setCodeError(errorObj?.message || "Invalid password reset link.")
-          }
-          setCodeValidating(false)
-        })
+    if (!oobCode) return
+
+    let isMounted = true
+    verifyPasswordResetCode(auth, oobCode)
+      .then((email) => {
+        if (!isMounted) return
+        setEmailForReset(email)
+        setMode("confirm")
+        setCodeValidating(false)
+      })
+      .catch((err: unknown) => {
+        if (!isMounted) return
+        const errorObj = err as { code?: string; message?: string }
+        if (errorObj?.code === "auth/invalid-action-code") {
+          setCodeError("This password reset link is invalid or has already been used.")
+        } else if (errorObj?.code === "auth/expired-action-code") {
+          setCodeError("This password reset link has expired. Please request a new one.")
+        } else {
+          setCodeError(errorObj?.message || "Invalid password reset link.")
+        }
+        setCodeValidating(false)
+      })
+
+    return () => {
+      isMounted = false
     }
   }, [oobCode])
 
